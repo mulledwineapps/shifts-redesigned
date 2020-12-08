@@ -174,10 +174,10 @@
 
     <View
         android:id="@+id/btn_shift_type_choose_color"
-        android:layout_width="@dimen/view_height_48"
-        android:layout_height="@dimen/view_size_24"
+        android:layout_width="@dimen/button_size_40"
+        android:layout_height="@dimen/button_size_40"
         android:layout_marginStart="@dimen/spacing_16"
-        android:background="@drawable/bg_rounded_24"
+        android:background="@drawable/bg_round"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_shift_type_choose_color_title"
         tools:backgroundTint="@color/color_attention" />
