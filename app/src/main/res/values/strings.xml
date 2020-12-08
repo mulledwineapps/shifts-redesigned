@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">Shifts Redesigned</string>
+
+    <!-- weekdays -->
+    <string-array name="days_of_week_array">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Вс</item>
+    </string-array>
+
+    <!-- months -->
+    <string name="january">Январь</string>
+    <string name="february">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="september">Сентябрь</string>
+    <string name="october">Октябрь</string>
+    <string name="november">Ноябрь</string>
+    <string name="december">Декабрь</string>
+
+    <!-- dialogs buttons -->
+    <string name="ok_button">Ок</string>
+    <string name="cancel_button">Отмена</string>
+
+    <!-- main screen -->
+    <string name="title_schedules">Графики</string>
+    <string name="title_shift_types">Смены</string>
+    <string name="title_settings">Настройки</string>
+
+    <!-- schedules screen -->
+    <string name="label_schedules">Графики</string>
+
+    <!-- schedule screen -->
+    <string name="label_add_schedule">Добавить график</string>
+    <string name="label_edit_schedule">Редактировать график</string>
+    <string name="schedule_save_menu_item_title">Сохранить</string>
+    <string name="schedule_name_title">Имя или название работы</string>
+    <string name="schedule_start_typing_hint">Начните писать</string>
+    <string name="schedule_choose_days_title">Выбрать дни</string>
+    <string name="schedule_first_day_title">Первый день</string>
+    <string name="schedule_last_day_title">Последний день</string>
+    <string name="schedule_setup_shifts_btn_title">Задать смены</string>
+    <string name="schedule_add_shift_btn_title">Добавить событие</string>
+
+    <!-- settings -->
+    <string name="label_settings">Настройки</string>
+    <string name="settings_group_main">Главное</string>
+    <string name="settings_title_holidays">Праздники</string>
+    <string name="settings_description_holidays">Подключить отображение праздников</string>
+    <string name="settings_group_transfer">Перенос</string>
+    <string name="settings_title_export">Экспорт записей</string>
+    <string name="settings_description_export">Сохраните графики в памяти телефона</string>
+    <string name="settings_title_import">Импорт записей</string>
+    <string name="settings_description_import">Загрузите графики в календарь</string>
+    <string name="settings_title_excel">Выгрузить в Excel</string>
+    <string name="settings_description_excel">Создайте документ с графиками</string>
+    <string name="settings_group_notifications">Напоминания</string>
+    <string name="settings_title_vibration">Вибрация</string>
+    <string name="settings_description_vibration">Вибрировать при напоминании</string>
+    <string name="settings_title_melody">Мелодия напоминания</string>
+    <string name="settings_description_melody">Выбрать</string>
+
+    <!-- dialogs -->
+    <string name="label_choose_shift">Выбрать смену</string>
+    <string name="label_choose_shift_color">Выбрать цвет смены</string>
+
+    <!-- dialog buttons -->
+    <string name="yes_button">Да</string>
+    <string name="no_button">Нет</string>
+
+    <!-- color picker -->
+    <string name="sizzling_red">Шипящий красный</string>
+    <string name="free_speech_blue">Свобода слова</string>
+    <string name="spiro_disco_ball">Диско шар</string>
+    <string name="jade_dust">Нефритовая пыль</string>
+    <string name="green_teal">Зелёный чирок</string>
+    <string name="chrome_yellow">Жёлтый хром</string>
+    <string name="vibrant_yellow">Яркий жёлтый</string>
+    <string name="red_orange">Красный апельсин</string>
+    <string name="london_square">Лондонская площадь</string>
+    <string name="black_pearl">Чёрная жемчужина</string>
+
+    <!-- shift types screen -->
+    <string name="shift_types_shifts_label">Смены</string>
+
+    <!-- shift type screen -->
+    <string name="shift_type_add_label">Добавить смену</string>
+    <string name="shift_type_edit_label">Редактировать смену</string>
+    <string name="shift_type_name_title">Название смены</string>
+    <string name="shift_type_all_day_btn_title">Весь день</string>
+    <string name="shift_type_choose_hours_btn_title">Выбрать часы</string>
+    <string name="shift_type_duration_title">Продолжительность смены</string>
+    <string name="shift_type_start_title">Начало</string>
+    <string name="shift_type_finish_title">Конец</string>
+    <string name="shift_type_choose_color_title">Выбрать цвет смены</string>
+
+    <!-- splash_info screen -->
+    <string name="splash_info">Генерируем календарь…</string>
+
+    <!-- misc -->
+    <string name="empty_yet_placeholder">Здесь пока пусто</string>
+    <string name="choose_placeholder">Выбрать</string>
+    <string name="please_wait">Пожалуйста, подождите…</string>
+
+    <!-- content descriptions -->
+    <string name="description_btn_add_schedule">Кнопка добавить график</string>
+    <string name="description_go_today">Перейти к сегодняшнему дню</string>
+
+</resources>

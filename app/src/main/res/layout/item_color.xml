@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height_72"
+    android:background="@color/white"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingHorizontal="@dimen/spacing_16"
+    tools:context=".ui.dialogs.ColorPickerDialog">
+
+    <View
+        android:id="@+id/v_color_item_circle"
+        android:layout_width="@dimen/colored_circle_size_32"
+        android:layout_height="@dimen/colored_circle_size_32"
+        android:background="@drawable/bg_round"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:backgroundTint="@color/london_square" />
+
+    <TextView
+        android:id="@+id/tv_color_item_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:letterSpacing="0.02"
+        android:minHeight="@dimen/view_size_24"
+        android:textColor="@color/bright_gray"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/v_color_item_circle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Лондонская площадь" />
+
+    <TextView
+        android:id="@+id/tv_color_item_hex"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:letterSpacing="0.02"
+        android:minHeight="@dimen/text_view_height_32"
+        android:textColor="@color/bright_gray_54"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/v_color_item_circle"
+        app:layout_constraintTop_toBottomOf="@id/tv_color_item_name"
+        tools:text="#808E9B" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

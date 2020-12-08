@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.MainFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ActionBarTheme">
+
+            <TextView
+                android:id="@+id/tv_chosen_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/bright_gray"
+                android:textSize="@dimen/font_18"
+                app:drawableEndCompat="@drawable/ic_round_arrow_drop_down_24"
+                tools:text="Ноябрь, 17" />
+
+            <ImageButton
+                android:id="@+id/btn_today"
+                android:layout_width="@dimen/button_size_40"
+                android:layout_height="@dimen/button_size_40"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/spacing_4"
+                android:background="@drawable/bg_btn_round"
+                android:contentDescription="@string/description_go_today"
+                android:src="@drawable/ic_round_today_24" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_16"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:background="@color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dates"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_item_height_64"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_date" />
+
+            <View
+                android:id="@+id/indicator"
+                android:layout_width="@dimen/indicator_width_40"
+                android:layout_height="@dimen/indicator_height_4"
+                android:layout_gravity="bottom"
+                android:background="@drawable/tab_indicator"
+                android:backgroundTint="@color/bright_gray"
+                tools:translationX="52dp" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_divider" />
+
+    <TextView
+        android:id="@+id/tv_list_is_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingBottom="@dimen/spacing_16"
+        android:text="@string/empty_yet_placeholder"
+        android:textColor="@color/bright_gray_54"
+        android:textSize="@dimen/font_14"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_shifts_on_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_shift_on_main" />
+
+</LinearLayout>

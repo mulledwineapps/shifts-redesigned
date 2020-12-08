@@ -1,0 +1,69 @@
+package ru.mulledwine.shiftsredesigned.ui.shifttypes
+
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_shift_types.*
+import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
+import ru.mulledwine.shiftsredesigned.viewmodels.ShiftTypesViewModel
+
+class ShiftTypesFragment : BaseFragment<ShiftTypesViewModel>() {
+
+    companion object {
+        private const val TAG = "M_ShiftTypesFragment"
+    }
+
+    override val viewModel: ShiftTypesViewModel by viewModels()
+    override val layout: Int = R.layout.fragment_shift_types
+
+    private val shiftTypesAdapter by lazy {
+        ShiftTypesAdapter(
+            longClickListener = ::itemLongClickCallback,
+            clickListener = ::itemClickCallback
+        )
+    }
+
+    private fun itemClickCallback(item: ShiftTypeItem) {
+        viewModel.handleEditShiftType(getString(R.string.shift_type_edit_label), item.id)
+    }
+
+    private fun itemLongClickCallback(item: ShiftTypeItem) {
+        root.showAreYouSureDialog("${item.name}\n\nВы уверены, что хотите удалить этот тип смены?") {
+            viewModel.handleDeleteShiftType(item.id)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_shift_types, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.menu_item_add).setOnMenuItemClickListener {
+            viewModel.handleNavigateAddShiftType(getString(R.string.shift_type_add_label))
+            true
+        }
+    }
+
+    override fun setupViews() {
+        with(rv_shift_types) {
+            adapter = shiftTypesAdapter
+            itemAnimator = null
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
+
+        viewModel.observeShiftTypes(viewLifecycleOwner) {
+            shiftTypesAdapter.submitList(it)
+        }
+    }
+
+}

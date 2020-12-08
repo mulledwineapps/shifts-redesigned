@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_splash">
+
+    <fragment
+        android:id="@+id/nav_splash"
+        android:name="ru.mulledwine.shiftsredesigned.ui.splash.SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_nav_splash_to_nav_main"
+            app:destination="@id/nav_main"
+            app:popUpTo="@id/nav_splash"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_main"
+        android:name="ru.mulledwine.shiftsredesigned.ui.main.MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_nav_main_to_nav_schedule"
+            app:destination="@id/nav_schedule" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_settings"
+            app:destination="@id/nav_settings" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_shift_types"
+            app:destination="@id/nav_shift_types" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_schedules"
+            app:destination="@id/nav_schedules" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_schedule"
+        android:name="ru.mulledwine.shiftsredesigned.ui.schedule.ScheduleFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_schedule">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="item"
+            android:defaultValue="@null"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleParcelable"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_nav_schedule_to_dialog_choose_shift_type"
+            app:destination="@id/dialog_choose_shift_type" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="ru.mulledwine.shiftsredesigned.ui.settings.SettingsFragment"
+        android:label="@string/label_settings"
+        tools:layout="@layout/fragment_settings"/>
+
+    <fragment
+        android:id="@+id/nav_shift_types"
+        android:name="ru.mulledwine.shiftsredesigned.ui.shifttypes.ShiftTypesFragment"
+        android:label="@string/shift_types_shifts_label"
+        tools:layout="@layout/fragment_shift_types">
+        <action
+            android:id="@+id/action_nav_shift_types_to_nav_shift_type"
+            app:destination="@id/nav_shift_type" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_schedules"
+        android:name="ru.mulledwine.shiftsredesigned.ui.schedules.SchedulesFragment"
+        android:label="@string/label_schedules"
+        tools:layout="@layout/fragment_schedules">
+        <action
+            android:id="@+id/action_nav_schedules_to_nav_schedule"
+            app:destination="@id/nav_schedule" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_shift_type"
+        android:name="ru.mulledwine.shiftsredesigned.ui.shifttype.ShiftTypeFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_shift_type">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="item"
+            android:defaultValue="@null"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_shift_type_to_dialog_color_picker"
+            app:destination="@id/dialog_color_picker" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/dialog_choose_shift_type"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftTypeDialog"
+        android:label="@string/label_choose_shift"
+        tools:layout="@layout/dialog_choose_shift_type">
+
+        <argument
+            android:name="shift_types"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem[]" />
+        <argument
+            android:name="current_item_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_date_picker"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.DatePickerDialog">
+
+        <argument
+            android:name="time"
+            app:argType="long" />
+
+        <argument
+            android:name="view_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_time_picker"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.TimePickerDialog">
+
+        <argument
+            android:name="time"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime" />
+
+        <argument
+            android:name="view_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_color_picker"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ColorPickerDialog">
+
+        <argument
+            android:name="titleRes"
+            app:argType="integer" />
+
+    </dialog>
+
+    <action
+        android:id="@+id/action_to_dialog_date_picker"
+        app:destination="@id/dialog_date_picker" />
+
+    <action
+        android:id="@+id/action_to_dialog_time_picker"
+        app:destination="@id/dialog_time_picker" />
+
+</navigation>

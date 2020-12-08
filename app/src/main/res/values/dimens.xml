@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="spacing_24">24dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_4">4dp</dimen>
+
+    <dimen name="font_24">24sp</dimen>
+    <dimen name="font_18">18sp</dimen>
+    <dimen name="font_16">16sp</dimen>
+    <dimen name="font_14">14sp</dimen>
+    <dimen name="font_12">12sp</dimen>
+
+    <dimen name="corner_radius_24">24dp</dimen>
+    <dimen name="corner_radius_4">4dp</dimen>
+
+    <dimen name="colored_circle_size_32">32dp</dimen>
+
+    <!-- main screen -->
+    <dimen name="tab_item_height_64">64dp</dimen>
+    <dimen name="tab_item_width_48">48dp</dimen>
+    <dimen name="indicator_width_40">40dp</dimen>
+    <dimen name="indicator_height_4">4dp</dimen>
+    <dimen name="list_item_height_72">72dp</dimen>
+    <dimen name="colored_dot_size_16">16dp</dimen>
+    <dimen name="button_size_40">40dp</dimen>
+
+    <dimen name="view_size_24">24dp</dimen>
+    <dimen name="view_height_40">40dp</dimen>
+    <dimen name="view_height_48">48dp</dimen>
+    <dimen name="text_view_height_32">32dp</dimen>
+    <dimen name="list_item_height_48">48dp</dimen>
+
+</resources>

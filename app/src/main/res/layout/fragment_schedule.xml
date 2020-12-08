@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.schedule.ScheduleFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingTop="@dimen/spacing_16">
+
+            <TextView
+                android:id="@+id/tv_schedule_name_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="top|start"
+                android:text="@string/schedule_name_title"
+                android:textColor="@color/bright_gray"
+                android:textSize="@dimen/font_12"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_schedule_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:background="@drawable/bg_rounded_4"
+                android:backgroundTint="@color/white"
+                android:hint="@string/schedule_start_typing_hint"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences"
+                android:paddingStart="@dimen/spacing_16"
+                android:paddingEnd="@dimen/spacing_16"
+                android:textColor="@color/bright_gray"
+                android:textColorHint="@color/bright_gray_54"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_name_title" />
+
+            <TextView
+                android:id="@+id/tv_schedule_choose_days"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="top|start"
+                android:text="@string/schedule_choose_days_title"
+                android:textColor="@color/bright_gray"
+                android:textSize="@dimen/font_12"
+                app:layout_constraintTop_toBottomOf="@id/et_schedule_name" />
+
+            <TextView
+                android:id="@+id/tv_schedule_start_title"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:layout_marginEnd="@dimen/spacing_4"
+                android:gravity="start|center_vertical"
+                android:text="@string/schedule_first_day_title"
+                android:textColor="@color/bright_gray_54"
+                app:layout_constraintEnd_toStartOf="@id/tv_schedule_finish_title"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_choose_days" />
+
+            <TextView
+                android:id="@+id/tv_schedule_finish_title"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginStart="@dimen/spacing_4"
+                android:layout_marginEnd="@dimen/spacing_16"
+                android:gravity="start|center_vertical"
+                android:text="@string/schedule_last_day_title"
+                android:textColor="@color/bright_gray_54"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_schedule_start_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_choose_days" />
+
+            <TextView
+                android:id="@+id/tv_schedule_start"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:layout_marginEnd="@dimen/spacing_4"
+                android:background="@drawable/bg_rounded_4"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingStart="@dimen/spacing_16"
+                android:paddingEnd="@dimen/spacing_16"
+                android:textColor="@color/bright_gray"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintEnd_toStartOf="@id/tv_schedule_finish"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_start_title"
+                tools:text="1 Ноября" />
+
+            <TextView
+                android:id="@+id/tv_schedule_finish"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginStart="@dimen/spacing_4"
+                android:layout_marginEnd="@dimen/spacing_16"
+                android:background="@drawable/bg_rounded_4"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/spacing_16"
+                android:textColor="@color/bright_gray"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_schedule_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_start_title"
+                tools:text="21 Ноября" />
+
+            <TextView
+                android:id="@+id/tv_setup_shifts_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="top|start"
+                android:text="@string/schedule_setup_shifts_btn_title"
+                android:textColor="@color/bright_gray"
+                android:textSize="@dimen/font_12"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_start" />
+
+            <TextView
+                android:id="@+id/tv_list_is_empty"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height_72"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="center"
+                android:text="@string/empty_yet_placeholder"
+                android:textColor="@color/bright_gray_54"
+                android:textSize="@dimen/font_14"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/rv_schedule_shifts"
+                app:layout_constraintTop_toBottomOf="@id/tv_setup_shifts_title"
+                tools:visibility="visible" />
+
+            <ru.mulledwine.shiftsredesigned.ui.custom.CustomRecyclerView
+                android:id="@+id/rv_schedule_shifts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_list_is_empty"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_shift" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/spacing_16"
+        android:background="@drawable/bg_rounded_4"
+        android:backgroundTint="@color/bright_gray"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif-medium"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/schedule_add_shift_btn_title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_schedule_shifts" />
+
+</LinearLayout>

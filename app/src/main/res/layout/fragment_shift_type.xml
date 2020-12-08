@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:paddingTop="@dimen/spacing_16"
+    tools:context=".ui.shifttype.ShiftTypeFragment">
+
+    <TextView
+        android:id="@+id/tv_shift_type_name_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="top|start"
+        android:text="@string/shift_type_name_title"
+        android:textColor="@color/bright_gray"
+        android:textSize="@dimen/font_12"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_shift_type_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:background="@drawable/bg_rounded_4"
+        android:backgroundTint="@color/white"
+        android:hint="@string/schedule_start_typing_hint"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences"
+        android:paddingStart="@dimen/spacing_16"
+        android:paddingEnd="@dimen/spacing_16"
+        android:textColor="@color/bright_gray"
+        android:textColorHint="@color/bright_gray_54"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintTop_toBottomOf="@id/tv_shift_type_name_title" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_shift_type_duration"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_40"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/et_shift_type_name">
+
+        <RadioButton
+            android:id="@+id/btn_shift_type_full_day"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/spacing_24"
+            android:layout_weight="1"
+            android:button="@drawable/bg_radio_button"
+            android:buttonTint="@color/checkable_color"
+            android:paddingHorizontal="@dimen/spacing_8"
+            android:text="@string/shift_type_all_day_btn_title"
+            android:textColor="@color/checkable_color"
+            tools:checked="true" />
+
+        <RadioButton
+            android:id="@+id/btn_shift_type_choose_hours"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:button="@drawable/bg_radio_button"
+            android:buttonTint="@color/checkable_color"
+            android:paddingHorizontal="@dimen/spacing_8"
+            android:text="@string/shift_type_choose_hours_btn_title"
+            android:textColor="@color/checkable_color"
+            tools:checked="false" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_shift_type_duration_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="top|start"
+        android:text="@string/shift_type_duration_title"
+        android:textColor="@color/enabled_disabled_color"
+        android:textSize="@dimen/font_12"
+        app:layout_constraintTop_toBottomOf="@id/radio_group_shift_type_duration" />
+
+    <TextView
+        android:id="@+id/tv_shift_type_start_title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginEnd="@dimen/spacing_4"
+        android:gravity="start|center_vertical"
+        android:text="@string/shift_type_start_title"
+        android:textColor="@color/bright_gray_54"
+        app:layout_constraintEnd_toStartOf="@id/tv_shift_type_finish_title"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_shift_type_duration_title" />
+
+    <TextView
+        android:id="@+id/tv_shift_type_finish_title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginStart="@dimen/spacing_4"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:gravity="start|center_vertical"
+        android:text="@string/shift_type_finish_title"
+        android:textColor="@color/bright_gray_54"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/tv_shift_type_start_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_shift_type_duration_title" />
+
+    <TextView
+        android:id="@+id/tv_shift_type_start"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginEnd="@dimen/spacing_4"
+        android:background="@drawable/bg_rounded_4"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingStart="@dimen/spacing_16"
+        android:paddingEnd="@dimen/spacing_16"
+        android:textColor="@color/enabled_disabled_color"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintEnd_toStartOf="@id/tv_shift_type_finish"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_shift_type_start_title"
+        tools:text="00:00" />
+
+    <TextView
+        android:id="@+id/tv_shift_type_finish"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_marginStart="@dimen/spacing_4"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:background="@drawable/bg_rounded_4"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/spacing_16"
+        android:textColor="@color/enabled_disabled_color"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/tv_shift_type_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_shift_type_start_title"
+        tools:text="00:00" />
+
+    <TextView
+        android:id="@+id/btn_shift_type_choose_color_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_24"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="top|start"
+        android:text="@string/shift_type_choose_color_title"
+        android:textColor="@color/bright_gray"
+        android:textSize="@dimen/font_12"
+        app:layout_constraintTop_toBottomOf="@id/tv_shift_type_start" />
+
+    <View
+        android:id="@+id/btn_shift_type_choose_color"
+        android:layout_width="@dimen/view_height_48"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:background="@drawable/bg_rounded_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_shift_type_choose_color_title"
+        tools:backgroundTint="@color/color_attention" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

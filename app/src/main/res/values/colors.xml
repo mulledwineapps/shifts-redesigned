@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_divider">#E5E5E5</color>
+    <color name="bright_gray">#3A3D49</color>
+    <color name="bright_gray_54">#8A3A3D49</color>
+    <color name="alabaster">#F8F8F8</color>
+
+    <color name="color_attention">#E45E55</color>
+    
+    <!-- color picker -->
+    <color name="sizzling_red">#f53b57</color> Шипящий красный
+    <color name="free_speech_blue">#3c40c6</color> Свобода слова
+    <color name="spiro_disco_ball">#0fbcf9</color> Диско шар
+    <color name="jade_dust">#00d8d6</color> Нефритовая пыль
+    <color name="green_teal">#05c46b</color> Зелёный чирок
+    <color name="chrome_yellow">#ffa801</color> Жёлтый хром
+    <color name="vibrant_yellow">#ffd32a</color> Яркий жёлтые
+    <color name="red_orange">#ff3f34</color> Красный апельсин
+    <color name="london_square">#808e9b</color> Лондонская площадь
+    <color name="black_pearl">#1e272e</color> Чёрная жемчужина
+
+</resources>

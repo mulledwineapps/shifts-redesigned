@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- settings -->
+    <item name="settings_holidays" type="id" />
+    <item name="settings_export" type="id" />
+    <item name="settings_import" type="id" />
+    <item name="settings_excel" type="id" />
+    <item name="settings_vibration" type="id" />
+    <item name="settings_melody" type="id" />
+
+</resources>

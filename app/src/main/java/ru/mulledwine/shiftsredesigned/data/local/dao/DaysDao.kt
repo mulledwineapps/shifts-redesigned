@@ -1,0 +1,26 @@
+package ru.th1ngshappen.shifts.data.local.dao
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Query
+import ru.mulledwine.shiftsredesigned.data.local.dao.BaseDao
+import ru.mulledwine.shiftsredesigned.data.local.entities.Day
+
+@Dao
+interface DaysDao : BaseDao<Day> {
+
+    @Query(
+        """
+            SELECT * FROM days
+        """
+    )
+    fun findDays(): LiveData<List<Day>>
+
+    @Query(
+        """
+            SELECT * FROM days WHERE id = :dayId
+        """
+    )
+    suspend fun getDay(dayId: String): Day
+
+}

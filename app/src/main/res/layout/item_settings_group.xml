@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height_48"
+    android:paddingHorizontal="@dimen/spacing_16"
+    tools:context=".ui.settings.SettingsAdapter">
+
+    <TextView
+        android:id="@+id/tv_settings_group_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical|top"
+        android:textColor="@color/bright_gray"
+        android:textSize="@dimen/font_12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Главное" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
