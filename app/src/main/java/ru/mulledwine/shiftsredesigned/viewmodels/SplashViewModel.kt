@@ -1,6 +1,5 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import ru.mulledwine.shiftsredesigned.data.local.CalendarGenerator
 import ru.mulledwine.shiftsredesigned.data.local.PrefManager
@@ -44,20 +43,25 @@ class SplashViewModel(handle: SavedStateHandle) :
         val shifts = schedules.flatMap { schedule ->
 
             var ordinal = 1
-            val patternLength = (2..3).random()
-            shiftTypes
-                .shuffled()
-                .take(patternLength)
-                .flatMap { shiftType ->
-                    List((1..3).random()) {
-                        Shift(
-                            id = shiftId++,
-                            scheduleId = schedule.id!!,
-                            shiftTypeId = shiftType.id!!,
-                            ordinal = ordinal++
-                        )
-                    }
+
+            val types = when (schedule.name) {
+                "2 через 2" -> shiftTypes.dropLast(1)
+                "2 через 3" -> shiftTypes.dropLast(1) + shiftTypes[3]
+                else -> {
+                    val patternLength = (2..3).random()
+                    shiftTypes.shuffled().take(patternLength)
+                        .flatMap { shiftType -> List((1..3).random()) { shiftType } }
                 }
+            }
+
+            types.map { shiftType ->
+                Shift(
+                    id = shiftId++,
+                    scheduleId = schedule.id!!,
+                    shiftTypeId = shiftType.id!!,
+                    ordinal = ordinal++
+                )
+            }
 
         }
 

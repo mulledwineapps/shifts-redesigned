@@ -21,7 +21,7 @@ data class Schedule(
         private var counter = 0
         private val scheduleNames = listOf(
             "Мой график",
-            "График мужа",
+            "График друга",
             "2 через 2",
             "2 через 3"
         )
