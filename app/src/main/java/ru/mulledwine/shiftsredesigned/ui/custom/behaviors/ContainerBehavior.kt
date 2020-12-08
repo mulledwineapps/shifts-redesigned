@@ -24,10 +24,10 @@ class ContainerBehavior() : AppBarLayout.ScrollingViewBehavior() {
     ): Boolean {
 
         if (child is FragmentContainerView) {
-            val fragmentContainer = child.children.first() as ViewGroup
+            val fragmentContainer = child.children.first()
 
             // if child not scrolling
-            if (!fragmentContainer.isNestedScrollingEnabled) {
+            if (fragmentContainer is ViewGroup && !fragmentContainer.isNestedScrollingEnabled) {
                 val appbar = parent.children.find { it is AppBarLayout }
                 val ah =  if (appbar?.isVisible == true) appbar.measuredHeight else 0
                 val bottombar = parent.children.find { it is BottomAppBar }
