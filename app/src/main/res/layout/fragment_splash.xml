@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/spacing_16"
+    android:layout_marginBottom="@dimen/spacing_8"
     android:gravity="center"
     android:text="@string/splash_info"
-    android:textColor="@android:color/darker_gray"
+    android:textColor="@color/bright_gray_54"
     android:textSize="@dimen/font_24"
     tools:context=".ui.schedules.SchedulesFragment" />
