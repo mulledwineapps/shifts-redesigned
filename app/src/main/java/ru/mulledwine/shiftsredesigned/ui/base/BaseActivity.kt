@@ -12,10 +12,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.PrefManager
 import ru.mulledwine.shiftsredesigned.viewmodels.BaseViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.Loading
 import ru.mulledwine.shiftsredesigned.viewmodels.NavigationCommand
@@ -117,7 +115,7 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
     }
 
     fun showAreYouSureDialog(message: String, handler: () -> Unit) {
-        val dialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+        val dialog = AlertDialog.Builder(this, R.style.LightAlertDialogTheme)
             .setMessage(message)
             .setPositiveButton(R.string.yes_button) { _, _ -> handler.invoke() }
             .setNegativeButton(R.string.no_button, null)

@@ -41,7 +41,7 @@ class ChooseShiftTypeDialog : DialogFragment() {
             setPadding(Constants.dp8, Constants.dp8, Constants.dp8, Constants.dp16)
         }
 
-        return AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+        return AlertDialog.Builder(requireContext(), R.style.LightAlertDialogTheme)
             .setView(rvShiftTypes)
             .setTitle(R.string.label_choose_shift)
             .create()

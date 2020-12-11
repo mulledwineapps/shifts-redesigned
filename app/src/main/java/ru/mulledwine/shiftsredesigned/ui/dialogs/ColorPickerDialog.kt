@@ -41,7 +41,7 @@ class ColorPickerDialog : DialogFragment() {
             setPadding(0, Constants.dp8, 0, Constants.dp16)
         }
 
-        return AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+        return AlertDialog.Builder(requireContext(), R.style.LightAlertDialogTheme)
             .setView(rvColors)
             .setTitle(args.titleRes)
             .create()

@@ -1,7 +1,6 @@
 package ru.mulledwine.shiftsredesigned.ui.dialogs
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.widget.DatePicker
@@ -29,13 +28,13 @@ class DatePickerDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-//        val context = ContextThemeWrapper(requireContext(), R.style.PickerDialogTheme)
-        val datePicker = DatePicker(requireContext())
+        val context = ContextThemeWrapper(requireContext(), R.style.DatePickerTheme)
+        val datePicker = DatePicker(context)
         val time = if (args.time == 0L) Constants.today.timeInMillis else args.time
         val calendar = Utils.getCalendarInstance(time)
         datePicker.init(calendar.year, calendar.month, calendar.date, null)
 
-        val dialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+        return AlertDialog.Builder(requireContext(), R.style.DarkAlertDialogTheme)
             .setView(datePicker)
             .setPositiveButton(R.string.ok_button) { _, _ ->
                 calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
@@ -45,20 +44,7 @@ class DatePickerDialog : DialogFragment() {
                 )
             }
             .setNegativeButton(R.string.cancel_button, null)
-            //.setNeutralButton(R.string.today_button, null)
             .create()
-
-//        dialog.setOnShowListener {
-//            val neutralBtn = dialog.getButton(DialogInterface.BUTTON_NEUTRAL)
-//            neutralBtn.setOnClickListener {
-//                with(Constants.today) {
-//                    datePicker.updateDate(year, month, date)
-//                }
-//                calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
-//            }
-//        }
-
-        return dialog
     }
 
 }

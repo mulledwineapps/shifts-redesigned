@@ -11,6 +11,8 @@
     <color name="color_attention">#E45E55</color>
     <color name="ic_launcher_background">#3C40C6</color>
     
+    <color name="dodger_blue">#27C7FF</color>
+    
     <!-- color picker -->
     <color name="sizzling_red">#f53b57</color> Шипящий красный
     <color name="free_speech_blue">#3c40c6</color> Свобода слова

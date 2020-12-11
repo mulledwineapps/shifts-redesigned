@@ -44,23 +44,40 @@
         <item name="android:textSize">@dimen/font_18</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="android:windowTitleStyle">@style/DialogTitle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button.Negative</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Neutral</item>
+    <style name="LightAlertButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="DarkAlertButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/bright_gray</item>
     </style>
 
-    <style name="Alert.Button.Negative" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/bright_gray_54</item>
+    <style name="WhiteTextAppearance" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Alert.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/bright_gray_54</item>
+    <style name="DarkAlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:background">@color/bright_gray</item>
+        <item name="android:windowTitleStyle">@style/DialogTitle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/LightAlertButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/LightAlertButton</item>
+    </style>
+
+    <style name="DatePickerTheme" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:colorAccent">@color/bright_gray</item>
+        <item name="android:colorControlActivated">@color/dodger_blue
+        </item> <!-- круг вокруг выбранного дня -->
+        <item name="android:textColorPrimary">@color/white</item> <!-- дни месяца -->
+        <item name="android:textColorPrimaryInverse">@color/bright_gray
+        </item> <!-- веделенный день -->
+        <item name="android:textColorSecondary">@color/white</item> <!-- дни недели -->
+        <item name="android:headerMonthTextAppearance">@style/WhiteTextAppearance</item>
+    </style>
+
+    <style name="LightAlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:windowTitleStyle">@style/DialogTitle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DarkAlertButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DarkAlertButton</item>
     </style>
 
 </resources>
