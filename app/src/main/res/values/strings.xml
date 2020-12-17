@@ -26,13 +26,10 @@
     <string name="november">Ноябрь</string>
     <string name="december">Декабрь</string>
 
-    <!-- dialogs buttons -->
-    <string name="ok_button">Ок</string>
-    <string name="cancel_button">Отмена</string>
-
     <!-- main screen -->
     <string name="title_schedules">Графики</string>
     <string name="title_shift_types">Смены</string>
+    <string name="title_vacations">Отпуска</string>
     <string name="title_settings">Настройки</string>
 
     <!-- schedules screen -->
@@ -41,14 +38,28 @@
     <!-- schedule screen -->
     <string name="label_add_schedule">Добавить график</string>
     <string name="label_edit_schedule">Редактировать график</string>
-    <string name="schedule_save_menu_item_title">Сохранить</string>
     <string name="schedule_name_title">Имя или название работы</string>
     <string name="schedule_start_typing_hint">Начните писать</string>
-    <string name="schedule_choose_days_title">Выбрать дни</string>
-    <string name="schedule_first_day_title">Первый день</string>
-    <string name="schedule_last_day_title">Последний день</string>
+    <string name="schedule_type_title">Тип графика</string>
+    <string name="schedule_type_regular_btn_title">Обычный</string>
+    <string name="schedule_type_cyclic_btn_title">Цикличный</string>
     <string name="schedule_setup_shifts_btn_title">Задать смены</string>
-    <string name="schedule_add_shift_btn_title">Добавить событие</string>
+    <string name="schedule_setup_cycle_btn_title">Задать цикл смен</string>
+    <string name="schedule_add_shift_btn_title">Добавить смену</string>
+
+    <!-- vacations screen -->
+    <string name="label_vacations">Отпуска</string>
+    <string name="vacations_title">Отпуска</string>
+    <string name="btn_add_vacation_title">Добавить отпуск</string>
+
+    <!-- vacation screen -->
+    <string name="label_add_vacation">Добавить отпуск</string>
+    <string name="label_edit_vacation">Редактировать отпуск</string>
+    <string name="vacation_total_days_title">Всего дней</string>
+    <string name="vacation_enter_count_hint">Введите количество</string>
+    <string name="vacation_start_shift_title">Первая смена после отпуска</string>
+    <string name="click_to_choose_shift_hint">Нажмите, чтобы выбрать смену</string>
+    <string name="available_for_cyclic_schedules_only_hint">Доступно только для цикличных графиков</string>
 
     <!-- settings -->
     <string name="label_settings">Настройки</string>
@@ -70,11 +81,22 @@
 
     <!-- dialogs -->
     <string name="label_choose_shift">Выбрать смену</string>
+    <string name="label_choose_schedule">Выбрать график</string>
+    <string name="label_choose_month">Выбрать месяц</string>
     <string name="label_choose_shift_color">Выбрать цвет смены</string>
 
     <!-- dialog buttons -->
-    <string name="yes_button">Да</string>
-    <string name="no_button">Нет</string>
+    <string name="ok_button">Ок</string>
+    <string name="delete_button">Удалить</string>
+    <string name="cancel_button">Отмена</string>
+
+    <!-- menu item titles -->
+    <string name="menu_item_delete">Удалить</string>
+    <string name="menu_item_statistics">Статистика</string>
+    <string name="menu_item_vacations">Настроить отпуска</string>
+    <string name="menu_item_archive">Архивировать</string>
+    <string name="menu_item_tuning">Редактировать дни</string>
+    <string name="menu_item_save">Сохранить</string>
 
     <!-- color picker -->
     <string name="sizzling_red">Шипящий красный</string>
@@ -105,13 +127,26 @@
     <!-- splash_info screen -->
     <string name="splash_info">Генерируем календарь…</string>
 
+    <!-- days tuning screen -->
+    <string name="label_days_tuning">Редактировать дни</string>
+    <string name="tuning_choose_days_title">Выбрать дни</string>
+    <string name="month_year">%1$s %2$s</string>
+
     <!-- misc -->
     <string name="empty_yet_placeholder">Здесь пока пусто</string>
     <string name="choose_placeholder">Выбрать</string>
     <string name="please_wait">Пожалуйста, подождите…</string>
+    <string name="choose_schedule_title">Выбрать график</string>
+    <string name="choose_shift_title">Выбрать смену</string>
+    <string name="choose_days_title">Выбрать дни</string>
+    <string name="first_day_title">Первый день</string>
+    <string name="last_day_title">Последний день</string>
 
     <!-- content descriptions -->
     <string name="description_btn_add_schedule">Кнопка добавить график</string>
     <string name="description_go_today">Перейти к сегодняшнему дню</string>
+    <string name="description_delete_shift_from_schedule">Кнопка удалить смену из графика</string>
+    <string name="description_check_label">Метка выделенного элемента списка</string>
+    <string name="description_empty_list_image">Картинка вместо пустого списка</string>
 
 </resources>

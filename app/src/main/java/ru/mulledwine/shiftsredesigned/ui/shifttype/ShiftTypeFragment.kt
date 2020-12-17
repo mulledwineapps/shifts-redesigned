@@ -39,7 +39,7 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_shift_type, menu)
+        inflater.inflate(R.menu.menu_save, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -61,8 +61,8 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
 
         args.item?.let {
             et_shift_type_name.setText(it.name)
-            if (it.isFullDay) btn_shift_type_full_day.isChecked =
-                true else btn_shift_type_choose_hours.isChecked = true
+            if (it.isFullDay) btn_shift_type_full_day.isChecked = true
+            else btn_shift_type_choose_hours.isChecked = true
             btn_shift_type_choose_color.backgroundTintList = ColorStateList.valueOf(it.color)
 
             binding.start = it.start

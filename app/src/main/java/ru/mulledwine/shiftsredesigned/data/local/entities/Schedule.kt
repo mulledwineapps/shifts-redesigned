@@ -5,15 +5,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import ru.mulledwine.shiftsredesigned.Constants
+import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
 import ru.mulledwine.shiftsredesigned.data.local.models.TimeUnits
-import ru.mulledwine.shiftsredesigned.extensions.toCalendar
-import java.util.*
 
 @Entity(tableName = "schedules")
 data class Schedule(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val name: String,
+    val isCyclic: Boolean,
     val start: Long,
     val finish: Long = 0L
 ) {
@@ -33,6 +33,7 @@ data class Schedule(
                 Schedule(
                     id = counter++,
                     name = scheduleName,
+                    isCyclic = true,
                     start = time
                 )
             }.toList()
@@ -47,4 +48,14 @@ data class ScheduleWithShifts(
         entityColumn = "schedule_id"
     )
     val shiftsWithTypes: List<ShiftsWithTypeView>
+)
+
+
+data class ScheduleWithVacations(
+    @Embedded val schedule: ScheduleShort,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "schedule_id"
+    )
+    val vacations: List<Vacation>
 )

@@ -13,12 +13,12 @@ object ScheduleRepository {
     private val schedulesDao = db.schedulesDao()
     private val shiftTypesDao = db.shiftTypesDao()
 
-    suspend fun updateSchedule(
+    suspend fun upsertSchedule(
         schedule: Schedule,
         shiftsToUpsert: List<ScheduleShiftItem>,
         shiftIdsToDelete: List<Int>
     ) {
-        schedulesDao.updateSchedule(schedule, shiftsToUpsert, shiftIdsToDelete)
+        schedulesDao.upsertSchedule(schedule, shiftsToUpsert, shiftIdsToDelete)
     }
 
     fun findShiftTypes(): LiveData<List<ShiftType>> {

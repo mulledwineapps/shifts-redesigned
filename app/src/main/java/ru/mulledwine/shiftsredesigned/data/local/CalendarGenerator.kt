@@ -1,6 +1,5 @@
 package ru.mulledwine.shiftsredesigned.data.local
 
-import android.util.Log
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
@@ -16,8 +15,8 @@ object CalendarGenerator {
 
     private val pointer = Utils.getCalendarInstance()
 
-    private val firstYear = Constants.today.year - 1
-    private val lastYear = Constants.today.year + 1
+    val firstYear = Constants.today.year - 2
+    val lastYear = Constants.today.year + 2
 
     suspend fun generate() {
         pointer.setWithZeroTime(firstYear, Calendar.JANUARY, 1)
@@ -30,9 +29,10 @@ object CalendarGenerator {
             daysDao.insert(
                 Day(
                     id = pointer.getDayId(),
-                    numberInWeek = pointer.daysFromWeekStart,
                     date = pointer.date,
-                    start = pointer
+                    month = pointer.month,
+                    numberInWeek = pointer.daysFromWeekStart,
+                    startTime = pointer.timeInMillis
                 )
             )
 

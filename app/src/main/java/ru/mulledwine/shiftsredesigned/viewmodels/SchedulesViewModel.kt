@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
-import ru.mulledwine.shiftsredesigned.extensions.data.getDuration
+import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleItem
 import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
 import ru.mulledwine.shiftsredesigned.ui.schedules.SchedulesFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
@@ -19,15 +19,8 @@ class SchedulesViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(h
     private val repository = SchedulesRepository
 
     fun observeSchedules(owner: LifecycleOwner, onChange: (list: List<ScheduleItem>) -> Unit) {
-        repository.findSchedules().map { list ->
-            list.map {
-                ScheduleItem(
-                    id = it.id!!,
-                    name = it.name,
-                    duration = it.getDuration(),
-                )
-            }
-        }.observe(owner, Observer(onChange))
+        repository.findSchedules().map { list -> list.map { it.toScheduleItem() } }
+            .observe(owner, Observer(onChange))
     }
 
     fun handleEditSchedule(title: String, id: Int) {
@@ -39,14 +32,15 @@ class SchedulesViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(h
         }
     }
 
-    fun handleNavigateAddSchedule(title: String) {
-        val action = SchedulesFragmentDirections.actionNavSchedulesToNavSchedule(title)
-        navigateWithAction(action)
+    fun handleDeleteSchedule(id: Int) {
+        launchSafely {
+            repository.deleteSchedule(id)
+        }
     }
 
-    fun handleDeleteSchedule(scheduleId: Int) {
+    fun handleDeleteSchedules(ids: List<Int>) {
         launchSafely {
-            repository.deleteSchedule(scheduleId)
+            repository.deleteSchedules(ids)
         }
     }
 

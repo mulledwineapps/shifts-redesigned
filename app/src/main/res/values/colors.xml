@@ -6,9 +6,9 @@
     <color name="color_divider">#E5E5E5</color>
     <color name="bright_gray">#3A3D49</color>
     <color name="bright_gray_54">#8A3A3D49</color>
+    <color name="color_selection">#F2F2F2</color>
     <color name="alabaster">#F8F8F8</color>
 
-    <color name="color_attention">#E45E55</color>
     <color name="ic_launcher_background">#3C40C6</color>
     
     <color name="dodger_blue">#27C7FF</color>

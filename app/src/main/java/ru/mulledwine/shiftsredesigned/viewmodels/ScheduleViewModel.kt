@@ -10,10 +10,9 @@ import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toShiftTypeItem
 import ru.mulledwine.shiftsredesigned.repositories.ScheduleRepository
-import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
+import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
 
-class ScheduleViewModel(handle: SavedStateHandle) :
-    BaseViewModel<ScheduleState>(handle, ScheduleState()) {
+class ScheduleViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(handle, EmptyState) {
 
     companion object {
         private const val TAG = "M_ScheduleViewModel"
@@ -27,7 +26,7 @@ class ScheduleViewModel(handle: SavedStateHandle) :
         shiftIdsToDelete: List<Int>
     ) {
         launchSafely {
-            repository.updateSchedule(schedule, shiftsToUpsert, shiftIdsToDelete)
+            repository.upsertSchedule(schedule, shiftsToUpsert, shiftIdsToDelete)
             navigateUp()
         }
     }
@@ -72,7 +71,3 @@ sealed class InputErrors {
     }
 
 }
-
-data class ScheduleState(
-    val shiftItems: List<ScheduleShiftItem> = emptyList()
-) : IViewModelState

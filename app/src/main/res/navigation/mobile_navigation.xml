@@ -32,6 +32,12 @@
         <action
             android:id="@+id/action_nav_main_to_nav_schedules"
             app:destination="@id/nav_schedules" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_days_tuning"
+            app:destination="@id/nav_days_tuning" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_vacations"
+            app:destination="@id/nav_vacations" />
     </fragment>
 
     <fragment
@@ -47,12 +53,8 @@
         <argument
             android:name="item"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleParcelable"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithShiftItems"
             app:nullable="true" />
-
-        <action
-            android:id="@+id/action_nav_schedule_to_dialog_choose_shift_type"
-            app:destination="@id/dialog_choose_shift_type" />
 
     </fragment>
 
@@ -60,7 +62,7 @@
         android:id="@+id/nav_settings"
         android:name="ru.mulledwine.shiftsredesigned.ui.settings.SettingsFragment"
         android:label="@string/label_settings"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_shift_types"
@@ -80,6 +82,45 @@
         <action
             android:id="@+id/action_nav_schedules_to_nav_schedule"
             app:destination="@id/nav_schedule" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_vacations"
+        android:name="ru.mulledwine.shiftsredesigned.ui.vacations.VacationsFragment"
+        android:label="@string/label_vacations"
+        tools:layout="@layout/fragment_vacations">
+
+        <argument
+            android:name="item"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithVacationItems" />
+
+        <action
+            android:id="@+id/action_nav_vacations_to_nav_vacation"
+            app:destination="@id/nav_vacation" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_vacation"
+        android:name="ru.mulledwine.shiftsredesigned.ui.vacation.VacationFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_vacation">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="schedule"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort" />
+        <argument
+            android:name="vacation"
+            android:defaultValue="@null"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.VacationParcelable"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_vacation_to_dialog_choose_shift"
+            app:destination="@id/dialog_choose_shift" />
+
     </fragment>
 
     <fragment
@@ -103,11 +144,28 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_days_tuning"
+        android:name="ru.mulledwine.shiftsredesigned.ui.daystuning.DaysTuningFragment"
+        android:label="@string/label_days_tuning"
+        tools:layout="@layout/fragment_days_tuning">
+
+        <argument
+            android:name="schedule"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort" />
+        <action
+            android:id="@+id/action_nav_days_tuning_to_dialog_choose_schedule"
+            app:destination="@id/dialog_choose_schedule" />
+        <action
+            android:id="@+id/action_nav_days_tuning_to_dialog_choose_month"
+            app:destination="@id/dialog_choose_month" />
+
+    </fragment>
+
     <dialog
         android:id="@+id/dialog_choose_shift_type"
         android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftTypeDialog"
-        android:label="@string/label_choose_shift"
-        tools:layout="@layout/dialog_choose_shift_type">
+        android:label="@string/label_choose_shift">
 
         <argument
             android:name="shift_types"
@@ -116,6 +174,37 @@
             android:name="current_item_id"
             android:defaultValue="-1"
             app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_choose_shift"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftDialog"
+        android:label="@string/label_choose_shift">
+
+        <argument
+            android:name="items"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem[]" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_choose_schedule"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseScheduleDialog"
+        android:label="@string/label_choose_schedule">
+
+        <argument
+            android:name="schedules"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem[]" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_choose_month"
+        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseMonthDialog"
+        android:label="@string/label_choose_month">
+
+        <argument
+            android:name="month"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.Month" />
     </dialog>
 
     <dialog
@@ -164,5 +253,13 @@
     <action
         android:id="@+id/action_to_dialog_time_picker"
         app:destination="@id/dialog_time_picker" />
+
+    <action
+        android:id="@+id/action_to_dialog_choose_shift_type"
+        app:destination="@id/dialog_choose_shift_type" />
+
+    <action
+        android:id="@+id/action_to_dialog_choose_schedule"
+        app:destination="@id/dialog_choose_schedule" />
 
 </navigation>

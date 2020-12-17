@@ -33,7 +33,7 @@ class ShiftTypesFragment : BaseFragment<ShiftTypesViewModel>() {
     }
 
     private fun itemLongClickCallback(item: ShiftTypeItem) {
-        root.showAreYouSureDialog("${item.name}\n\nВы уверены, что хотите удалить этот тип смены?") {
+        root.askWhetherToDelete("Удалить тип смены ${item.name}?") {
             viewModel.handleDeleteShiftType(item.id)
         }
     }
@@ -44,7 +44,7 @@ class ShiftTypesFragment : BaseFragment<ShiftTypesViewModel>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_shift_types, menu)
+        inflater.inflate(R.menu.menu_add, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

@@ -6,6 +6,7 @@ import ru.mulledwine.shiftsredesigned.BuildConfig
 import ru.mulledwine.shiftsredesigned.data.local.dao.SchedulesDao
 import ru.mulledwine.shiftsredesigned.data.local.dao.ShiftTypesDao
 import ru.mulledwine.shiftsredesigned.data.local.dao.ShiftsDao
+import ru.mulledwine.shiftsredesigned.data.local.dao.VacationsDao
 import ru.mulledwine.shiftsredesigned.data.local.entities.*
 import ru.th1ngshappen.shifts.data.local.dao.*
 
@@ -28,7 +29,8 @@ object DbManager {
         Day::class,
         Schedule::class,
         ShiftType::class,
-        Shift::class
+        Shift::class,
+        Vacation::class
     ],
     version = AppDb.DATABASE_VERSION,
     exportSchema = true,
@@ -46,4 +48,5 @@ abstract class AppDb : RoomDatabase() {
     abstract fun schedulesDao(): SchedulesDao
     abstract fun shiftsDao(): ShiftsDao
     abstract fun shiftTypesDao(): ShiftTypesDao
+    abstract fun vacationsDao(): VacationsDao
 }

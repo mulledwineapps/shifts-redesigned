@@ -56,7 +56,7 @@
                 android:layout_height="@dimen/tab_item_height_64"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_date" />
+                tools:listitem="@layout/item_date_tab" />
 
             <View
                 android:id="@+id/indicator"
@@ -65,7 +65,7 @@
                 android:layout_gravity="bottom"
                 android:background="@drawable/tab_indicator"
                 android:backgroundTint="@color/bright_gray"
-                tools:translationX="52dp" />
+                tools:translationX="4dp" />
 
         </FrameLayout>
 
@@ -76,25 +76,47 @@
         android:layout_height="1dp"
         android:background="@color/color_divider" />
 
-    <TextView
-        android:id="@+id/tv_list_is_empty"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:paddingBottom="@dimen/spacing_16"
-        android:text="@string/empty_yet_placeholder"
-        android:textColor="@color/bright_gray_54"
-        android:textSize="@dimen/font_14"
-        android:visibility="gone" />
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_shifts_on_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_shift_on_main" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_list_is_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/spacing_32"
+                android:src="@drawable/tiredness"
+                app:layout_constraintBottom_toTopOf="@id/tv_list_is_empty"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/description_empty_list_image" />
+
+            <TextView
+                android:id="@+id/tv_list_is_empty"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center"
+                android:text="@string/empty_yet_placeholder"
+                android:textColor="@color/bright_gray_54"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

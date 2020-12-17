@@ -4,8 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ScheduleItem(
-    val id: Int,
-    val name: String,
-    val duration: String
-): Parcelable
+data class Month(
+    val number: Int, // с нуля
+    val year: Int
+) : Parcelable

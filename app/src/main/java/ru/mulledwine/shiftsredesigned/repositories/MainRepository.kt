@@ -6,7 +6,6 @@ import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithShifts
 
 object MainRepository {
-    private const val TAG = "M_MainRepository"
 
     private val daysDao = db.daysDao()
     private val schedulesDao = db.schedulesDao()
@@ -25,6 +24,10 @@ object MainRepository {
 
     suspend fun deleteSchedule(id: Int) {
         schedulesDao.deleteSchedule(id)
+    }
+
+    suspend fun deleteSchedules(ids: List<Int>) {
+        schedulesDao.deleteSchedules(ids)
     }
 
 }

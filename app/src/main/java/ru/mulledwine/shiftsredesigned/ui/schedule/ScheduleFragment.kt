@@ -1,7 +1,6 @@
 package ru.mulledwine.shiftsredesigned.ui.schedule
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.core.view.isVisible
@@ -15,7 +14,7 @@ import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
-import ru.mulledwine.shiftsredesigned.extensions.format
+import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
 import ru.mulledwine.shiftsredesigned.extensions.getTrimmedString
 import ru.mulledwine.shiftsredesigned.extensions.hideKeyboard
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
@@ -30,10 +29,6 @@ import ru.mulledwine.shiftsredesigned.viewmodels.ScheduleViewModel
 
 
 class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
-
-    companion object {
-        private const val TAG = "M_ScheduleFragment"
-    }
 
     override val layout: Int = R.layout.fragment_schedule
     override val binding: ScheduleBinding = ScheduleBinding()
@@ -99,7 +94,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_schedule, menu)
+        inflater.inflate(R.menu.menu_save, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -123,6 +118,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
             val item = Schedule(
                 id = args.item?.id,
                 name = et_schedule_name.getTrimmedString(),
+                isCyclic = btn_schedule_type_cyclic.isChecked,
                 start = binding.start,
                 finish = binding.finish
             )
@@ -145,6 +141,11 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
             binding.start = it.start
             binding.finish = it.finish
             submitItems(it.shiftItems)
+            if (it.isCyclic) btn_schedule_type_cyclic.isChecked = true
+            else btn_schedule_type_regular.isChecked = true
+            binding.isCyclic = it.isCyclic
+        } ?: run {
+            btn_schedule_type_regular.isChecked = true
         }
 
         viewModel.observeShiftTypes(viewLifecycleOwner) { shiftTypeItems ->
@@ -177,6 +178,13 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
             }
         }
 
+        radio_group_schedule_type.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.btn_schedule_type_regular -> binding.isCyclic = false
+                R.id.btn_schedule_type_cyclic -> binding.isCyclic = true
+            }
+        }
+
         with(rv_schedule_shifts) {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
             adapter = scheduleShiftsAdapter
@@ -193,7 +201,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
             }
 
             clearNameFieldFocus()
-            val action = ScheduleFragmentDirections.actionNavScheduleToDialogChooseShiftType(
+            val action = ScheduleFragmentDirections.actionToDialogChooseShiftType(
                 binding.shiftTypeItems.toTypedArray()
             )
             viewModel.navigateWithAction(action)
@@ -223,7 +231,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
     }
 
     private fun itemClickCallback(item: ScheduleShiftItem) {
-        val action = ScheduleFragmentDirections.actionNavScheduleToDialogChooseShiftType(
+        val action = ScheduleFragmentDirections.actionToDialogChooseShiftType(
             binding.shiftTypeItems.toTypedArray(),
             item.shiftId
         )
@@ -231,7 +239,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
     }
 
     private fun itemLongClickCallback(item: ScheduleShiftItem) {
-        root.showAreYouSureDialog("${item.typeName}\n\nВы уверены, что хотите удалить эту смену?") {
+        root.askWhetherToDelete("Удалить из графика смену ${item.typeName}?") {
 
             binding.shiftIdsToDelete.add(item.shiftId)
 
@@ -258,13 +266,18 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
         val shiftIdsToDelete: MutableList<Int> = mutableListOf()
 
         var start: Long by RenderProp(0L) {
-            tv_schedule_start.text = if (it == 0L) getString(R.string.choose_placeholder)
-            else Utils.getCalendarInstance(it).format()
+            tv_schedule_start.text = if (it == 0L) ""
+            else Utils.getCalendarInstance(it).formatAndCapitalize()
         }
 
         var finish: Long by RenderProp(0L) {
-            tv_schedule_finish.text = if (it == 0L) getString(R.string.choose_placeholder)
-            else Utils.getCalendarInstance(it).format()
+            tv_schedule_finish.text = if (it == 0L) ""
+            else Utils.getCalendarInstance(it).formatAndCapitalize()
+        }
+
+        var isCyclic: Boolean by RenderProp(false) {
+            tv_setup_shifts_title.text = if (it) getString(R.string.schedule_setup_cycle_btn_title)
+            else getString(R.string.schedule_setup_shifts_btn_title)
         }
 
     }

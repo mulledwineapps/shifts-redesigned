@@ -8,7 +8,7 @@
     android:foreground="?attr/selectableItemBackground"
     android:minHeight="@dimen/list_item_height_72"
     android:paddingHorizontal="@dimen/spacing_16"
-    tools:context=".ui.main.ShiftsOnMainAdapter">
+    tools:context=".ui.main.ShiftsAdapter">
 
     <TextView
         android:id="@+id/tv_main_item_name"
@@ -50,8 +50,20 @@
         android:layout_height="@dimen/colored_dot_size_16"
         android:background="@drawable/bg_round"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_main_item_check"
         app:layout_constraintTop_toTopOf="parent"
         tools:backgroundTint="@android:color/holo_red_light" />
+
+    <ImageView
+        android:id="@+id/iv_main_item_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/description_check_label"
+        android:src="@drawable/ic_round_done_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

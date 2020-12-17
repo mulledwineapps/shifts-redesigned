@@ -35,7 +35,7 @@
         android:textColor="@color/bright_gray"
         android:textSize="@dimen/font_16"
         app:layout_constraintBottom_toTopOf="@id/tv_shift_item_duration"
-        app:layout_constraintEnd_toStartOf="@id/v_shift_item_colored_dot"
+        app:layout_constraintEnd_toStartOf="@id/v_shift_item_color"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/tv_shift_item_ordinal"
         app:layout_constraintTop_toTopOf="parent"
@@ -53,20 +53,35 @@
         android:textColor="@color/bright_gray_54"
         android:textSize="@dimen/font_14"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/v_shift_item_colored_dot"
+        app:layout_constraintEnd_toStartOf="@id/v_shift_item_color"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/tv_shift_item_ordinal"
         app:layout_constraintTop_toBottomOf="@id/tv_shift_item_name"
         tools:text="7:00 - 16:00" />
 
     <View
-        android:id="@+id/v_shift_item_colored_dot"
+        android:id="@+id/v_shift_item_color"
         android:layout_width="@dimen/colored_dot_size_16"
         android:layout_height="@dimen/colored_dot_size_16"
+        android:layout_marginEnd="@dimen/spacing_8"
         android:background="@drawable/bg_round"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete_shift_item"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:backgroundTint="@android:color/holo_red_light" />
+
+    <ImageButton
+        android:id="@+id/btn_delete_shift_item"
+        android:layout_width="@dimen/button_size_40"
+        android:layout_height="@dimen/button_size_40"
+        android:background="@drawable/bg_btn_round"
+        android:contentDescription="@string/description_delete_shift_from_schedule"
+        android:src="@drawable/ic_round_close_24"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:backgroundTint="@android:color/holo_red_light" />
+        app:tint="@color/bright_gray_54" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

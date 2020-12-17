@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.vacations.VacationsFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_vacations"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/spacing_16">
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:text="@string/choose_schedule_title" />
+
+            <TextView
+                android:id="@+id/tv_schedule_name"
+                style="@style/TextSelectable"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="start|center_vertical"
+                android:hint="@string/choose_placeholder"
+                tools:text="Мой график" />
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:text="@string/vacations_title" />
+
+            <TextView
+                android:id="@+id/tv_list_is_empty"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height_72"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="center"
+                android:text="@string/empty_yet_placeholder"
+                android:textColor="@color/bright_gray_54"
+                android:textSize="@dimen/font_14"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_vacations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context=".ui.vacations.VacationsFragment"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_vacation" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/btn_add"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_margin="@dimen/spacing_16"
+        android:text="@string/btn_add_vacation_title" />
+
+</LinearLayout>

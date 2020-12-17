@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="spacing_32">32dp</dimen>
     <dimen name="spacing_24">24dp</dimen>
     <dimen name="spacing_16">16dp</dimen>
     <dimen name="spacing_8">8dp</dimen>
     <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_2">2dp</dimen>
 
     <dimen name="font_24">24sp</dimen>
+    <dimen name="font_20">20sp</dimen>
     <dimen name="font_18">18sp</dimen>
     <dimen name="font_16">16sp</dimen>
     <dimen name="font_14">14sp</dimen>
     <dimen name="font_12">12sp</dimen>
 
-    <dimen name="corner_radius_24">24dp</dimen>
     <dimen name="corner_radius_4">4dp</dimen>
 
     <dimen name="colored_circle_size_32">32dp</dimen>

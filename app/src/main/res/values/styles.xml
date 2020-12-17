@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DialogTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/bright_gray</item>
+        <item name="android:textSize">@dimen/font_18</item>
+    </style>
+
+    <style name="LightAlertButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="DarkAlertButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/bright_gray</item>
+    </style>
+
+    <style name="WhiteTextAppearance" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="DarkAlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:background">@color/bright_gray</item>
+        <item name="android:windowTitleStyle">@style/DialogTitle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/LightAlertButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/LightAlertButton</item>
+    </style>
+
+    <style name="DatePickerTheme" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:colorAccent">@color/bright_gray</item>
+        <item name="android:colorControlActivated">@color/dodger_blue
+        </item> <!-- круг вокруг выбранного дня -->
+        <item name="android:textColorPrimary">@color/white</item> <!-- дни месяца -->
+        <item name="android:textColorPrimaryInverse">@color/bright_gray
+        </item> <!-- веделенный день -->
+        <item name="android:textColorSecondary">@color/white</item> <!-- дни недели -->
+        <item name="android:headerMonthTextAppearance">@style/WhiteTextAppearance</item>
+    </style>
+
+    <style name="LightAlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:windowTitleStyle">@style/DialogTitle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DarkAlertButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DarkAlertButton</item>
+    </style>
+
+    <style name="TextSelectable">
+        <item name="android:background">@drawable/bg_rounded_4</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:paddingStart">@dimen/spacing_16</item>
+        <item name="android:paddingEnd">@dimen/spacing_16</item>
+        <item name="android:textSize">@dimen/font_14</item>
+    </style>
+
+    <style name="TitlePrimaryStyle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">top|start</item>
+        <item name="android:textSize">@dimen/font_12</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:background">@drawable/bg_rounded_4</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:paddingStart">@dimen/spacing_16</item>
+        <item name="android:paddingEnd">@dimen/spacing_16</item>
+        <item name="android:textColorHint">@color/bright_gray_54</item>
+        <item name="android:textSize">@dimen/font_14</item>
+    </style>
+
+    <style name="ButtonTheme" parent="Theme.ShiftsRedesigned">
+        <item name="colorControlHighlight">@color/white</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/bg_rounded_4</item>
+        <item name="android:backgroundTint">@color/bright_gray</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/spacing_16</item>
+        <item name="android:paddingEnd">@dimen/spacing_16</item>
+        <item name="android:paddingTop">@dimen/spacing_8</item>
+        <item name="android:paddingBottom">@dimen/spacing_8</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_14</item>
+        <item name="android:theme">@style/ButtonTheme</item>
+    </style>
+</resources>

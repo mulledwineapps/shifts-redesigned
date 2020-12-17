@@ -28,7 +28,6 @@ class RootActivity : BaseActivity<RootViewModel>() {
         // top level destination ids
         val appbarConfiguration = AppBarConfiguration(setOf(R.id.nav_main))
         setupActionBarWithNavController(navController, appbarConfiguration)
-
     }
 
     override fun renderNotification(notify: Notify) {
@@ -39,7 +38,6 @@ class RootActivity : BaseActivity<RootViewModel>() {
         when (notify) {
             is Notify.TextMessage -> Unit /* nothing */
             is Notify.ActionMessage -> {
-//                snackbar.setActionTextColor(getColor(R.color.color_accent))
                 snackbar.setAction(notify.actionLabel) {
                     notify.actionHandler.invoke()
                 }

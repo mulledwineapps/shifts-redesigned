@@ -16,6 +16,13 @@ interface ShiftsDao : BaseDao<Shift> {
             SELECT * FROM shifts WHERE schedule_id = :scheduleId ORDER BY ordinal
         """
     )
-    fun getShifts(scheduleId: Int): LiveData<List<ShiftWithType>>
+    fun findShifts(scheduleId: Int): LiveData<List<ShiftWithType>>
+
+    @Query(
+        """
+            SELECT shift_type_id FROM shifts WHERE id = :id
+        """
+    )
+    suspend fun getShiftTypeId(id: Int): Int
 
 }

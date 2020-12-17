@@ -8,34 +8,50 @@
     android:foreground="?attr/selectableItemBackground"
     android:minHeight="@dimen/list_item_height_72"
     android:paddingHorizontal="@dimen/spacing_16"
+    tools:background="@color/color_selection"
     tools:context=".ui.schedules.SchedulesAdapter">
 
     <TextView
         android:id="@+id/tv_schedule_item_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_16"
+        android:layout_marginEnd="@dimen/spacing_16"
         android:letterSpacing="0.02"
         android:minHeight="@dimen/view_size_24"
         android:textColor="@color/bright_gray"
         android:textSize="@dimen/font_16"
         app:layout_constraintBottom_toTopOf="@id/tv_schedule_item_duration"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@+id/iv_check"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Мой график" />
 
     <TextView
         android:id="@+id/tv_schedule_item_duration"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_16"
         android:letterSpacing="0.02"
         android:minHeight="@dimen/text_view_height_32"
         android:textColor="@color/bright_gray_54"
         android:textSize="@dimen/font_14"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_check"
         app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_schedule_item_name"
         tools:text="16 Ноября - 30 Ноября" />
+
+    <ImageView
+        android:id="@+id/iv_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/description_check_label"
+        android:src="@drawable/ic_round_done_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

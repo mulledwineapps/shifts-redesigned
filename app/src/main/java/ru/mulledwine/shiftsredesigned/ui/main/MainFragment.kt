@@ -1,23 +1,26 @@
 package ru.mulledwine.shiftsredesigned.ui.main
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.fragment_main.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
-import ru.mulledwine.shiftsredesigned.data.local.models.Months
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftOnMainItem
-import ru.mulledwine.shiftsredesigned.extensions.date
+import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
 import ru.mulledwine.shiftsredesigned.extensions.getDayId
-import ru.mulledwine.shiftsredesigned.extensions.month
+import ru.mulledwine.shiftsredesigned.extensions.getScheduleGenitive
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.base.BottombarBuilder
@@ -34,6 +37,7 @@ import java.util.*
 class MainFragment : BaseFragment<MainViewModel>() {
 
     companion object {
+        private const val TAG = "M_MainFragment"
         private const val KEY_TOOLBAR_TITLE = "KEY_TOOLBAR_TITLE"
     }
 
@@ -48,55 +52,50 @@ class MainFragment : BaseFragment<MainViewModel>() {
     override val prepareBottombar: (BottombarBuilder.() -> Unit) = {
         setVisibility(true)
         setFabClickListener { navigateToSchedule() }
-        setOnMenuItemClickListener { if (it.itemId == R.id.menu_item_settings) navigateToSettings() }
-        setOnNavigationItemClickListener { showNavigationMenu(it) }
+        setOnMenuItemClickListener(::onMenuItemClick)
+        setOnNavigationItemClickListener(::onNavigationIconClick)
     }
+
+    private var isSelectionMode: Boolean = false
+
+    private var onIdleCallback: (() -> Unit)? = null
 
     private val datesLayoutManager
         get() = rv_dates.layoutManager as LinearLayoutManager
 
-    private var moveIndicatorOnNextSelection = true
+    private val datesAdapter = DateTabsAdapter(::dateClickCallback)
 
-    private val datesAdapter = DatesAdapter(::moveSelectionIndicator, ::daySelectedCallback)
+    private lateinit var pagerAdapter: PagerAdapter
 
-    private val shiftsOnMainAdapter = ShiftsOnMainAdapter(
-        ::itemClickCallback,
-        ::itemLongClickCallback
+    val shiftsAdapter = ShiftsAdapter(
+        longClickListener = ::itemLongClickCallback,
+        clickListener = ::itemClickCallback
     )
 
-    override fun setupViews() {
+    val pool = RecyclerView.RecycledViewPool()
 
-        moveIndicatorOnNextSelection = false
-
-        with(rv_dates) {
-            adapter = datesAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    // move indicator along with recycler
-                    indicator.translationX -= dx
-                }
-            })
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (onIdleCallback != null) return
+            // move indicator along with recycler
+            indicator.translationX -= dx
         }
 
-        with(rv_shifts_on_main) {
-            adapter = shiftsOnMainAdapter
-            itemAnimator = null
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE && onIdleCallback != null) {
+                onIdleCallback?.invoke()
+                onIdleCallback = null
+            }
+            super.onScrollStateChanged(recyclerView, newState)
         }
+    }
 
-        tv_chosen_date.setOnClickListener {
-            navigateToDatePicker(binding.currentDayStart)
-        }
+    private var action: Action = Action.SWIPE
 
-        btn_today.setOnClickListener { scrollByDayId(Constants.todayId) }
-
-        // listen for date pick
-        setFragmentResultListener(DatePickerDialog.DATE_PICKER_KEY) { _, bundle ->
-            val time = bundle.getLong(DatePickerDialog.PICK_ACTION_KEY)
-            val dayId = Utils.getCalendarInstance(time).getDayId()
-            scrollByDayId(dayId)
-        }
-
+    private enum class Action {
+        SWIPE,
+        DATE_CLICK,
+        DATE_SET
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,96 +116,212 @@ class MainFragment : BaseFragment<MainViewModel>() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun scrollByDayId(dayId: String) {
-        val pos = datesAdapter.currentList.indexOfFirst { it.id == dayId }
-        val day = datesAdapter.currentList.getOrNull(pos)
+    override fun setupViews() {
 
-        if (day == null || day.id == datesAdapter.selectedItemId) return
-
-        val firstPos = datesLayoutManager.findFirstVisibleItemPosition()
-        val lastPos = datesLayoutManager.findLastVisibleItemPosition()
-
-        if (pos !in firstPos..lastPos) {
-            scrollDatesTo(pos)
-            moveIndicatorOnNextSelection = false
-            indicator.translationX = Constants.dp48
+        tv_chosen_date.setOnClickListener {
+            navigateToDatePicker(binding.currentDayStart)
         }
 
-        daySelectedCallback(day, pos)
+        btn_today.setOnClickListener { onDayChosen(Constants.todayId) }
+
+        with(rv_dates) {
+            adapter = datesAdapter
+            itemAnimator = null
+            addOnScrollListener(scrollListener)
+        }
+
+        // listen for date pick
+        setFragmentResultListener(DatePickerDialog.DATE_PICKER_KEY) { _, bundle ->
+            val time = bundle.getLong(DatePickerDialog.PICK_ACTION_KEY)
+            val dayId = Utils.getCalendarInstance(time).getDayId()
+            onDayChosen(dayId)
+        }
+
+        setupViewPager()
     }
 
-    private fun daySelectedCallback(day: Day, position: Int) {
-        datesAdapter.selectItem(day.id, position)
-        updateTitle(day.start)
-        viewModel.updateCurrentDay(day)
+    private fun isPositionVisible(position: Int): Boolean {
+        val firstPos = datesLayoutManager.findFirstVisibleItemPosition()
+        val lastPos = datesLayoutManager.findLastVisibleItemPosition()
+        return position in firstPos..lastPos
+    }
+
+    private fun setupViewPager() {
+        pagerAdapter = PagerAdapter(this)
+        view_pager.adapter = pagerAdapter
+
+        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+
+            override fun onPageSelected(position: Int) {
+                Log.d(TAG, "onPageSelected: $position action $action")
+                val day = binding.days[position]
+
+                if (binding.selectedDayId != day.id) { // to avoid executing on first show
+
+                    when (action) {
+                        Action.SWIPE -> updateDateViewsPosition(position, day.id, false)
+                        Action.DATE_CLICK -> Unit
+                        Action.DATE_SET -> {
+                            val selectedPos = binding.days.indexOfFirst {
+                                it.id == binding.selectedDayId
+                            }
+                            updateDateViewsPosition(
+                                position,
+                                day.id,
+                                !isPositionVisible(selectedPos)
+                            )
+                        }
+                    }
+
+                    updateTitle(day)
+                    viewModel.updateCurrentDay(day)
+                    binding.selectedDayId = day.id
+                    action = Action.SWIPE
+                }
+                super.onPageSelected(position)
+            }
+        })
+    }
+
+    private fun onDayChosen(dayId: String) {
+        val position = binding.days.indexOfFirst { it.id == dayId }
+
+        if (view_pager.currentItem == position) {
+            // the day is already selected, need to scroll dates recycler only
+            updateDateViewsPosition(position, dayId, true)
+        } else {
+            action = Action.DATE_SET
+            view_pager.currentItem = position
+        }
+    }
+
+    private fun updateDateViewsPosition(position: Int, dayId: String, resetIndicatorPos: Boolean) {
+        val firstPos = datesLayoutManager.findFirstVisibleItemPosition()
+        val lastPos = datesLayoutManager.findLastVisibleItemPosition()
+        if (position !in firstPos..lastPos) {
+
+            // to prevent overlong scrolling
+            if (position - firstPos > 20)
+                datesLayoutManager.scrollToPositionWithOffset(position + 20, 0)
+            if (firstPos - position > 20)
+                datesLayoutManager.scrollToPositionWithOffset(position - 10, 0)
+
+            smoothScrollDatesTo(
+                position,
+                if (resetIndicatorPos) 0 else indicator.translationX.toInt()
+            ) {
+                if (resetIndicatorPos) indicator.translationX = 0f
+                datesAdapter.selectDay(dayId) // after scroll to avoid tab text blinking
+            }
+        } else {
+            datesLayoutManager.findViewByPosition(position)?.let {
+                indicator.translationX = (it.left + it.paddingLeft).toFloat()
+            }
+            datesAdapter.selectDay(dayId)
+        }
+    }
+
+    private fun dateClickCallback(position: Int, holderLeft: Int) {
+        // date is already visible, no need to scroll dates recycler
+        action = Action.DATE_CLICK
+        indicator.translationX = holderLeft.toFloat()
+        view_pager.currentItem = position
+    }
+
+    private fun onDeleteRequested() {
+        val selected = shiftsAdapter.selectedItems
+        val message = if (selected.size == 1) "Удалить график ${selected.first().scheduleName}?"
+        else "Удалить ${selected.size.getScheduleGenitive()}?"
+
+        root.askWhetherToDelete(message) {
+            if (selected.size == 1) viewModel.handleDeleteSchedule(selected.first().scheduleId)
+            else viewModel.handleDeleteSchedules(selected.map { it.scheduleId })
+            disableSelectionMode()
+        }
+    }
+
+    private fun onNavigationIconClick(view: View) {
+        if (isSelectionMode) {
+            disableSelectionMode()
+        } else showNavigationMenu(view)
     }
 
     private fun itemClickCallback(item: ShiftOnMainItem) {
-        // save ui manually since onSaveInstanceState is not called on navigate action
-        binding.saveUi()
-        viewModel.handleEditSchedule(
-            title = getString(R.string.label_edit_schedule),
-            id = item.scheduleId
-        )
-    }
-
-    private fun itemLongClickCallback(item: ShiftOnMainItem) {
-        root.showAreYouSureDialog("${item.scheduleName}\n\nВы уверены, что хотите удалить этот график?") {
-            viewModel.handleDeleteSchedule(item.scheduleId)
+        if (isSelectionMode) onSelectionSizeChanged()
+        else {
+            viewModel.navigateToEditSchedule(
+                title = getString(R.string.label_edit_schedule),
+                id = item.scheduleId
+            )
         }
     }
 
-    private fun moveSelectionIndicator(holderLeft: Int) {
-
-        if (!moveIndicatorOnNextSelection) {
-            moveIndicatorOnNextSelection = true
-            return
+    private fun onSelectionSizeChanged() {
+        shiftsAdapter.selectedItems.size.let { size ->
+            if (size == 0) disableSelectionMode()
+            else updateMenuIconsVisibility(size == 1)
         }
-
-        // move indicator maximal close to an outer edge of screen if it is too far
-        when {
-            indicator.translationX < -indicator.width ->
-                indicator.translationX = -indicator.width.toFloat()
-            indicator.translationX > rv_dates.width ->
-                indicator.translationX = rv_dates.width.toFloat()
-        }
-
-        val newTranslationX = (holderLeft - indicator.left).toFloat()
-
-        indicator.animate()
-            .setDuration(200L)
-            .translationX(newTranslationX)
     }
 
-    private fun scrollDatesTo(pos: Int) {
-        if (pos == -1) return
-        datesLayoutManager.scrollToPositionWithOffset(pos - 1, -Constants.dp4)
+    private fun updateMenuIconsVisibility(isVisible: Boolean) {
+        bottombar.menu.children
+            .filterNot { it.itemId in setOf(R.id.menu_item_delete, R.id.menu_item_archive) }
+            .forEach { it.isVisible = isVisible }
+    }
+
+    private fun itemLongClickCallback() {
+        if (shiftsAdapter.selectedItems.isEmpty()) disableSelectionMode()
+        else enableSelectionMode()
+    }
+
+    private fun enableSelectionMode() {
+        isSelectionMode = true
+        bottombar.replaceMenu(R.menu.menu_schedules)
+        bottombar.setNavigationIcon(R.drawable.ic_round_close_24)
+        fab.hide()
+    }
+
+    private fun disableSelectionMode(showFab: Boolean = true) {
+        isSelectionMode = false
+        shiftsAdapter.clearSelection()
+        bottombar.replaceMenu(R.menu.bottom_app_bar)
+        bottombar.setNavigationIcon(R.drawable.ic_round_menu_24)
+        if (showFab) fab.show()
+    }
+
+    private fun updateTitle(day: Day) {
+        val calendar = Utils.getCalendarInstance(day.startTime)
+        updateTitle(calendar)
     }
 
     private fun updateTitle(calendar: Calendar) {
-        val monthName = Months.values()[calendar.month].getName(requireContext())
-        val date = "${calendar.date}".padStart(2, '0')
-        binding.title = "$monthName, $date"
+        binding.title = calendar.formatAndCapitalize("dd MMMM, yyyy")
     }
 
     private fun showNavigationMenu(view: View) {
         PopupMenu(requireContext(), view).apply {
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_item_schedules -> {
-                        navigateToSchedules()
-                        true
-                    }
-                    R.id.menu_item_shift_types -> {
-                        navigateToShiftTypes()
-                        true
-                    }
-                    else -> false
-                }
-            }
+            setOnMenuItemClickListener(::onMenuItemClick)
             inflate(R.menu.bottom_nav_menu)
             show()
         }
+    }
+
+    private fun onMenuItemClick(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.menu_item_delete -> onDeleteRequested()
+            R.id.menu_item_settings -> navigateToSettings()
+            R.id.menu_item_tuning -> viewModel.navigateToTuning(shiftsAdapter.selectedItems.first().scheduleId)
+            R.id.menu_item_statistics -> Unit
+            R.id.menu_item_archive -> Unit
+            R.id.menu_item_schedules -> navigateToSchedules()
+            R.id.menu_item_shift_types -> navigateToShiftTypes()
+            R.id.menu_item_vacations -> navigateToVacations()
+        }
+
+        return true
+
+        // if (item.itemId != R.id.menu_item_delete) disableSelectionMode(false)
     }
 
     private fun navigateToSettings() {
@@ -220,6 +335,10 @@ class MainFragment : BaseFragment<MainViewModel>() {
         viewModel.navigateWithAction(action)
     }
 
+    private fun navigateToVacations() {
+        viewModel.navigateToVacations(shiftsAdapter.selectedItems.firstOrNull()?.scheduleId)
+    }
+
     private fun navigateToShiftTypes() {
         val action = MainFragmentDirections.actionNavMainToNavShiftTypes()
         viewModel.navigateWithAction(action)
@@ -230,6 +349,31 @@ class MainFragment : BaseFragment<MainViewModel>() {
         viewModel.navigateWithAction(action)
     }
 
+    private fun smoothScrollDatesTo(
+        pos: Int,
+        offset: Int = 0,
+        onStop: (() -> Unit)? = null
+    ) {
+        if (pos == -1) return
+
+        onIdleCallback = onStop
+
+        val smoothScroller = object : LinearSmoothScroller(requireContext()) {
+            override fun calculateDxToMakeVisible(view: View?, snapPreference: Int): Int {
+                return super.calculateDxToMakeVisible(view, snapPreference) + offset - Constants.dp4
+            }
+
+            override fun getHorizontalSnapPreference(): Int = SNAP_TO_START
+        }
+        smoothScroller.targetPosition = pos
+        datesLayoutManager.startSmoothScroll(smoothScroller)
+    }
+
+    private fun scrollDatesTo(pos: Int, offset: Int = 0) {
+        if (pos == -1) return
+        datesLayoutManager.scrollToPositionWithOffset(pos, offset - Constants.dp4)
+    }
+
     inner class MainBinding : Binding() {
 
         var currentDayStart: Long = Constants.today.timeInMillis
@@ -238,29 +382,27 @@ class MainFragment : BaseFragment<MainViewModel>() {
             if (it.isEmpty()) updateTitle(Constants.today) else tv_chosen_date.text = it
         }
 
-        var indicatorTranslation: Float by RenderProp(Constants.dp48) {
-            indicator.translationX = it
+        var selectedDayId: String by RenderProp(Constants.todayId, false) {
+
         }
 
-        var selectedDayId: String by RenderProp(Constants.todayId) {
-            datesAdapter.selectItem(it)
-        }
+        var days: List<Day> by RenderProp(emptyList()) { list ->
 
-        fun saveUi() {
-            indicatorTranslation = indicator.translationX
-            selectedDayId = datesAdapter.selectedItemId ?: Constants.todayId
-        }
+            val pos = list.indexOfFirst { it.id == selectedDayId }
 
-        private var days: List<Day> by RenderProp(emptyList(), false) { list ->
             datesAdapter.submitList(list) {
-                val pos = list.indexOfFirst { it.id == selectedDayId }
                 scrollDatesTo(pos)
             }
+
+            pagerAdapter.items = days
+            pagerAdapter.notifyDataSetChanged()
+            view_pager.setCurrentItem(pos, false)
         }
 
         private var shiftItems: List<ShiftOnMainItem> by RenderProp(emptyList()) {
-            shiftsOnMainAdapter.submitList(it)
-            tv_list_is_empty.isVisible = it.isEmpty()
+            if (isSelectionMode) disableSelectionMode()
+            shiftsAdapter.submitList(it)
+            container_list_is_empty.isVisible = it.isEmpty()
         }
 
         override fun bind(data: IViewModelState) {
@@ -268,10 +410,6 @@ class MainFragment : BaseFragment<MainViewModel>() {
             days = data.days
             shiftItems = data.shiftItems
             currentDayStart = data.currentDayStart
-        }
-
-        override fun saveUi(outState: Bundle) {
-            outState.putString(::selectedDayId.name, datesAdapter.selectedItemId)
         }
 
         override fun restoreUi(savedState: Bundle?) {

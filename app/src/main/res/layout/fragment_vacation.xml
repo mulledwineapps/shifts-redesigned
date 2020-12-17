@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/spacing_16"
+    tools:context=".ui.vacation.VacationFragment">
+
+    <TextView
+        style="@style/TitlePrimaryStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:text="@string/choose_days_title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:text="@string/first_day_title"
+        android:textColor="@color/bright_gray_54" />
+
+    <TextView
+        android:id="@+id/tv_vacation_start"
+        style="@style/TextSelectable"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:gravity="start|center_vertical"
+        android:hint="@string/choose_placeholder"
+        tools:text="1 Ноября" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:text="@string/last_day_title"
+        android:textColor="@color/bright_gray_54" />
+
+    <TextView
+        android:id="@+id/tv_vacation_finish"
+        style="@style/TextSelectable"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:gravity="start|center_vertical"
+        android:hint="@string/choose_placeholder"
+        tools:text="21 Ноября" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_size_24"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:text="@string/vacation_total_days_title"
+        android:textColor="@color/bright_gray_54" />
+
+    <EditText
+        android:id="@+id/et_days_total"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:hint="@string/vacation_enter_count_hint"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="3"
+        app:layout_constraintTop_toBottomOf="@id/tv_schedule_name_title" />
+
+    <TextView
+        style="@style/TitlePrimaryStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        android:layout_marginTop="@dimen/spacing_24"
+        android:minHeight="@dimen/view_size_24"
+        android:text="@string/vacation_start_shift_title" />
+
+    <FrameLayout
+        android:id="@+id/btn_choose_shift_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/item_shift_type" />
+
+        <TextView
+            android:id="@+id/tv_shift_type_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:foreground="?android:selectableItemBackground"
+            android:gravity="center"
+            android:textColor="@color/bright_gray_54"
+            android:textSize="@dimen/font_14"
+            tools:text="@string/click_to_choose_shift_hint" />
+
+    </FrameLayout>
+
+</LinearLayout>

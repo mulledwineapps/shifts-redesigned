@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithShifts
+import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithVacations
 import ru.mulledwine.shiftsredesigned.data.local.entities.Shift
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
 
 @Dao
 interface SchedulesDao : BaseDao<Schedule> {
@@ -27,17 +29,17 @@ interface SchedulesDao : BaseDao<Schedule> {
 
     @Query(
         """
-            SELECT * FROM schedules WHERE id = :id 
-        """
-    )
-    fun findSchedule(id: Int): LiveData<Schedule?>
-
-    @Query(
-        """
             DELETE FROM schedules WHERE id = :id
         """
     )
     suspend fun deleteSchedule(id: Int)
+
+    @Query(
+        """
+            DELETE FROM schedules WHERE id in (:ids)
+        """
+    )
+    suspend fun deleteSchedules(ids: List<Int>)
 
     @Transaction
     @Query(
@@ -46,6 +48,38 @@ interface SchedulesDao : BaseDao<Schedule> {
         """
     )
     suspend fun getSchedule(id: Int): ScheduleWithShifts
+
+    @Query(
+        """
+            SELECT id, name, isCyclic FROM schedules WHERE id = :id 
+        """
+    )
+    suspend fun getScheduleShort(id: Int): ScheduleShort
+
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM schedules WHERE id = :id 
+        """
+    )
+    suspend fun getScheduleWithVacations(id: Int): ScheduleWithVacations
+
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM schedules
+            LIMIT 1
+        """
+    )
+    suspend fun getScheduleWithVacations(): ScheduleWithVacations
+
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM schedules WHERE id = :id
+        """
+    )
+    fun findSchedule(id: Int): LiveData<ScheduleWithShifts>
 
     @Insert
     suspend fun insertShift(shift: Shift)
@@ -61,7 +95,7 @@ interface SchedulesDao : BaseDao<Schedule> {
     suspend fun deleteShift(id: Int)
 
     @Transaction
-    suspend fun updateSchedule(
+    suspend fun upsertSchedule(
         schedule: Schedule,
         shiftsToUpsert: List<ScheduleShiftItem>,
         shiftIdsToDelete: List<Int>

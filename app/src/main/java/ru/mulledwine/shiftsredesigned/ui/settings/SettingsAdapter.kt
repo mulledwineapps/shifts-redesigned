@@ -69,7 +69,7 @@ class SettingsAdapter(
 
     class GroupViewHolder(containerView: View) : ViewHolder(containerView) {
         override fun bind(item: SettingsItem) {
-            if (adapterPosition == 0) containerView.updateLayoutParams { height = Constants.dp40 }
+            if (bindingAdapterPosition == 0) containerView.updateLayoutParams { height = Constants.dp40 }
             item as SettingsItem.Group
             tv_settings_group_title.text = item.title
         }
@@ -84,8 +84,7 @@ class SettingsAdapter(
         override fun areContentsTheSame(
             oldItem: SettingsItem,
             newItem: SettingsItem
-        ): Boolean =
-            oldItem == newItem
+        ): Boolean = oldItem == newItem
     }
 
 }

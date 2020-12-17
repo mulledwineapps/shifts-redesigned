@@ -3,13 +3,16 @@ package ru.mulledwine.shiftsredesigned.repositories
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleParcelable
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
-import ru.mulledwine.shiftsredesigned.extensions.data.getDuration
+import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
+import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
+import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithShiftItems
+import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithVacationItems
+import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleShiftItem
+import ru.mulledwine.shiftsredesigned.extensions.data.toVacationItem
 
 object SchedulesRepository {
 
-    private const val TAG = "M_MainRepository"
+    private const val TAG = "M_SchedulesRepository"
 
     private val schedulesDao = db.schedulesDao()
 
@@ -21,25 +24,37 @@ object SchedulesRepository {
         schedulesDao.deleteSchedule(id)
     }
 
-    suspend fun getSchedule(id: Int): ScheduleParcelable {
+    suspend fun deleteSchedules(ids: List<Int>) {
+        schedulesDao.deleteSchedules(ids)
+    }
+
+    suspend fun getSchedule(id: Int): ScheduleWithShiftItems {
         val scheduleFull = schedulesDao.getSchedule(id)
-        return ScheduleParcelable(
+        return ScheduleWithShiftItems(
             id = scheduleFull.schedule.id!!,
             name = scheduleFull.schedule.name,
+            isCyclic = scheduleFull.schedule.isCyclic,
             start = scheduleFull.schedule.start,
             finish = scheduleFull.schedule.finish,
             shiftItems = scheduleFull.shiftsWithTypes.map {
-                val shiftFull = it.value
-                ScheduleShiftItem(
-                    shiftId = shiftFull.shift.id!!,
-                    shiftTypeId = shiftFull.type.id!!,
-                    ordinal = shiftFull.shift.ordinal,
-                    duration = shiftFull.type.getDuration(),
-                    typeName = shiftFull.type.name,
-                    color = shiftFull.type.color,
-                    isNewItem = false
-                )
+                it.value.toScheduleShiftItem()
             }
+        )
+    }
+
+    suspend fun getScheduleShort(id: Int): ScheduleShort {
+        return schedulesDao.getScheduleShort(id)
+    }
+
+    suspend fun getScheduleWithVacationItems(id: Int?): ScheduleWithVacationItems {
+        val scheduleFull = if (id == null) schedulesDao.getScheduleWithVacations()
+        else schedulesDao.getScheduleWithVacations(id)
+
+        return ScheduleWithVacationItems(
+            schedule = scheduleFull.schedule,
+            vacationItems = scheduleFull.vacations
+                .sortedWith(compareByDescending<Vacation> { it.start }.thenByDescending { it.finish })
+                .map { it.toVacationItem() }
         )
     }
 

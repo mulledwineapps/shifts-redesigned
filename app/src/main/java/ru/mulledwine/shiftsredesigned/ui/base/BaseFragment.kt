@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime
@@ -35,6 +37,8 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
 
     val appbar: AppBarLayout get() = root.appbar
     val toolbar: MaterialToolbar get() = root.toolbar
+    val bottombar: BottomAppBar get() = root.bottombar
+    val fab: FloatingActionButton get() = root.fab
 
     // set listeners, tuning views
     abstract fun setupViews()
@@ -63,6 +67,8 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
         viewModel.observeLoading(viewLifecycleOwner) {
             renderLoading(it)
         }
+
+        root.toolbar?.setNavigationIcon(R.drawable.ic_round_arrow_back_24)
 
     }
 

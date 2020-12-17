@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.daystuning.DaysTuningFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_daystuning"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/spacing_16">
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:text="@string/choose_schedule_title" />
+
+            <TextView
+                android:id="@+id/tv_schedule"
+                style="@style/TextSelectable"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="start|center_vertical"
+                tools:text="Мой график" />
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:text="@string/tuning_choose_days_title" />
+
+            <TextView
+                android:id="@+id/tv_month_name"
+                style="@style/TextSelectable"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="start|center_vertical"
+                tools:text="Ноябрь 2020" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:background="@drawable/bg_rounded_4"
+                android:backgroundTint="@color/white"
+                android:overScrollMode="never"
+                android:padding="@dimen/spacing_16"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="7"
+                tools:itemCount="31"
+                tools:listitem="@layout/item_date" />
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:text="@string/choose_shift_title" />
+
+            <FrameLayout
+                android:id="@+id/btn_choose_shift_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/item_shift_type" />
+
+                <TextView
+                    android:id="@+id/tv_shift_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:foreground="?android:selectableItemBackground"
+                    android:gravity="center"
+                    android:text="@string/click_to_choose_shift_hint"
+                    android:textColor="@color/bright_gray_54"
+                    android:textSize="@dimen/font_14" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

@@ -44,7 +44,7 @@ class ShiftsAdapter(
             tv_shift_item_ordinal.text = item.ordinal.toString()
             tv_shift_item_name.text = item.typeName
             tv_shift_item_duration.text = item.duration
-            v_shift_item_colored_dot.backgroundTintList = ColorStateList.valueOf(item.color)
+            v_shift_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
         }
     }
 

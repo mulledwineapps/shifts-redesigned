@@ -55,14 +55,12 @@ class ShiftTypesAdapter(
         override fun areItemsTheSame(
             oldItem: ShiftTypeItem,
             newItem: ShiftTypeItem
-        ): Boolean =
-            oldItem.id == newItem.id
+        ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
             oldItem: ShiftTypeItem,
             newItem: ShiftTypeItem
-        ): Boolean =
-            oldItem == newItem
+        ): Boolean = oldItem == newItem
     }
 
 }

@@ -180,6 +180,6 @@
         android:background="@drawable/bg_round"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_shift_type_choose_color_title"
-        tools:backgroundTint="@color/color_attention" />
+        tools:backgroundTint="@color/chrome_yellow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

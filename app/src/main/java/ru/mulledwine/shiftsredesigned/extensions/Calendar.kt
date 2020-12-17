@@ -1,7 +1,6 @@
 package ru.mulledwine.shiftsredesigned.extensions
 
 import ru.mulledwine.shiftsredesigned.Constants
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,9 +38,21 @@ fun Calendar.setWithZeroTime(year: Int, month: Int, date: Int) {
 
 fun Calendar.moveToNextDay() = add(Calendar.DATE, 1)
 
-fun Calendar.format(): String {
+fun Calendar.formatAndCapitalize(): String {
     val monthFormat = SimpleDateFormat("MMMM", Locale("ru"))
     val month: String = monthFormat.format(this.time).capitalize(Locale("ru"))
+    val year = if (this.year == Constants.today.year) "" else " $year"
+    return "$date $month$year"
+}
+
+fun Calendar.formatAndCapitalize(formatString: String): String {
+    val formatted = SimpleDateFormat(formatString, Locale("ru")).format(this.time)
+    return formatted.split(" ").joinToString(" ") { it.capitalize(Locale("ru")) }
+}
+
+fun Calendar.format(): String {
+    val monthFormat = SimpleDateFormat("MMMM", Locale("ru"))
+    val month: String = monthFormat.format(this.time)
     val year = if (this.year == Constants.today.year) "" else " $year"
     return "$date $month$year"
 }

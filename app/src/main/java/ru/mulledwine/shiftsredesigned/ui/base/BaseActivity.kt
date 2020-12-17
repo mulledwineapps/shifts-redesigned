@@ -1,6 +1,5 @@
 package ru.mulledwine.shiftsredesigned.ui.base
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -33,6 +32,9 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
 
     val toolbarBuilder = ToolbarBuilder()
     val bottombarBuilder = BottombarBuilder()
+
+    // for closing list menu if shown
+    var onNavigationIconClick: (() -> Unit)? = null
 
     abstract fun subscribeOnState(state: IViewModelState)
 
@@ -77,7 +79,10 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
 
     // чтобы при клавише назад мы перемещались вверх по иерархии
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return onNavigationIconClick?.let {
+            it.invoke()
+            true
+        } ?: navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     private fun subscribeOnNavigation(command: NavigationCommand) {
@@ -114,21 +119,15 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
         }
     }
 
-    fun showAreYouSureDialog(message: String, handler: () -> Unit) {
-        val dialog = AlertDialog.Builder(this, R.style.LightAlertDialogTheme)
+    fun askWhetherToDelete(message: String, handler: () -> Unit) {
+        AlertDialog.Builder(this, R.style.LightAlertDialogTheme)
             .setMessage(message)
-            .setPositiveButton(R.string.yes_button) { _, _ -> handler.invoke() }
-            .setNegativeButton(R.string.no_button, null)
+            .setPositiveButton(R.string.delete_button) { _, _ -> handler.invoke() }
+            .setNegativeButton(R.string.cancel_button, null)
             .create().apply {
                 requestWindowFeature(Window.FEATURE_NO_TITLE)
             }
-
-        dialog.setOnShowListener {
-            val positiveBtn = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            positiveBtn.setTextColor(this.getColor(R.color.color_attention))
-        }
-
-        dialog.show()
+            .show()
     }
 
 }
@@ -212,9 +211,11 @@ class BottombarBuilder() {
         context.bottombar.isVisible = visible
 
         // do not use show & hide since no animation required
+        // and using isVisible leads to cradle loosing
         with(context.fab) {
-            alpha = if (visible) 1f else 0f
             isEnabled = visible
+            if (isOrWillBeHidden && visible) show()
+            alpha = if (visible) 1f else 0f
         }
 
         if (visible) {
