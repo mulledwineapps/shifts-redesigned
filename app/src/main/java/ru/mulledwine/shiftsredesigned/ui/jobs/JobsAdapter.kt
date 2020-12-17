@@ -1,4 +1,4 @@
-package ru.mulledwine.shiftsredesigned.ui.main
+package ru.mulledwine.shiftsredesigned.ui.jobs
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -10,22 +10,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_shift_on_main.*
+import kotlinx.android.synthetic.main.item_job.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftOnMainItem
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 
-class ShiftsAdapter(
-    private val longClickListener: () -> Unit,
-    private val clickListener: (item: ShiftOnMainItem) -> Unit,
+class JobsAdapter(
+    private val longClickListener: (() -> Unit)? = null,
+    private val clickListener: (item: JobItem) -> Unit
 ) :
-    ListAdapter<ShiftOnMainItem, ShiftsAdapter.ViewHolder>(DiffCallback()) {
+    ListAdapter<JobItem, JobsAdapter.ViewHolder>(DiffCallback()) {
 
-    val selectedItems = mutableSetOf<ShiftOnMainItem>()
+    var isSelectionAllowed = false
+    val selectedItems = mutableSetOf<JobItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val containerView = inflater.inflate(R.layout.item_shift_on_main, parent, false)
+        val containerView = inflater.inflate(R.layout.item_job, parent, false)
         return ViewHolder(containerView)
     }
 
@@ -37,7 +38,7 @@ class ShiftsAdapter(
         }
         holder.containerView.setOnLongClickListener {
             handleSelection(item, holder)
-            longClickListener.invoke()
+            longClickListener?.invoke()
             true
         }
         holder.bind(item)
@@ -49,13 +50,15 @@ class ShiftsAdapter(
         notifyDataSetChanged()
     }
 
-    private fun handleSelection(item: ShiftOnMainItem, holder: ViewHolder) {
-        if (selectedItems.contains(item)) {
-            selectedItems.remove(item)
-            holder.setSelection(false)
-        } else {
-            selectedItems.add(item)
-            holder.setSelection(true)
+    private fun handleSelection(item: JobItem, holder: ViewHolder) {
+        if (isSelectionAllowed) {
+            if (selectedItems.contains(item)) {
+                selectedItems.remove(item)
+                holder.setSelection(false)
+            } else {
+                selectedItems.add(item)
+                holder.setSelection(true)
+            }
         }
     }
 
@@ -63,30 +66,27 @@ class ShiftsAdapter(
         override val containerView: View
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(item: ShiftOnMainItem) {
-            tv_main_item_name.text = item.scheduleName
-            tv_main_item_description.text = item.description
-            v_main_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
-            iv_main_item_check.imageTintList = ColorStateList.valueOf(item.color)
+        fun bind(item: JobItem) {
+            tv_job_item_name.text = item.name
         }
 
         fun setSelection(isSelected: Boolean) {
             val color = if (isSelected) Constants.selectionColor else Color.WHITE
             containerView.backgroundTintList = ColorStateList.valueOf(color)
-            v_main_item_color.isVisible = !isSelected
-            iv_main_item_check.isVisible = isSelected
+            iv_check.isVisible = isSelected
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<ShiftOnMainItem>() {
+    class DiffCallback : DiffUtil.ItemCallback<JobItem>() {
         override fun areItemsTheSame(
-            oldItem: ShiftOnMainItem,
-            newItem: ShiftOnMainItem
-        ): Boolean = oldItem.shiftId == newItem.shiftId
+            oldItem: JobItem,
+            newItem: JobItem
+        ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: ShiftOnMainItem,
-            newItem: ShiftOnMainItem
+            oldItem: JobItem,
+            newItem: JobItem
         ): Boolean = oldItem == newItem
     }
+
 }

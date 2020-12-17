@@ -27,19 +27,30 @@
     <string name="december">Декабрь</string>
 
     <!-- main screen -->
+    <string name="title_jobs">Работы</string>
     <string name="title_schedules">Графики</string>
     <string name="title_shift_types">Смены</string>
     <string name="title_vacations">Отпуска</string>
     <string name="title_settings">Настройки</string>
 
+    <!-- jobs screen -->
+    <string name="label_jobs">Работы</string>
+
+    <!-- job dialog -->
+    <string name="label_add_job">Добавить работу</string>
+    <string name="label_edit_job">Редактировать работу</string>
+    <string name="job_name_title">Название</string>
+
     <!-- schedules screen -->
     <string name="label_schedules">Графики</string>
+    <string name="schedules_title">Графики</string>
+    <string name="btn_add_schedule_title">Добавить график</string>
 
     <!-- schedule screen -->
     <string name="label_add_schedule">Добавить график</string>
     <string name="label_edit_schedule">Редактировать график</string>
-    <string name="schedule_name_title">Имя или название работы</string>
-    <string name="schedule_start_typing_hint">Начните писать</string>
+    <string name="schedule_belongs_job_title">График принадлежит работе</string>
+    <string name="schedule_duration_title">Продолжительность графика</string>
     <string name="schedule_type_title">Тип графика</string>
     <string name="schedule_type_regular_btn_title">Обычный</string>
     <string name="schedule_type_cyclic_btn_title">Цикличный</string>
@@ -81,7 +92,7 @@
 
     <!-- dialogs -->
     <string name="label_choose_shift">Выбрать смену</string>
-    <string name="label_choose_schedule">Выбрать график</string>
+    <string name="label_choose_job">Выбрать работу</string>
     <string name="label_choose_month">Выбрать месяц</string>
     <string name="label_choose_shift_color">Выбрать цвет смены</string>
 
@@ -91,6 +102,7 @@
     <string name="cancel_button">Отмена</string>
 
     <!-- menu item titles -->
+    <string name="menu_item_edit">Редактировать</string>
     <string name="menu_item_delete">Удалить</string>
     <string name="menu_item_statistics">Статистика</string>
     <string name="menu_item_vacations">Настроить отпуска</string>
@@ -136,11 +148,12 @@
     <string name="empty_yet_placeholder">Здесь пока пусто</string>
     <string name="choose_placeholder">Выбрать</string>
     <string name="please_wait">Пожалуйста, подождите…</string>
-    <string name="choose_schedule_title">Выбрать график</string>
+    <string name="choose_job_title">Выбрать работу</string>
     <string name="choose_shift_title">Выбрать смену</string>
     <string name="choose_days_title">Выбрать дни</string>
     <string name="first_day_title">Первый день</string>
     <string name="last_day_title">Последний день</string>
+    <string name="start_typing_hint">Начните писать</string>
 
     <!-- content descriptions -->
     <string name="description_btn_add_schedule">Кнопка добавить график</string>
@@ -148,5 +161,6 @@
     <string name="description_delete_shift_from_schedule">Кнопка удалить смену из графика</string>
     <string name="description_check_label">Метка выделенного элемента списка</string>
     <string name="description_empty_list_image">Картинка вместо пустого списка</string>
+    <string name="description_btn_set_random_color">Кнопка генерации случайного цвета для смены</string>
 
 </resources>

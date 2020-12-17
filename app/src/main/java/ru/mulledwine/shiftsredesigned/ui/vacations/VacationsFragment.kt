@@ -13,14 +13,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_vacations.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.VacationItem
 import ru.mulledwine.shiftsredesigned.extensions.getVacationGenitive
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
-import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseScheduleDialog
+import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
 import ru.mulledwine.shiftsredesigned.viewmodels.VacationsState
 import ru.mulledwine.shiftsredesigned.viewmodels.VacationsViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
@@ -70,10 +69,10 @@ class VacationsFragment : BaseFragment<VacationsViewModel>() {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
 
-        // listen for schedule pick
-        setFragmentResultListener(ChooseScheduleDialog.CHOOSE_SCHEDULE_KEY) { _, bundle ->
-            val schedule = bundle[ChooseScheduleDialog.SELECTED_SCHEDULE] as ScheduleShort
-            viewModel.handleUpdateSchedule(schedule)
+        // listen for job pick
+        setFragmentResultListener(ChooseJobDialog.CHOOSE_JOB_KEY) { _, bundle ->
+            val job = bundle[ChooseJobDialog.SELECTED_JOB] as JobItem
+            viewModel.handleUpdateJob(job)
         }
     }
 
@@ -95,27 +94,20 @@ class VacationsFragment : BaseFragment<VacationsViewModel>() {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
 
-        tv_schedule_name.setOnClickListener { navigateToDialogChooseSchedule() }
+        tv_vacations_job.setOnClickListener { navigateToDialogChooseJob() }
         btn_add.setOnClickListener { viewModel.handleClickAdd(getString(R.string.label_add_vacation)) }
 
-        viewModel.observeSchedules(viewLifecycleOwner) {
-            binding.scheduleItems = it
+        viewModel.observeJobs(viewLifecycleOwner) {
+            binding.jobItems = it
         }
 
     }
 
-    private fun navigateToDialogChooseSchedule() {
-        val action = VacationsFragmentDirections.actionToDialogChooseSchedule(
-            binding.scheduleItems.toTypedArray()
+    private fun navigateToDialogChooseJob() {
+        val action = VacationsFragmentDirections.actionToDialogChooseJob(
+            binding.jobItems.toTypedArray()
         )
         viewModel.navigateWithAction(action)
-    }
-
-    private fun submitItems(list: List<VacationItem>) {
-        vacationsAdapter.submitList(list) {
-            if (tv_list_is_empty == null) return@submitList // exit in process
-            tv_list_is_empty.isVisible = list.isEmpty()
-        }
     }
 
     private fun closeSelectionMenu() {
@@ -145,11 +137,11 @@ class VacationsFragment : BaseFragment<VacationsViewModel>() {
     }
 
     private fun itemClickCallback(item: VacationItem) {
-        if (isSelectionMode) onSelectionSizeChanged()
+        if (isSelectionMode) onSelectionChanged()
         else viewModel.handleClickEdit(getString(R.string.label_edit_vacation), item.id)
     }
 
-    private fun onSelectionSizeChanged() {
+    private fun onSelectionChanged() {
         vacationsAdapter.selectedItems.size.let { size ->
             if (size == 0) isSelectionMode = false
             else toolbar.title = "$size"
@@ -160,12 +152,19 @@ class VacationsFragment : BaseFragment<VacationsViewModel>() {
         isSelectionMode = vacationsAdapter.selectedItems.isNotEmpty()
     }
 
+    private fun submitItems(list: List<VacationItem>) {
+        vacationsAdapter.submitList(list) {
+            if (tv_list_is_empty == null) return@submitList // exit in process
+            tv_list_is_empty.isVisible = list.isEmpty()
+        }
+    }
+
     inner class VacationsBinding : Binding() {
 
-        var scheduleItems: List<ScheduleItem> = emptyList()
+        var jobItems: List<JobItem> = emptyList()
 
-        var scheduleName by RenderProp(args.item.schedule.name) {
-            tv_schedule_name.text = it
+        var jobName by RenderProp(args.item.jobItem.name) {
+            tv_vacations_job.text = it
         }
 
         var vacationItems: List<VacationItem> by RenderProp(args.item.vacationItems) {
@@ -175,7 +174,7 @@ class VacationsFragment : BaseFragment<VacationsViewModel>() {
         override fun bind(data: IViewModelState) {
             data as VacationsState
             vacationItems = data.vacationItems
-            scheduleName = data.scheduleName
+            jobName = data.jobName
         }
 
     }

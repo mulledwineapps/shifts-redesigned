@@ -1,5 +1,15 @@
 package ru.mulledwine.shiftsredesigned.extensions
 
+fun Int.getJobGenitive(): String {
+    return when (this) {
+        in 11..14 -> "$this выбранных работ"
+        else -> when (this % 10) {
+            1 -> "$this выбранную работу"
+            in 2..4 -> "$this выбранные работы"
+            else -> "$this выбранных работ"
+        }
+    }
+}
 fun Int.getScheduleGenitive(): String {
     return when (this) {
         in 11..14 -> "$this выбранных графиков"

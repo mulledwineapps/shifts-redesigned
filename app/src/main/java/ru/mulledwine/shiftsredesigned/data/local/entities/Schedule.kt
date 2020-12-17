@@ -1,48 +1,53 @@
 package ru.mulledwine.shiftsredesigned.data.local.entities
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.Relation
+import androidx.room.*
 import ru.mulledwine.shiftsredesigned.Constants
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
 import ru.mulledwine.shiftsredesigned.data.local.models.TimeUnits
 
-@Entity(tableName = "schedules")
+@Entity(
+    tableName = "schedules",
+    foreignKeys = [
+        ForeignKey(
+            entity = Job::class,
+            parentColumns = ["id"],
+            childColumns = ["job_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Schedule(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val name: String,
+    @ColumnInfo(name = "job_id", index = true)
+    val jobId: Int,
+    @ColumnInfo(name = "is_cyclic")
     val isCyclic: Boolean,
     val start: Long,
     val finish: Long = 0L
 ) {
     companion object {
         private var counter = 0
-        private val scheduleNames = listOf(
-            "Мой график",
-            "График друга",
-            "2 через 2",
-            "2 через 3"
-        )
 
-        fun generateAll(): List<Schedule> {
-            return scheduleNames.map { scheduleName ->
-                val time = Constants.today.timeInMillis +
-                        (-10 * TimeUnits.WEEK.value..-TimeUnits.WEEK.value).random()
-                Schedule(
-                    id = counter++,
-                    name = scheduleName,
-                    isCyclic = true,
-                    start = time
-                )
-            }.toList()
+        fun generate(jobId: Int): Schedule {
+            val time = Constants.today.timeInMillis +
+                    (-10 * TimeUnits.WEEK.value..-TimeUnits.WEEK.value).random()
+            return Schedule(
+                id = counter++,
+                jobId = jobId,
+                isCyclic = true,
+                start = time
+            )
         }
+
     }
 }
 
 data class ScheduleWithShifts(
     @Embedded val schedule: Schedule,
+    @Relation(
+        parentColumn = "job_id",
+        entityColumn = "id"
+    ) val job: Job,
     @Relation(
         parentColumn = "id",
         entityColumn = "schedule_id"
@@ -50,12 +55,11 @@ data class ScheduleWithShifts(
     val shiftsWithTypes: List<ShiftsWithTypeView>
 )
 
-
-data class ScheduleWithVacations(
-    @Embedded val schedule: ScheduleShort,
+data class JobWithVacations(
+    @Embedded val job: Job,
     @Relation(
         parentColumn = "id",
-        entityColumn = "schedule_id"
+        entityColumn = "job_id"
     )
     val vacations: List<Vacation>
 )

@@ -4,23 +4,29 @@ import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
 import ru.mulledwine.shiftsredesigned.extensions.data.getDescription
 
 data class ShiftOnMainItem(
-    val shiftId: Int,
+    val jobId: Int,
+    val jobName: String,
     val scheduleId: Int,
-    val scheduleName: String,
+    val scheduleDuration: String,
+    val shiftId: Int,
     val description: String, // тип смены и её продолжительность
     val color: Int
 )
 
-data class ShiftScheduleType(
-    val shiftId: Int,
+data class JobScheduleShiftType(
+    val jobId: Int,
+    val jobName: String,
     val scheduleId: Int,
-    val scheduleName: String,
+    val scheduleDuration: String,
+    val shiftId: Int,
     val shiftType: ShiftType
 ) {
     fun toShiftOnMainItem() = ShiftOnMainItem(
-        shiftId = shiftId,
+        jobId = jobId,
+        jobName = jobName,
         scheduleId = scheduleId,
-        scheduleName = scheduleName,
+        scheduleDuration = scheduleDuration,
+        shiftId = shiftId,
         description = shiftType.getDescription(),
         color = shiftType.color
     )

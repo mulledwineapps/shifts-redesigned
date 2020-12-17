@@ -42,6 +42,10 @@
         <item name="buttonBarNegativeButtonStyle">@style/DarkAlertButton</item>
     </style>
 
+    <style name="AlabasterAlertDialogTheme" parent="LightAlertDialogTheme">
+        <item name="android:background">@color/alabaster</item>
+    </style>
+
     <style name="TextSelectable">
         <item name="android:background">@drawable/bg_rounded_4</item>
         <item name="android:backgroundTint">@color/white</item>

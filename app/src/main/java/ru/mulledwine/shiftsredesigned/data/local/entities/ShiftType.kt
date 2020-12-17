@@ -1,6 +1,5 @@
 package ru.mulledwine.shiftsredesigned.data.local.entities
 
-//import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -27,7 +26,7 @@ data class ShiftType(
         private val daysOff = setOf("Отсыпной", "Выходной", "Отгул")
         private val names = setOf("Дневная", "Ночная") + daysOff
 
-        fun generateAll(): List<ShiftType> {
+        fun generate(): List<ShiftType> {
             return (names).map {
                 val isFullDay = daysOff.contains(it)
                 if (isFullDay) {

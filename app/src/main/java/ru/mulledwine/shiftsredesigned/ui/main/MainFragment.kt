@@ -27,6 +27,7 @@ import ru.mulledwine.shiftsredesigned.ui.base.BottombarBuilder
 import ru.mulledwine.shiftsredesigned.ui.base.ToolbarBuilder
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
 import ru.mulledwine.shiftsredesigned.ui.dialogs.DatePickerDialog
+import ru.mulledwine.shiftsredesigned.ui.dialogs.JobDialog
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.MainState
 import ru.mulledwine.shiftsredesigned.viewmodels.MainViewModel
@@ -51,7 +52,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     override val prepareBottombar: (BottombarBuilder.() -> Unit) = {
         setVisibility(true)
-        setFabClickListener { navigateToSchedule() }
+        setFabClickListener { ::onFabClick.invoke() }
         setOnMenuItemClickListener(::onMenuItemClick)
         setOnNavigationItemClickListener(::onNavigationIconClick)
     }
@@ -67,9 +68,9 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     private lateinit var pagerAdapter: PagerAdapter
 
-    val shiftsAdapter = ShiftsAdapter(
-        longClickListener = ::itemLongClickCallback,
-        clickListener = ::itemClickCallback
+    val shiftsAdapter = MainAdapter(
+        clickListener = ::itemClickCallback,
+        longClickListener = ::itemLongClickCallback
     )
 
     val pool = RecyclerView.RecycledViewPool()
@@ -135,6 +136,12 @@ class MainFragment : BaseFragment<MainViewModel>() {
             val time = bundle.getLong(DatePickerDialog.PICK_ACTION_KEY)
             val dayId = Utils.getCalendarInstance(time).getDayId()
             onDayChosen(dayId)
+        }
+
+        // listen for job added
+        setFragmentResultListener(JobDialog.JOB_KEY) { _, bundle ->
+            val name = bundle.getString(JobDialog.JOB_NAME, "")
+            viewModel.handleAddJobThenSchedule(name, requireContext())
         }
 
         setupViewPager()
@@ -230,8 +237,10 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     private fun onDeleteRequested() {
         val selected = shiftsAdapter.selectedItems
-        val message = if (selected.size == 1) "Удалить график ${selected.first().scheduleName}?"
-        else "Удалить ${selected.size.getScheduleGenitive()}?"
+        val message = if (selected.size == 1) {
+            val item = selected.first()
+            "Удалить график?\n\n${item.jobName}\n${item.scheduleDuration}"
+        } else "Удалить ${selected.size.getScheduleGenitive()}?"
 
         root.askWhetherToDelete(message) {
             if (selected.size == 1) viewModel.handleDeleteSchedule(selected.first().scheduleId)
@@ -247,16 +256,14 @@ class MainFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun itemClickCallback(item: ShiftOnMainItem) {
-        if (isSelectionMode) onSelectionSizeChanged()
-        else {
-            viewModel.navigateToEditSchedule(
-                title = getString(R.string.label_edit_schedule),
-                id = item.scheduleId
-            )
-        }
+        if (isSelectionMode) onSelectionChanged()
+        else viewModel.handleClickEdit(
+            title = getString(R.string.label_edit_schedule),
+            item = item
+        )
     }
 
-    private fun onSelectionSizeChanged() {
+    private fun onSelectionChanged() {
         shiftsAdapter.selectedItems.size.let { size ->
             if (size == 0) disableSelectionMode()
             else updateMenuIconsVisibility(size == 1)
@@ -276,7 +283,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     private fun enableSelectionMode() {
         isSelectionMode = true
-        bottombar.replaceMenu(R.menu.menu_schedules)
+        bottombar.replaceMenu(R.menu.menu_main)
         bottombar.setNavigationIcon(R.drawable.ic_round_close_24)
         fab.hide()
     }
@@ -284,7 +291,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
     private fun disableSelectionMode(showFab: Boolean = true) {
         isSelectionMode = false
         shiftsAdapter.clearSelection()
-        bottombar.replaceMenu(R.menu.bottom_app_bar)
+        bottombar.replaceMenu(R.menu.menu_settings)
         bottombar.setNavigationIcon(R.drawable.ic_round_menu_24)
         if (showFab) fab.show()
     }
@@ -310,13 +317,13 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
         when (item.itemId) {
             R.id.menu_item_delete -> onDeleteRequested()
-            R.id.menu_item_settings -> navigateToSettings()
-            R.id.menu_item_tuning -> viewModel.navigateToTuning(shiftsAdapter.selectedItems.first().scheduleId)
+            R.id.menu_item_tuning -> viewModel.navigateToTuning(shiftsAdapter.selectedItems.first().jobId)
             R.id.menu_item_statistics -> Unit
-            R.id.menu_item_archive -> Unit
+            R.id.menu_item_jobs -> navigateToJobs()
             R.id.menu_item_schedules -> navigateToSchedules()
             R.id.menu_item_shift_types -> navigateToShiftTypes()
             R.id.menu_item_vacations -> navigateToVacations()
+            R.id.menu_item_settings -> navigateToSettings()
         }
 
         return true
@@ -324,29 +331,29 @@ class MainFragment : BaseFragment<MainViewModel>() {
         // if (item.itemId != R.id.menu_item_delete) disableSelectionMode(false)
     }
 
+    private fun onFabClick() {
+        viewModel.handleClickAdd(requireContext())
+    }
+
     private fun navigateToSettings() {
         val action = MainFragmentDirections.actionNavMainToNavSettings()
         viewModel.navigateWithAction(action)
     }
 
-    private fun navigateToSchedule() {
-        val action = MainFragmentDirections
-            .actionNavMainToNavSchedule(getString(R.string.label_add_schedule))
-        viewModel.navigateWithAction(action)
+    private fun navigateToJobs() {
+        viewModel.navigateToJobs()
+    }
+
+    private fun navigateToSchedules() {
+        viewModel.navigateToSchedules(shiftsAdapter.selectedItems.firstOrNull()?.jobId)
+    }
+
+    private fun navigateToShiftTypes() {
+        viewModel.navigateToShiftTypes()
     }
 
     private fun navigateToVacations() {
         viewModel.navigateToVacations(shiftsAdapter.selectedItems.firstOrNull()?.scheduleId)
-    }
-
-    private fun navigateToShiftTypes() {
-        val action = MainFragmentDirections.actionNavMainToNavShiftTypes()
-        viewModel.navigateWithAction(action)
-    }
-
-    private fun navigateToSchedules() {
-        val action = MainFragmentDirections.actionNavMainToNavSchedules()
-        viewModel.navigateWithAction(action)
     }
 
     private fun smoothScrollDatesTo(

@@ -28,7 +28,7 @@
         android:layout_marginHorizontal="@dimen/spacing_16"
         android:background="@drawable/bg_rounded_4"
         android:backgroundTint="@color/white"
-        android:hint="@string/schedule_start_typing_hint"
+        android:hint="@string/start_typing_hint"
         android:importantForAutofill="no"
         android:inputType="textCapSentences"
         android:paddingStart="@dimen/spacing_16"
@@ -181,5 +181,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_shift_type_choose_color_title"
         tools:backgroundTint="@color/chrome_yellow" />
+
+    <ImageButton
+        android:id="@+id/btn_shift_type_random_color"
+        android:layout_width="@dimen/button_size_40"
+        android:layout_height="@dimen/button_size_40"
+        android:background="@drawable/bg_btn_round_inset"
+        android:backgroundTint="@color/alabaster"
+        android:contentDescription="@string/description_btn_set_random_color"
+        android:src="@drawable/ic_round_autorenew_24"
+        app:layout_constraintBottom_toBottomOf="@id/btn_shift_type_choose_color"
+        app:layout_constraintStart_toEndOf="@id/btn_shift_type_choose_color"
+        app:layout_constraintTop_toTopOf="@id/btn_shift_type_choose_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

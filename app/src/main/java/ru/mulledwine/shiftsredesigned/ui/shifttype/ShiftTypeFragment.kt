@@ -23,10 +23,6 @@ import ru.mulledwine.shiftsredesigned.viewmodels.ShiftTypeViewModel
 
 class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
 
-    companion object {
-        private const val TAG = "M_ShiftTypeFragment"
-    }
-
     private val args: ShiftTypeFragmentArgs by navArgs()
 
     override val layout: Int = R.layout.fragment_shift_type
@@ -97,6 +93,11 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
             val action = ShiftTypeFragmentDirections
                 .actionNavShiftTypeToDialogColorPicker(R.string.label_choose_shift_color)
             viewModel.navigateWithAction(action)
+        }
+
+        btn_shift_type_random_color.setOnClickListener {
+            val color = Utils.getRandomColor()
+            btn_shift_type_choose_color.backgroundTintList = ColorStateList.valueOf(color)
         }
 
         // listen for time pick

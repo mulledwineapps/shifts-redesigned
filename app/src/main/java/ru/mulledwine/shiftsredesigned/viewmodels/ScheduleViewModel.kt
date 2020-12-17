@@ -6,8 +6,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toShiftTypeItem
 import ru.mulledwine.shiftsredesigned.repositories.ScheduleRepository
 import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
@@ -37,6 +39,11 @@ class ScheduleViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(ha
         }.observe(owner, Observer(onChange))
     }
 
+    fun observeJobs(owner: LifecycleOwner, onChange: (list: List<JobItem>) -> Unit) {
+        repository.findJobs().map { list -> list.map { it.toJobItem() } }
+            .observe(owner, Observer(onChange))
+    }
+
     fun handleInputError(errorType: InputErrors) {
         val message = Notify.TextMessage(
             message = errorType.message,
@@ -51,6 +58,7 @@ sealed class InputErrors {
 
     abstract val message: String
 
+    // TODO move it to job
     object NameIsBlank : InputErrors() {
         override val message: String = "Название графика не должно быть пустым"
     }

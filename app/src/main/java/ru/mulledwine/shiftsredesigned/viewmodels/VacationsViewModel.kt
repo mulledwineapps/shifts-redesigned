@@ -1,11 +1,10 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
 import androidx.lifecycle.*
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithVacationItems
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
+import ru.mulledwine.shiftsredesigned.data.local.models.JobWithVacationItems
 import ru.mulledwine.shiftsredesigned.data.local.models.VacationItem
-import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleItem
+import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toVacationItem
 import ru.mulledwine.shiftsredesigned.extensions.mutableLiveData
 import ru.mulledwine.shiftsredesigned.repositories.VacationsRepository
@@ -14,23 +13,23 @@ import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 class VacationsViewModel(
     handle: SavedStateHandle,
-    param: ScheduleWithVacationItems
+    param: JobWithVacationItems
 ) : BaseViewModel<VacationsState>(
     handle,
-    VacationsState(param.schedule.name, param.vacationItems)
+    VacationsState(param.jobItem.name, param.vacationItems)
 ) {
 
     private val repository = VacationsRepository
 
-    private val scheduleLive = mutableLiveData(param.schedule)
+    private val jobLive = mutableLiveData(param.jobItem)
 
-    private val vacations = scheduleLive.switchMap {
+    private val vacations = jobLive.switchMap {
         repository.findVacations(it.id)
     }
 
     init {
-        subscribeOnDataSource(scheduleLive) { schedule, state ->
-            state.copy(scheduleName = schedule.name)
+        subscribeOnDataSource(jobLive) { schedule, state ->
+            state.copy(jobName = schedule.name)
         }
         subscribeOnDataSource(vacations) { vacations, state ->
             state.copy(vacationItems = vacations.map {
@@ -39,13 +38,28 @@ class VacationsViewModel(
         }
     }
 
-    fun observeSchedules(owner: LifecycleOwner, onChange: (list: List<ScheduleItem>) -> Unit) {
-        repository.findSchedules().map { list -> list.map { it.toScheduleItem() } }
+    fun observeJobs(owner: LifecycleOwner, onChange: (list: List<JobItem>) -> Unit) {
+        repository.findJobs().map { list -> list.map { it.toJobItem() } }
             .observe(owner, Observer(onChange))
     }
 
-    fun handleUpdateSchedule(schedule: ScheduleShort) {
-        scheduleLive.value = schedule
+    fun handleUpdateJob(job: JobItem) {
+        jobLive.value = job
+    }
+
+    fun handleClickAdd(title: String) {
+        val action = VacationsFragmentDirections
+            .actionNavVacationsToNavVacation(title, jobLive.value!!)
+        navigateWithAction(action)
+    }
+
+    fun handleClickEdit(title: String, id: Int) {
+        launchSafely {
+            val vacation = repository.getVacationParcelable(id)
+            val action = VacationsFragmentDirections
+                .actionNavVacationsToNavVacation(title, jobLive.value!!, vacation)
+            navigateWithAction(action)
+        }
     }
 
     fun handleDeleteVacation(id: Int) {
@@ -60,24 +74,9 @@ class VacationsViewModel(
         }
     }
 
-    fun handleClickAdd(title: String) {
-        val action = VacationsFragmentDirections
-            .actionNavVacationsToNavVacation(title, scheduleLive.value!!)
-        navigateWithAction(action)
-    }
-
-    fun handleClickEdit(title: String, id: Int) {
-        launchSafely {
-            val vacation = repository.getVacationParcelable(id)
-            val action = VacationsFragmentDirections
-                .actionNavVacationsToNavVacation(title, scheduleLive.value!!, vacation)
-            navigateWithAction(action)
-        }
-    }
-
 }
 
 data class VacationsState(
-    val scheduleName: String,
+    val jobName: String,
     val vacationItems: List<VacationItem>
 ) : IViewModelState

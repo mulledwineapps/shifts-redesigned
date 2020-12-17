@@ -4,28 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithShifts
-import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithVacations
 import ru.mulledwine.shiftsredesigned.data.local.entities.Shift
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShort
 
 @Dao
 interface SchedulesDao : BaseDao<Schedule> {
 
-    @Transaction
     @Query(
         """
-        SELECT * FROM schedules
+        SELECT * FROM schedules 
+        WHERE job_id = :jobId
+        ORDER BY start DESC, finish DESC
     """
     )
-    fun findSchedulesWithShifts(): LiveData<List<ScheduleWithShifts>>
-
-    @Query(
-        """
-        SELECT * FROM schedules ORDER BY start DESC, finish DESC
-    """
-    )
-    fun findSchedules(): LiveData<List<Schedule>>
+    fun findSchedules(jobId: Int): LiveData<List<Schedule>>
 
     @Query(
         """
@@ -49,30 +41,6 @@ interface SchedulesDao : BaseDao<Schedule> {
     )
     suspend fun getSchedule(id: Int): ScheduleWithShifts
 
-    @Query(
-        """
-            SELECT id, name, isCyclic FROM schedules WHERE id = :id 
-        """
-    )
-    suspend fun getScheduleShort(id: Int): ScheduleShort
-
-    @Transaction
-    @Query(
-        """
-            SELECT * FROM schedules WHERE id = :id 
-        """
-    )
-    suspend fun getScheduleWithVacations(id: Int): ScheduleWithVacations
-
-    @Transaction
-    @Query(
-        """
-            SELECT * FROM schedules
-            LIMIT 1
-        """
-    )
-    suspend fun getScheduleWithVacations(): ScheduleWithVacations
-
     @Transaction
     @Query(
         """
@@ -80,6 +48,14 @@ interface SchedulesDao : BaseDao<Schedule> {
         """
     )
     fun findSchedule(id: Int): LiveData<ScheduleWithShifts>
+
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM schedules
+    """
+    )
+    fun findSchedulesWithShifts(): LiveData<List<ScheduleWithShifts>>
 
     @Insert
     suspend fun insertShift(shift: Shift)

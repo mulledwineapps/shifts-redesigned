@@ -2,18 +2,18 @@ package ru.mulledwine.shiftsredesigned.extensions.data
 
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithShifts
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftScheduleType
+import ru.mulledwine.shiftsredesigned.data.local.models.JobScheduleShiftType
 import ru.mulledwine.shiftsredesigned.data.local.models.TimeUnits
 
 fun Day.getShiftItems(
     schedules: List<ScheduleWithShifts>
-): List<ShiftScheduleType> {
+): List<JobScheduleShiftType> {
     return schedules.mapNotNull { getShiftItems(it) }
 }
 
 fun Day.getShiftItems(
     schedule: ScheduleWithShifts
-): ShiftScheduleType? {
+): JobScheduleShiftType? {
 
     val day = this
 
@@ -38,10 +38,12 @@ fun Day.getShiftItems(
     val index = (days % shifts.size).toInt()
 
     return with(shifts[index].value) {
-        ShiftScheduleType(
-            shiftId = shift.id!!,
+        JobScheduleShiftType(
+            jobId =  schedule.job.id!!,
+            jobName = schedule.job.name,
             scheduleId = schedule.schedule.id!!,
-            scheduleName = schedule.schedule.name,
+            scheduleDuration = schedule.schedule.getDuration(),
+            shiftId = shift.id!!,
             shiftType = type
         )
     }

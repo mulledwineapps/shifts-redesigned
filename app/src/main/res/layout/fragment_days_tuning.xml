@@ -24,16 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_size_24"
                 android:layout_marginHorizontal="@dimen/spacing_16"
-                android:text="@string/choose_schedule_title" />
+                android:text="@string/choose_job_title" />
 
             <TextView
-                android:id="@+id/tv_schedule"
+                android:id="@+id/tv_tuning_job"
                 style="@style/TextSelectable"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height_48"
                 android:layout_marginHorizontal="@dimen/spacing_16"
                 android:gravity="start|center_vertical"
-                tools:text="Мой график" />
+                android:hint="@string/choose_placeholder"
+                tools:text="Моя работа" />
 
             <TextView
                 style="@style/TitlePrimaryStyle"

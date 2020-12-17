@@ -6,7 +6,9 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithVacationItems
+import ru.mulledwine.shiftsredesigned.data.local.models.JobWithScheduleItems
+import ru.mulledwine.shiftsredesigned.data.local.models.JobWithVacationItems
+import ru.mulledwine.shiftsredesigned.viewmodels.SchedulesViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.VacationsViewModel
 
 class ViewModelFactory(
@@ -24,7 +26,13 @@ class ViewModelFactory(
         if (modelClass.isAssignableFrom(VacationsViewModel::class.java)) {
             return VacationsViewModel(
                 handle,
-                params as ScheduleWithVacationItems
+                params as JobWithVacationItems
+            ) as T
+        }
+        if (modelClass.isAssignableFrom(SchedulesViewModel::class.java)) {
+            return SchedulesViewModel(
+                handle,
+                params as JobWithScheduleItems
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -5,25 +5,39 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.children
+import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_schedules.*
 import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
 import ru.mulledwine.shiftsredesigned.extensions.getScheduleGenitive
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
+import ru.mulledwine.shiftsredesigned.ui.base.Binding
+import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
+import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
+import ru.mulledwine.shiftsredesigned.viewmodels.SchedulesState
 import ru.mulledwine.shiftsredesigned.viewmodels.SchedulesViewModel
+import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
+import ru.mulledwine.shiftsredesigned.viewmodels.base.ViewModelFactory
 import kotlin.properties.Delegates
 
 class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
 
-    companion object {
-        private const val TAG = "M_SchedulesFragment"
-    }
+    private val args: SchedulesFragmentArgs by navArgs()
 
-    override val viewModel: SchedulesViewModel by viewModels()
     override val layout: Int = R.layout.fragment_schedules
+    override val binding: SchedulesBinding by lazy { SchedulesBinding() }
+    override val viewModel: SchedulesViewModel by viewModels {
+        ViewModelFactory(
+            owner = this,
+            params = args.item
+        )
+    }
 
     private var isSelectionMode: Boolean by Delegates.observable(false) { _, _, newValue ->
         root.invalidateOptionsMenu()
@@ -33,7 +47,7 @@ class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
             root.onNavigationIconClick = ::closeSelectionMenu
         } else {
             toolbar.setNavigationIcon(R.drawable.ic_round_arrow_back_24)
-            toolbar.title = "Графики"
+            toolbar.title = getString(R.string.label_schedules)
             root.onNavigationIconClick = null
         }
     }
@@ -42,17 +56,23 @@ class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
         SchedulesAdapter(
             longClickListener = ::itemLongClickCallback,
             clickListener = ::itemClickCallback
-        ).apply { isSelectionAllowed = true }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
+
+        // listen for job pick
+        setFragmentResultListener(ChooseJobDialog.CHOOSE_JOB_KEY) { _, bundle ->
+            val job = bundle[ChooseJobDialog.SELECTED_JOB] as JobItem
+            viewModel.handleUpdateJob(job)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val menuRes = if (isSelectionMode) R.menu.menu_schedules else R.menu.menu_add
-        inflater.inflate(menuRes, menu)
+        if (isSelectionMode) inflater.inflate(R.menu.menu_schedules, menu)
+        else super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -62,15 +82,26 @@ class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
     }
 
     override fun setupViews() {
+
         with(rv_schedules) {
             adapter = schedulesAdapter
-            itemAnimator = null
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         }
 
-        viewModel.observeSchedules(viewLifecycleOwner) {
-            schedulesAdapter.submitList(it)
+        tv_schedules_job.setOnClickListener { navigateToDialogChooseJob() }
+        btn_add.setOnClickListener { viewModel.handleClickAdd(getString(R.string.label_add_schedule)) }
+
+        viewModel.observeJobs(viewLifecycleOwner) {
+            binding.jobItems = it
         }
+
+    }
+
+    private fun navigateToDialogChooseJob() {
+        val action = SchedulesFragmentDirections.actionToDialogChooseJob(
+            binding.jobItems.toTypedArray()
+        )
+        viewModel.navigateWithAction(action)
     }
 
     private fun closeSelectionMenu() {
@@ -80,38 +111,33 @@ class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
 
     private fun onMenuItemClick(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_item_add -> navigateAddSchedule()
             R.id.menu_item_delete -> onDeleteRequested()
             else -> return false
         }
         return true
     }
 
-    private fun navigateAddSchedule() {
-        val action = SchedulesFragmentDirections
-            .actionNavSchedulesToNavSchedule(getString(R.string.label_add_schedule))
-        viewModel.navigateWithAction(action)
-    }
-
     private fun onDeleteRequested() {
         val selected = schedulesAdapter.selectedItems
-        val message = if (selected.size == 1) "Удалить график ${selected.first().name}?"
+        val message = if (selected.size == 1) {
+            val item = selected.first()
+            "Удалить график?\n\n${binding.jobName}\n${item.duration}"
+        }
         else "Удалить ${selected.size.getScheduleGenitive()}?"
 
         root.askWhetherToDelete(message) {
             if (selected.size == 1) viewModel.handleDeleteSchedule(selected.first().id)
             else viewModel.handleDeleteSchedules(selected.map { it.id })
-            schedulesAdapter.clearSelection()
-            isSelectionMode = false
+            closeSelectionMenu()
         }
     }
 
     private fun itemClickCallback(item: ScheduleItem) {
-        if (isSelectionMode) onSelectionSizeChanged()
-        else viewModel.handleEditSchedule(getString(R.string.label_edit_schedule), item.id)
+        if (isSelectionMode) onSelectionChanged()
+        else viewModel.handleClickEdit(getString(R.string.label_edit_schedule), item.id)
     }
 
-    private fun onSelectionSizeChanged() {
+    private fun onSelectionChanged() {
         schedulesAdapter.selectedItems.size.let { size ->
             if (size == 0) isSelectionMode = false
             else {
@@ -125,6 +151,33 @@ class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
 
     private fun itemLongClickCallback() {
         isSelectionMode = schedulesAdapter.selectedItems.isNotEmpty()
+    }
+
+    private fun submitItems(list: List<ScheduleItem>) {
+        schedulesAdapter.submitList(list) {
+            if (tv_list_is_empty == null) return@submitList // exit in process
+            tv_list_is_empty.isVisible = list.isEmpty()
+        }
+    }
+
+    inner class SchedulesBinding : Binding() {
+
+        var jobItems: List<JobItem> = emptyList()
+
+        var jobName by RenderProp(args.item.jobItem.name) {
+            tv_schedules_job.text = it
+        }
+
+        var scheduleItems: List<ScheduleItem> by RenderProp(args.item.scheduleItems) {
+            submitItems(it)
+        }
+
+        override fun bind(data: IViewModelState) {
+            data as SchedulesState
+            scheduleItems = data.scheduleItems
+            jobName = data.jobName
+        }
+
     }
 
 }

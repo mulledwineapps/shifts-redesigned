@@ -1,4 +1,4 @@
-package ru.mulledwine.shiftsredesigned.ui.schedules
+package ru.mulledwine.shiftsredesigned.ui.main
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -10,22 +10,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_schedule.*
+import kotlinx.android.synthetic.main.item_shift_on_main.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftOnMainItem
 
-class SchedulesAdapter(
-    private val longClickListener: (() -> Unit)? = null,
-    private val clickListener: (item: ScheduleItem) -> Unit
+class MainAdapter(
+    private val clickListener: (item: ShiftOnMainItem) -> Unit,
+    private val longClickListener: () -> Unit,
 ) :
-    ListAdapter<ScheduleItem, SchedulesAdapter.ViewHolder>(DiffCallback()) {
+    ListAdapter<ShiftOnMainItem, MainAdapter.ViewHolder>(DiffCallback()) {
 
-    val selectedItems = mutableSetOf<ScheduleItem>()
+    val selectedItems = mutableSetOf<ShiftOnMainItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val containerView = inflater.inflate(R.layout.item_schedule, parent, false)
+        val containerView = inflater.inflate(R.layout.item_shift_on_main, parent, false)
         return ViewHolder(containerView)
     }
 
@@ -37,7 +37,7 @@ class SchedulesAdapter(
         }
         holder.containerView.setOnLongClickListener {
             handleSelection(item, holder)
-            longClickListener?.invoke()
+            longClickListener.invoke()
             true
         }
         holder.bind(item)
@@ -49,7 +49,7 @@ class SchedulesAdapter(
         notifyDataSetChanged()
     }
 
-    private fun handleSelection(item: ScheduleItem, holder: ViewHolder) {
+    private fun handleSelection(item: ShiftOnMainItem, holder: ViewHolder) {
         if (selectedItems.contains(item)) {
             selectedItems.remove(item)
             holder.setSelection(false)
@@ -63,28 +63,30 @@ class SchedulesAdapter(
         override val containerView: View
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(item: ScheduleItem) {
-            tv_schedule_item_ordinal.text = item.ordinal.toString()
-            tv_schedule_item_duration.text = item.duration
+        fun bind(item: ShiftOnMainItem) {
+            tv_main_item_name.text = item.jobName
+            tv_main_item_description.text = item.description
+            v_main_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
+            iv_main_item_check.imageTintList = ColorStateList.valueOf(item.color)
         }
 
         fun setSelection(isSelected: Boolean) {
             val color = if (isSelected) Constants.selectionColor else Color.WHITE
             containerView.backgroundTintList = ColorStateList.valueOf(color)
-            iv_check.isVisible = isSelected
+            v_main_item_color.isVisible = !isSelected
+            iv_main_item_check.isVisible = isSelected
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<ScheduleItem>() {
+    class DiffCallback : DiffUtil.ItemCallback<ShiftOnMainItem>() {
         override fun areItemsTheSame(
-            oldItem: ScheduleItem,
-            newItem: ScheduleItem
-        ): Boolean = oldItem.id == newItem.id
+            oldItem: ShiftOnMainItem,
+            newItem: ShiftOnMainItem
+        ): Boolean = oldItem.shiftId == newItem.shiftId
 
         override fun areContentsTheSame(
-            oldItem: ScheduleItem,
-            newItem: ScheduleItem
+            oldItem: ShiftOnMainItem,
+            newItem: ShiftOnMainItem
         ): Boolean = oldItem == newItem
     }
-
 }

@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ScheduleItem(
     val id: Int,
-    val name: String,
+    val ordinal: Int,
     val duration: String,
     val isCyclic: Boolean
 ) : Parcelable
@@ -15,7 +15,6 @@ data class ScheduleItem(
 @Parcelize
 data class ScheduleWithShiftItems(
     val id: Int,
-    val name: String,
     val isCyclic: Boolean,
     val start: Long,
     val finish: Long,
@@ -34,14 +33,7 @@ data class ScheduleShiftItem(
 ) : Parcelable
 
 @Parcelize
-data class ScheduleShort(
-    val id: Int,
-    val name: String,
-    val isCyclic: Boolean
-) : Parcelable
-
-@Parcelize
-data class ScheduleWithVacationItems(
-    val schedule: ScheduleShort,
+data class JobWithVacationItems(
+    val jobItem: JobItem,
     val vacationItems: List<VacationItem>
 ) : Parcelable

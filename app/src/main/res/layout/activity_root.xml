@@ -41,7 +41,7 @@
         android:layout_gravity="bottom"
         android:theme="@style/BottomAppBarTheme"
         app:fabAlignmentMode="center"
-        app:menu="@menu/bottom_app_bar"
+        app:menu="@menu/menu_settings"
         app:navigationIcon="@drawable/ic_round_menu_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

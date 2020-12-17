@@ -2,24 +2,24 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
-import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
+import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
 import ru.mulledwine.shiftsredesigned.data.local.models.VacationParcelable
 import ru.mulledwine.shiftsredesigned.extensions.data.toVacationParcelable
 
 object VacationsRepository {
 
+    private val jobsDao = db.jobsDao()
     private val vacationsDao = db.vacationsDao()
-    private val schedulesDao = db.schedulesDao()
     private val shiftsDao = db.shiftsDao()
     private val shiftTypesDao = db.shiftTypesDao()
 
-    fun findSchedules(): LiveData<List<Schedule>> {
-        return schedulesDao.findSchedules()
+    fun findJobs(): LiveData<List<Job>> {
+        return jobsDao.findJobs()
     }
 
-    fun findVacations(scheduleId: Int): LiveData<List<Vacation>> {
-        return vacationsDao.findVacations(scheduleId)
+    fun findVacations(jobId: Int): LiveData<List<Vacation>> {
+        return vacationsDao.findVacations(jobId)
     }
 
     suspend fun deleteVacation(id: Int) {

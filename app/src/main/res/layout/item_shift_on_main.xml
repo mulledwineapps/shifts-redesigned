@@ -8,7 +8,7 @@
     android:foreground="?attr/selectableItemBackground"
     android:minHeight="@dimen/list_item_height_72"
     android:paddingHorizontal="@dimen/spacing_16"
-    tools:context=".ui.main.ShiftsAdapter">
+    tools:context=".ui.main.MainAdapter">
 
     <TextView
         android:id="@+id/tv_main_item_name"

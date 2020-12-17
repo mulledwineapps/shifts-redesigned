@@ -3,6 +3,7 @@ package ru.mulledwine.shiftsredesigned.viewmodels
 import androidx.lifecycle.SavedStateHandle
 import ru.mulledwine.shiftsredesigned.data.local.CalendarGenerator
 import ru.mulledwine.shiftsredesigned.data.local.PrefManager
+import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.entities.Shift
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
@@ -35,38 +36,35 @@ class SplashViewModel(handle: SavedStateHandle) :
 
     private suspend fun generateTestData() {
 
-        val shiftTypes = ShiftType.generateAll()
-        val schedules = Schedule.generateAll()
+        val shiftTypes = ShiftType.generate()
+        val jobs = Job.generate()
 
-        var shiftId = 0
+        val twoTwoPattern = shiftTypes.dropLast(1)
+        val twoThreePattern = shiftTypes.dropLast(1) + shiftTypes[3]
+        val patterns = setOf(twoTwoPattern, twoThreePattern)
+
+        val schedules = jobs.map { Schedule.generate(it.id!!) }
+
+        var shiftCounter = 0
 
         val shifts = schedules.flatMap { schedule ->
 
             var ordinal = 1
+            val pattern = patterns.random()
 
-            val types = when (schedule.name) {
-                "2 через 2" -> shiftTypes.dropLast(1)
-                "2 через 3" -> shiftTypes.dropLast(1) + shiftTypes[3]
-                else -> {
-                    val patternLength = (2..3).random()
-                    shiftTypes.shuffled().take(patternLength)
-                        .flatMap { shiftType -> List((1..3).random()) { shiftType } }
-                }
-            }
-
-            types.map { shiftType ->
+            pattern.map { shiftType ->
                 Shift(
-                    id = shiftId++,
+                    id = shiftCounter++,
                     scheduleId = schedule.id!!,
                     shiftTypeId = shiftType.id!!,
                     ordinal = ordinal++
                 )
             }
-
         }
 
-        repository.insertSchedulesToDb(schedules)
         repository.insertShiftTypesToDb(shiftTypes)
+        repository.insertJobsToDb(jobs)
+        repository.insertSchedulesToDb(schedules)
         repository.insertShiftsToDb(shifts)
 
     }

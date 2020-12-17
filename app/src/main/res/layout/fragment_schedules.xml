@@ -1,12 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rv_schedules"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.schedules.SchedulesFragment"
-    tools:itemCount="4"
-    tools:listitem="@layout/item_schedule" />
+    tools:context=".ui.schedules.SchedulesFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_schedules"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/spacing_16">
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:text="@string/choose_job_title" />
+
+            <TextView
+                android:id="@+id/tv_schedules_job"
+                style="@style/TextSelectable"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_48"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="start|center_vertical"
+                android:hint="@string/choose_placeholder"
+                tools:text="Моя работа" />
+
+            <TextView
+                style="@style/TitlePrimaryStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_size_24"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:text="@string/schedules_title" />
+
+            <TextView
+                android:id="@+id/tv_list_is_empty"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height_72"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:gravity="center"
+                android:text="@string/empty_yet_placeholder"
+                android:textColor="@color/bright_gray_54"
+                android:textSize="@dimen/font_14"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_schedules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context=".ui.schedules.SchedulesFragment"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_schedule" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/btn_add"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_48"
+        android:layout_margin="@dimen/spacing_16"
+        android:text="@string/btn_add_schedule_title" />
+
+</LinearLayout>

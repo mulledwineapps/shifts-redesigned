@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_delete"
+        android:icon="@drawable/ic_round_delete_24"
+        android:title="@string/menu_item_delete"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_tuning"
+        android:icon="@drawable/ic_round_date_range_24"
+        android:title="@string/menu_item_tuning"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_vacations"
+        android:icon="@drawable/ic_round_beach_access_24"
+        android:title="@string/menu_item_vacations"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_statistics"
+        android:icon="@drawable/ic_round_info_24"
+        android:title="@string/menu_item_statistics"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -3,10 +3,7 @@ package ru.mulledwine.shiftsredesigned.data.local
 import androidx.room.*
 import ru.mulledwine.shiftsredesigned.App
 import ru.mulledwine.shiftsredesigned.BuildConfig
-import ru.mulledwine.shiftsredesigned.data.local.dao.SchedulesDao
-import ru.mulledwine.shiftsredesigned.data.local.dao.ShiftTypesDao
-import ru.mulledwine.shiftsredesigned.data.local.dao.ShiftsDao
-import ru.mulledwine.shiftsredesigned.data.local.dao.VacationsDao
+import ru.mulledwine.shiftsredesigned.data.local.dao.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.*
 import ru.th1ngshappen.shifts.data.local.dao.*
 
@@ -27,6 +24,7 @@ object DbManager {
 @Database(
     entities = [
         Day::class,
+        Job::class,
         Schedule::class,
         ShiftType::class,
         Shift::class,
@@ -45,6 +43,7 @@ abstract class AppDb : RoomDatabase() {
     }
 
     abstract fun daysDao(): DaysDao
+    abstract fun jobsDao(): JobsDao
     abstract fun schedulesDao(): SchedulesDao
     abstract fun shiftsDao(): ShiftsDao
     abstract fun shiftTypesDao(): ShiftTypesDao

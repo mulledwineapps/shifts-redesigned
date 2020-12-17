@@ -12,17 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
 import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
-import ru.mulledwine.shiftsredesigned.extensions.getTrimmedString
-import ru.mulledwine.shiftsredesigned.extensions.hideKeyboard
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
+import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
 import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftTypeDialog
 import ru.mulledwine.shiftsredesigned.ui.dialogs.DatePickerDialog
-import ru.mulledwine.shiftsredesigned.utils.SimpleOnEditorActionListener
+import ru.mulledwine.shiftsredesigned.ui.schedules.SchedulesFragmentDirections
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.InputErrors
 import ru.mulledwine.shiftsredesigned.viewmodels.ScheduleViewModel
@@ -31,7 +31,7 @@ import ru.mulledwine.shiftsredesigned.viewmodels.ScheduleViewModel
 class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
     override val layout: Int = R.layout.fragment_schedule
-    override val binding: ScheduleBinding = ScheduleBinding()
+    override val binding: ScheduleBinding by lazy { ScheduleBinding() }
     override val viewModel: ScheduleViewModel by viewModels()
 
     private val args: ScheduleFragmentArgs by navArgs()
@@ -44,6 +44,11 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
+
+        // listen for job pick
+        setFragmentResultListener(ChooseJobDialog.CHOOSE_JOB_KEY) { _, bundle ->
+            binding.jobItem = bundle[ChooseJobDialog.SELECTED_JOB] as JobItem
+        }
 
         // listen for date pick
         setFragmentResultListener(DatePickerDialog.DATE_PICKER_KEY) { _, bundle ->
@@ -100,10 +105,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.menu_item_save).setOnMenuItemClickListener {
 
-            if (et_schedule_name.text.isBlank()) {
-                viewModel.handleInputError(InputErrors.NameIsBlank)
-                return@setOnMenuItemClickListener true
-            }
+            // TODO make validation dependent on schedule type (cyclic or not)
 
             if (scheduleShiftsAdapter.itemCount == 0) {
                 viewModel.handleInputError(InputErrors.NoShifts)
@@ -115,16 +117,16 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
                 return@setOnMenuItemClickListener true
             }
 
-            val item = Schedule(
-                id = args.item?.id,
-                name = et_schedule_name.getTrimmedString(),
+            val schedule = Schedule(
+                id = args.schedule?.id,
+                jobId = binding.jobItem.id,
                 isCyclic = btn_schedule_type_cyclic.isChecked,
                 start = binding.start,
                 finish = binding.finish
             )
 
             viewModel.handleClickSave(
-                schedule = item,
+                schedule = schedule,
                 shiftsToUpsert = scheduleShiftsAdapter.currentList,
                 shiftIdsToDelete = binding.shiftIdsToDelete
             )
@@ -134,10 +136,11 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
     override fun setupViews() {
 
-        tv_list_is_empty.isVisible = args.item == null
+        tv_list_is_empty.isVisible = args.schedule == null // TODO and if schedule.shifts is empty?
 
-        args.item?.let {
-            et_schedule_name.setText(it.name)
+        tv_schedule_job.setOnClickListener { navigateToDialogChooseJob() }
+
+        args.schedule?.let {
             binding.start = it.start
             binding.finish = it.finish
             submitItems(it.shiftItems)
@@ -148,17 +151,16 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
             btn_schedule_type_regular.isChecked = true
         }
 
-        viewModel.observeShiftTypes(viewLifecycleOwner) { shiftTypeItems ->
-            binding.shiftTypeItems = shiftTypeItems
+        viewModel.observeShiftTypes(viewLifecycleOwner) {
+            binding.shiftTypeItems = it
         }
 
-        et_schedule_name.setOnEditorActionListener(SimpleOnEditorActionListener {
-            clearNameFieldFocus()
-        })
+        viewModel.observeJobs(viewLifecycleOwner) {
+            binding.jobItems = it
+        }
 
         tv_schedule_start.apply {
             setOnClickListener {
-                clearNameFieldFocus()
                 navigateToDatePicker(binding.start, it.id)
             }
             setOnLongClickListener {
@@ -169,7 +171,6 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
         tv_schedule_finish.apply {
             setOnClickListener {
-                clearNameFieldFocus()
                 navigateToDatePicker(binding.finish, it.id)
             }
             setOnLongClickListener {
@@ -200,7 +201,6 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
                 return@setOnClickListener
             }
 
-            clearNameFieldFocus()
             val action = ScheduleFragmentDirections.actionToDialogChooseShiftType(
                 binding.shiftTypeItems.toTypedArray()
             )
@@ -209,11 +209,11 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
     }
 
-    private fun clearNameFieldFocus() {
-        with(et_schedule_name) {
-            if (hasFocus()) clearFocus()
-            requireContext().hideKeyboard(this)
-        }
+    private fun navigateToDialogChooseJob() {
+        val action = SchedulesFragmentDirections.actionToDialogChooseJob(
+            binding.jobItems.toTypedArray()
+        )
+        viewModel.navigateWithAction(action)
     }
 
     private fun getBoundsInputError(itemCount: Int): InputErrors? {
@@ -264,6 +264,12 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
         var shiftTypeItems: List<ShiftTypeItem> = emptyList()
         val shiftIdsToDelete: MutableList<Int> = mutableListOf()
+
+        var jobItems: List<JobItem> = emptyList()
+
+        var jobItem by RenderProp(args.job) {
+            tv_schedule_job.text = it.name
+        }
 
         var start: Long by RenderProp(0L) {
             tv_schedule_start.text = if (it == 0L) ""

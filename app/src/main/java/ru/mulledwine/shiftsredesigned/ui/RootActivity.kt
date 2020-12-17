@@ -32,7 +32,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
 
     override fun renderNotification(notify: Notify) {
 
-        val snackbar = Snackbar.make(root_container, notify.message, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(root_container, notify.message, notify.duration)
         notify.anchorViewId?.let { snackbar.setAnchorView(it) }
 
         when (notify) {

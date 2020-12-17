@@ -70,7 +70,7 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
 
             val item = Vacation(
                 id = args.vacation?.id,
-                scheduleId = args.schedule.id,
+                jobId = args.job.id,
                 start = binding.start,
                 finish = binding.finish,
                 firstShiftId = binding.firstShiftId
@@ -83,11 +83,14 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
 
     override fun setupViews() {
 
-        tv_shift_type_hint.text =
-            if (args.schedule.isCyclic) getString(R.string.click_to_choose_shift_hint)
-            else getString(R.string.available_for_cyclic_schedules_only_hint)
+        tv_shift_type_hint.text = getString(R.string.click_to_choose_shift_hint)
 
-        btn_choose_shift_type.isEnabled = args.schedule.isCyclic == true
+//        TODO check if schedule is cyclic on vacation end
+//        tv_shift_type_hint.text =
+//            if (args.schedule.isCyclic) getString(R.string.click_to_choose_shift_hint)
+//            else getString(R.string.available_for_cyclic_schedules_only_hint)
+//
+//        btn_choose_shift_type.isEnabled = args.schedule.isCyclic == true
 
         args.vacation?.let {
             binding.start = it.start
@@ -124,9 +127,10 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
 
         btn_choose_shift_type.setOnClickListener { navigateToDialogChooseShiftType() }
 
-        viewModel.observePattern(args.schedule.id, viewLifecycleOwner) {
-            binding.pattern = it.map { it.toScheduleShiftItem() }
-        }
+//        TODO get proper schedule
+//        viewModel.observePattern(args.schedule.id, viewLifecycleOwner) {
+//            binding.pattern = it.map { it.toScheduleShiftItem() }
+//        }
 
     }
 

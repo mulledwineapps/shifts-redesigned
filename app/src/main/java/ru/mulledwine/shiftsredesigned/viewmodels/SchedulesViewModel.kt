@@ -1,16 +1,23 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.map
+import androidx.lifecycle.*
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
+import ru.mulledwine.shiftsredesigned.data.local.models.JobWithScheduleItems
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
+import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleItem
+import ru.mulledwine.shiftsredesigned.extensions.mutableLiveData
 import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
 import ru.mulledwine.shiftsredesigned.ui.schedules.SchedulesFragmentDirections
-import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
+import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class SchedulesViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(handle, EmptyState) {
+class SchedulesViewModel(
+    handle: SavedStateHandle,
+    param: JobWithScheduleItems
+) : BaseViewModel<SchedulesState>(
+    handle,
+    SchedulesState(param.jobItem.name, param.scheduleItems)
+) {
 
     companion object {
         private const val TAG = "M_SchedulesViewModel"
@@ -18,16 +25,43 @@ class SchedulesViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(h
 
     private val repository = SchedulesRepository
 
-    fun observeSchedules(owner: LifecycleOwner, onChange: (list: List<ScheduleItem>) -> Unit) {
-        repository.findSchedules().map { list -> list.map { it.toScheduleItem() } }
+    private val jobLive = mutableLiveData(param.jobItem)
+
+    private val schedules = jobLive.switchMap {
+        repository.findSchedules(it.id)
+    }
+
+    init {
+        subscribeOnDataSource(jobLive) { schedule, state ->
+            state.copy(jobName = schedule.name)
+        }
+        subscribeOnDataSource(schedules) { schedules, state ->
+            state.copy(scheduleItems = schedules.mapIndexed { index, it ->
+                it.toScheduleItem(index.inc())
+            })
+        }
+    }
+
+    fun observeJobs(owner: LifecycleOwner, onChange: (list: List<JobItem>) -> Unit) {
+        repository.findJobs().map { list -> list.map { it.toJobItem() } }
             .observe(owner, Observer(onChange))
     }
 
-    fun handleEditSchedule(title: String, id: Int) {
+    fun handleUpdateJob(job: JobItem) {
+        jobLive.value = job
+    }
+
+    fun handleClickAdd(title: String) {
+        val action = SchedulesFragmentDirections
+            .actionNavSchedulesToNavSchedule(title, jobLive.value!!)
+        navigateWithAction(action)
+    }
+
+    fun handleClickEdit(title: String, id: Int) {
         launchSafely {
             val schedule = repository.getSchedule(id)
             val action = SchedulesFragmentDirections
-                .actionNavSchedulesToNavSchedule(title, schedule)
+                .actionNavSchedulesToNavSchedule(title, jobLive.value!!, schedule)
             navigateWithAction(action)
         }
     }
@@ -45,3 +79,8 @@ class SchedulesViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(h
     }
 
 }
+
+data class SchedulesState(
+    val jobName: String,
+    val scheduleItems: List<ScheduleItem>
+) : IViewModelState

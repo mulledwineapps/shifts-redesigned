@@ -12,7 +12,10 @@ import kotlinx.android.synthetic.main.fragment_days_tuning.*
 import kotlinx.android.synthetic.main.item_shift_type.*
 import ru.mulledwine.shiftsredesigned.Constants.today
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.*
+import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
+import ru.mulledwine.shiftsredesigned.data.local.models.Month
+import ru.mulledwine.shiftsredesigned.data.local.models.Months
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
 import ru.mulledwine.shiftsredesigned.extensions.daysFromWeekStart
 import ru.mulledwine.shiftsredesigned.extensions.month
 import ru.mulledwine.shiftsredesigned.extensions.setWithZeroTime
@@ -20,13 +23,12 @@ import ru.mulledwine.shiftsredesigned.extensions.year
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
+import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
 import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseMonthDialog
-import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseScheduleDialog
 import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftTypeDialog
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.DaysTuningViewModel
 import java.util.*
-import kotlin.properties.Delegates
 
 class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
@@ -43,9 +45,10 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
 
-        // listen for schedule pick
-        setFragmentResultListener(ChooseScheduleDialog.CHOOSE_SCHEDULE_KEY) { _, bundle ->
-            binding.schedule = bundle[ChooseScheduleDialog.SELECTED_SCHEDULE] as ScheduleShort
+        // listen for job pick
+        setFragmentResultListener(ChooseJobDialog.CHOOSE_JOB_KEY) { _, bundle ->
+            val job = bundle[ChooseJobDialog.SELECTED_JOB] as JobItem
+            binding.jobName = job.name
         }
 
         // listen for month pick
@@ -75,17 +78,17 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
     override fun setupViews() {
 
-        binding.schedule = args.schedule
+        binding.jobName = args.job.name
 
         rv_dates.adapter = datesAdapter
         rv_dates.itemAnimator = null
 
-        tv_schedule.setOnClickListener { navigateToDialogChooseSchedule() }
+        tv_tuning_job.setOnClickListener { navigateToDialogChooseJob() }
         tv_month_name.setOnClickListener { navigateToDialogChooseMonth() }
         btn_choose_shift_type.setOnClickListener { navigateToDialogChooseShiftType() }
 
-        viewModel.observeSchedules(viewLifecycleOwner) {
-            binding.scheduleItems = it
+        viewModel.observeJobs(viewLifecycleOwner) {
+            binding.jobItems = it
         }
 
         viewModel.observeShiftTypes(viewLifecycleOwner) {
@@ -94,9 +97,9 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
     }
 
-    private fun navigateToDialogChooseSchedule() {
-        val action = DaysTuningFragmentDirections.actionToDialogChooseSchedule(
-            binding.scheduleItems.toTypedArray()
+    private fun navigateToDialogChooseJob() {
+        val action = DaysTuningFragmentDirections.actionToDialogChooseJob(
+            binding.jobItems.toTypedArray()
         )
         viewModel.navigateWithAction(action)
     }
@@ -116,11 +119,11 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
     inner class DaysTuningBinding : Binding() {
 
-        var scheduleItems: List<ScheduleItem> = emptyList()
+        var jobItems: List<JobItem> = emptyList()
         var shiftTypeItems: List<ShiftTypeItem> = emptyList()
 
-        var schedule: ScheduleShort? by Delegates.observable(null) { _, _, value ->
-            tv_schedule.text = value?.name ?: getString(R.string.choose_placeholder)
+        var jobName: String by RenderProp("") {
+            tv_tuning_job.text = it
         }
 
         var month by RenderProp(Month(today.month, today.year)) {

@@ -11,11 +11,11 @@ interface VacationsDao : BaseDao<Vacation> {
     @Query(
         """
         SELECT * FROM vacations 
-        WHERE schedule_id = :scheduleId
+        WHERE job_id = :jobId
         ORDER BY start DESC, finish DESC
     """
     )
-    fun findVacations(scheduleId: Int): LiveData<List<Vacation>>
+    fun findVacations(jobId: Int): LiveData<List<Vacation>>
 
     @Query(
         """

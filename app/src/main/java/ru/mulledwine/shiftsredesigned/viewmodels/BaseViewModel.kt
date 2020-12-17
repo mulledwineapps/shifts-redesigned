@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.annotation.UiThread
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import ru.mulledwine.shiftsredesigned.utils.Utils
-import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import ru.mulledwine.shiftsredesigned.utils.Utils
+import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 abstract class BaseViewModel<T : IViewModelState>(
     private val handleState: SavedStateHandle,
@@ -145,7 +145,14 @@ abstract class BaseViewModel<T : IViewModelState>(
     ) {
 
         val errHand = CoroutineExceptionHandler { _, err ->
-            errHandler?.invoke(err) ?: notify(Notify.ErrorMessage(err.message ?: "Something wrong"))
+
+            errHandler?.invoke(err) ?: run {
+                val msg = Notify.ErrorMessage(
+                    message =  err.message ?: "Something went wrong",
+                    errLabel = "OK"
+                )
+                notify(msg)
+            }
 
             Log.d(TAG, "${err.message}")
             err.printStackTrace()
@@ -196,15 +203,18 @@ sealed class Notify() {
     // исключение - если они являются подклассами sealed класса
 
     abstract val message: String
+    abstract val duration: Int
     abstract val anchorViewId: Int?
 
     data class TextMessage(
         override val message: String,
+        override val duration: Int = Snackbar.LENGTH_LONG,
         @IdRes override val anchorViewId: Int? = null,
     ) : Notify()
 
     data class ActionMessage(
         override val message: String,
+        override val duration: Int = Snackbar.LENGTH_LONG,
         val actionLabel: String,
         @IdRes override val anchorViewId: Int? = null,
         val actionHandler: (() -> Unit)
@@ -212,6 +222,7 @@ sealed class Notify() {
 
     data class ErrorMessage(
         override val message: String,
+        override val duration: Int = Snackbar.LENGTH_INDEFINITE,
         val errLabel: String? = null,
         @IdRes override val anchorViewId: Int? = null,
         val errHandler: (() -> Unit)? = null
