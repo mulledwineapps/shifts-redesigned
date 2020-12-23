@@ -219,7 +219,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
         when (item.itemId) {
             R.id.menu_item_delete -> onDeleteRequested()
             R.id.menu_item_tuning -> viewModel.navigateToTuning(shiftsAdapter.selectedItems.first().jobId)
-            R.id.menu_item_statistics -> Unit
+            R.id.menu_item_statistics -> viewModel.navigateToStatistics(shiftsAdapter.selectedItems.first().jobId)
             R.id.menu_item_jobs -> navigateToJobs()
             R.id.menu_item_schedules -> navigateToSchedules()
             R.id.menu_item_shift_types -> navigateToShiftTypes()

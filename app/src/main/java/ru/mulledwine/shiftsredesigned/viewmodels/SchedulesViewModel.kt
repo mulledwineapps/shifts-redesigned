@@ -32,8 +32,8 @@ class SchedulesViewModel(
     }
 
     init {
-        subscribeOnDataSource(jobLive) { schedule, state ->
-            state.copy(jobName = schedule.name)
+        subscribeOnDataSource(jobLive) { job, state ->
+            state.copy(jobName = job.name)
         }
         subscribeOnDataSource(schedules) { schedules, state ->
             state.copy(scheduleItems = schedules.mapIndexed { index, it ->

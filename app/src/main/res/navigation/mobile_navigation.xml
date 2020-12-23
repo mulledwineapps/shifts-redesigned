@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_nav_main_to_dialog_add_job"
             app:destination="@id/dialog_job" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_statistics"
+            app:destination="@id/nav_statistics" />
     </fragment>
 
     <fragment
@@ -182,6 +185,22 @@
             app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobItem" />
         <action
             android:id="@+id/action_nav_days_tuning_to_dialog_choose_month"
+            app:destination="@id/dialog_choose_month" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_statistics"
+        android:name="ru.mulledwine.shiftsredesigned.ui.statistics.StatisticsFragment"
+        android:label="@string/label_statistics"
+        tools:layout="@layout/fragment_statistics">
+
+        <argument
+            android:name="item"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobWithStatisticItems" />
+
+        <action
+            android:id="@+id/action_nav_statistics_to_dialog_choose_month"
             app:destination="@id/dialog_choose_month" />
 
     </fragment>

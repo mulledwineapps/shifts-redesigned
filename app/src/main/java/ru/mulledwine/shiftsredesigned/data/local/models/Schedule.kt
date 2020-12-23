@@ -31,9 +31,3 @@ data class ScheduleShiftItem(
     val color: Int,
     val isNewItem: Boolean
 ) : Parcelable
-
-@Parcelize
-data class JobWithVacationItems(
-    val jobItem: JobItem,
-    val vacationItems: List<VacationItem>
-) : Parcelable

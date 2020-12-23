@@ -144,6 +144,10 @@
     <string name="tuning_choose_days_title">Выбрать дни</string>
     <string name="month_year">%1$s %2$s</string>
 
+    <!-- statistics screen -->
+    <string name="label_statistics">Статистика</string>
+    <string name="statistics_choose_period_title">Выбрать период</string>
+
     <!-- misc -->
     <string name="empty_yet_placeholder">Здесь пока пусто</string>
     <string name="choose_placeholder">Выбрать</string>
@@ -162,5 +166,7 @@
     <string name="description_check_label">Метка выделенного элемента списка</string>
     <string name="description_empty_list_image">Картинка вместо пустого списка</string>
     <string name="description_btn_set_random_color">Кнопка генерации случайного цвета для смены</string>
+    <string name="description_previous_month">Кнопка выбора предыдущего месяца</string>
+    <string name="description_next_month">Кнопка выбора следующего месяца</string>
 
 </resources>

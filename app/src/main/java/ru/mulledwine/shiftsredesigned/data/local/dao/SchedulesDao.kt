@@ -57,6 +57,24 @@ interface SchedulesDao : BaseDao<Schedule> {
     )
     fun findSchedulesWithShifts(): LiveData<List<ScheduleWithShifts>>
 
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM schedules 
+        WHERE job_id = :jobId
+    """
+    )
+    fun findSchedulesWithShifts(jobId: Int): LiveData<List<ScheduleWithShifts>>
+
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM schedules 
+        WHERE job_id = :jobId
+    """
+    )
+    suspend fun getSchedulesWithShifts(jobId: Int): List<ScheduleWithShifts>
+
     @Insert
     suspend fun insertShift(shift: Shift)
 

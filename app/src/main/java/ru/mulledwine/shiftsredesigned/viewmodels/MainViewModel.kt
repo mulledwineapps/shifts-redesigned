@@ -9,13 +9,14 @@ import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
-import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftOnMainItem
+import ru.mulledwine.shiftsredesigned.data.local.models.*
 import ru.mulledwine.shiftsredesigned.extensions.data.getShiftItems
+import ru.mulledwine.shiftsredesigned.extensions.data.getStatisticItems
 import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
+import ru.mulledwine.shiftsredesigned.extensions.data.toMonth
 import ru.mulledwine.shiftsredesigned.extensions.mutableLiveData
+import ru.mulledwine.shiftsredesigned.repositories.DaysRepository
 import ru.mulledwine.shiftsredesigned.repositories.JobsRepository
-import ru.mulledwine.shiftsredesigned.repositories.MainRepository
 import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
 import ru.mulledwine.shiftsredesigned.ui.main.MainFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
@@ -26,12 +27,12 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
         private const val TAG = "M_MainViewModel"
     }
 
-    private val repository = MainRepository
+    private val daysRepository = DaysRepository
     private val jobRepository = JobsRepository
     private val schedulesRepository = SchedulesRepository
 
     private val currentDay: MutableLiveData<Day> = mutableLiveData()
-    private val schedules = schedulesRepository.findSchedules()
+    private val schedules = schedulesRepository.findSchedulesWithShifts()
 
     private val shiftItems =
         MediatorLiveData<List<ShiftOnMainItem>>().apply {
@@ -50,9 +51,9 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
     init {
 
         launchSafely {
-            updateCurrentDay(repository.getDay(Constants.todayId))
+            updateCurrentDay(daysRepository.getDay(Constants.todayId))
         }
-        subscribeOnDataSource(repository.findDays()) { days, state ->
+        subscribeOnDataSource(daysRepository.findDays()) { days, state ->
             state.copy(days = days)
         }
         subscribeOnDataSource(shiftItems) { shiftItems, state ->
@@ -74,7 +75,8 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
             val action = if (job == null) {
                 MainFragmentDirections.actionNavMainToDialogAddJob()
             } else {
-                val title = context.getString(R.string.label_add_schedule) // TODO try to define the title in fragment, like in job dialog
+                // TODO try to define the title in fragment, like in job dialog
+                val title = context.getString(R.string.label_add_schedule)
                 MainFragmentDirections.actionNavMainToNavSchedule(title, job)
             }
 
@@ -147,6 +149,23 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
         launchSafely {
             val job = jobRepository.getJob(jobId).toJobItem()
             val action = MainFragmentDirections.actionNavMainToNavDaysTuning(job)
+            navigateWithAction(action)
+        }
+    }
+
+    // TODO использовать шиммер на экране статистики, чтобы не готовить данные заранее?
+    fun navigateToStatistics(jobId: Int) {
+
+        launchSafely {
+
+            val job = jobRepository.getJob(jobId).toJobItem()
+            val month = currentDay.value!!.toMonth()
+            val days = daysRepository.getDays(month)
+            val schedules = schedulesRepository.getSchedulesWithShifts(jobId)
+            val statisticItems = days.getStatisticItems(schedules)
+
+            val item = JobWithStatisticItems(job, month, statisticItems)
+            val action = MainFragmentDirections.actionNavMainToNavStatistics(item)
             navigateWithAction(action)
         }
     }

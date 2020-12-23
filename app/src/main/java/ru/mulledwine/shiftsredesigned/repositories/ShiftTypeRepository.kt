@@ -6,9 +6,11 @@ import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
 
 object ShiftTypeRepository {
 
-    private const val TAG = "M_ShiftTypeRepository"
-
     private val shiftTypesDao = db.shiftTypesDao()
+
+    fun findShiftTypes(): LiveData<List<ShiftType>> {
+        return shiftTypesDao.findShiftTypes()
+    }
 
     suspend fun updateShiftType(item: ShiftType) {
         shiftTypesDao.update(item)

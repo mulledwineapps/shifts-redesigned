@@ -31,6 +31,7 @@ object CalendarGenerator {
                     id = pointer.getDayId(),
                     date = pointer.date,
                     month = pointer.month,
+                    year = pointer.year,
                     numberInWeek = pointer.daysFromWeekStart,
                     startTime = pointer.timeInMillis
                 )

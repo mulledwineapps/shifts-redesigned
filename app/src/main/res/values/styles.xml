@@ -34,6 +34,9 @@
         </item> <!-- веделенный день -->
         <item name="android:textColorSecondary">@color/white</item> <!-- дни недели -->
         <item name="android:headerMonthTextAppearance">@style/WhiteTextAppearance</item>
+        <!--headerMonthTextAppearance is deprecated but headerTextColor is private-->
+        <!--https://issuetracker.google.com/u/1/issues/171444166-->
+        <!--<item name="android:headerTextColor">@color/white</item>-->
     </style>
 
     <style name="LightAlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">

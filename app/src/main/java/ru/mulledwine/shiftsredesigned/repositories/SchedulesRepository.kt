@@ -19,12 +19,20 @@ object SchedulesRepository {
         return jobsDao.findJobs()
     }
 
-    fun findSchedules(): LiveData<List<ScheduleWithShifts>> {
+    fun findSchedules(jobId: Int): LiveData<List<Schedule>> {
+        return schedulesDao.findSchedules(jobId)
+    }
+
+    fun findSchedulesWithShifts(): LiveData<List<ScheduleWithShifts>> {
         return schedulesDao.findSchedulesWithShifts()
     }
 
-    fun findSchedules(jobId: Int): LiveData<List<Schedule>> {
-        return schedulesDao.findSchedules(jobId)
+    fun findSchedulesWithShifts(jobId: Int): LiveData<List<ScheduleWithShifts>> {
+        return schedulesDao.findSchedulesWithShifts(jobId)
+    }
+
+    suspend fun getSchedulesWithShifts(jobId: Int): List<ScheduleWithShifts> {
+        return schedulesDao.getSchedulesWithShifts(jobId)
     }
 
     suspend fun deleteSchedule(id: Int) {

@@ -16,6 +16,8 @@ import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.Month
 import ru.mulledwine.shiftsredesigned.data.local.models.Months
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.extensions.data.next
+import ru.mulledwine.shiftsredesigned.extensions.data.previous
 import ru.mulledwine.shiftsredesigned.extensions.daysFromWeekStart
 import ru.mulledwine.shiftsredesigned.extensions.month
 import ru.mulledwine.shiftsredesigned.extensions.setWithZeroTime
@@ -36,7 +38,7 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
     private val datesAdapter = DatesAdapter()
 
     override val layout: Int = R.layout.fragment_days_tuning
-    override val binding: DaysTuningBinding = DaysTuningBinding()
+    override val binding: DaysTuningBinding by lazy { DaysTuningBinding() }
     override val viewModel: DaysTuningViewModel by viewModels()
 
     private var selectedShiftTypeId: Int? = null
@@ -78,13 +80,20 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
     override fun setupViews() {
 
-        binding.jobName = args.job.name
-
         rv_dates.adapter = datesAdapter
         rv_dates.itemAnimator = null
 
         tv_tuning_job.setOnClickListener { navigateToDialogChooseJob() }
         tv_month_name.setOnClickListener { navigateToDialogChooseMonth() }
+
+        btn_previous_month.setOnClickListener {
+            binding.month = binding.month.previous()
+        }
+
+        btn_next_month.setOnClickListener {
+            binding.month = binding.month.next()
+        }
+
         btn_choose_shift_type.setOnClickListener { navigateToDialogChooseShiftType() }
 
         viewModel.observeJobs(viewLifecycleOwner) {
@@ -122,7 +131,7 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
         var jobItems: List<JobItem> = emptyList()
         var shiftTypeItems: List<ShiftTypeItem> = emptyList()
 
-        var jobName: String by RenderProp("") {
+        var jobName: String by RenderProp(args.job.name) {
             tv_tuning_job.text = it
         }
 

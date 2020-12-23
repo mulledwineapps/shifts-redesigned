@@ -98,7 +98,8 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
                 } catch (e: Throwable) {
                     // несмотря на OnSingleClickListener с задержкой 300 мс
                     // всё равно падает иногда, пытаясь выполнить повторную навигацию
-                    Log.e(TAG, "subscribeOnNavigation: ${e.message} ${e.stackTrace}")
+                    Log.e(TAG, "subscribeOnNavigation: ${e.message}")
+                    e.printStackTrace()
                 }
 
             }

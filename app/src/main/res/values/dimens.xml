@@ -32,6 +32,7 @@
     <dimen name="view_height_40">40dp</dimen>
     <dimen name="view_height_48">48dp</dimen>
     <dimen name="text_view_height_32">32dp</dimen>
+    <dimen name="list_item_height_32">32dp</dimen>
     <dimen name="list_item_height_48">48dp</dimen>
 
 </resources>

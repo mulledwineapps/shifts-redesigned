@@ -1,11 +1,13 @@
 package ru.mulledwine.shiftsredesigned.data.local
 
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ru.mulledwine.shiftsredesigned.App
 import ru.mulledwine.shiftsredesigned.BuildConfig
 import ru.mulledwine.shiftsredesigned.data.local.dao.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.*
-import ru.th1ngshappen.shifts.data.local.dao.*
 
 object DbManager {
     init {
