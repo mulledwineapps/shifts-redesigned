@@ -43,31 +43,16 @@
 
         </FrameLayout>
 
-        <FrameLayout
+        <ru.mulledwine.shiftsredesigned.ui.custom.RecyclerTabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_16"
             android:layout_marginEnd="@dimen/spacing_16"
-            android:background="@color/white">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_dates"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/tab_item_height_64"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_date_tab" />
-
-            <View
-                android:id="@+id/indicator"
-                android:layout_width="@dimen/indicator_width_40"
-                android:layout_height="@dimen/indicator_height_4"
-                android:layout_gravity="bottom"
-                android:background="@drawable/tab_indicator"
-                android:backgroundTint="@color/bright_gray"
-                tools:translationX="4dp" />
-
-        </FrameLayout>
+            app:rtl_tabIndicatorDrawable="@drawable/tab_indicator"
+            app:rtl_tabIndicatorHeight="@dimen/indicator_height_4"
+            app:rtl_tabOnScreenLimit="7"
+            tools:listitem="@layout/item_date_tab" />
 
     </LinearLayout>
 
@@ -97,12 +82,12 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/spacing_32"
+                android:contentDescription="@string/description_empty_list_image"
                 android:src="@drawable/tiredness"
                 app:layout_constraintBottom_toTopOf="@id/tv_list_is_empty"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/description_empty_list_image" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_list_is_empty"

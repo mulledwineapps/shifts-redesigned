@@ -1,7 +1,6 @@
 package ru.mulledwine.shiftsredesigned.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
@@ -9,8 +8,6 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -59,12 +56,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     private var isSelectionMode: Boolean = false
 
-    private var onIdleCallback: (() -> Unit)? = null
-
-    private val datesLayoutManager
-        get() = rv_dates.layoutManager as LinearLayoutManager
-
-    private val datesAdapter = DateTabsAdapter(::dateClickCallback)
+    private lateinit var dateTabsAdapter: DateTabsAdapter
 
     private lateinit var pagerAdapter: PagerAdapter
 
@@ -74,30 +66,6 @@ class MainFragment : BaseFragment<MainViewModel>() {
     )
 
     val pool = RecyclerView.RecycledViewPool()
-
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (onIdleCallback != null) return
-            // move indicator along with recycler
-            indicator.translationX -= dx
-        }
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            if (newState == RecyclerView.SCROLL_STATE_IDLE && onIdleCallback != null) {
-                onIdleCallback?.invoke()
-                onIdleCallback = null
-            }
-            super.onScrollStateChanged(recyclerView, newState)
-        }
-    }
-
-    private var action: Action = Action.SWIPE
-
-    private enum class Action {
-        SWIPE,
-        DATE_CLICK,
-        DATE_SET
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -125,12 +93,6 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
         btn_today.setOnClickListener { onDayChosen(Constants.todayId) }
 
-        with(rv_dates) {
-            adapter = datesAdapter
-            itemAnimator = null
-            addOnScrollListener(scrollListener)
-        }
-
         // listen for date pick
         setFragmentResultListener(DatePickerDialog.DATE_PICKER_KEY) { _, bundle ->
             val time = bundle.getLong(DatePickerDialog.PICK_ACTION_KEY)
@@ -147,92 +109,31 @@ class MainFragment : BaseFragment<MainViewModel>() {
         setupViewPager()
     }
 
-    private fun isPositionVisible(position: Int): Boolean {
-        val firstPos = datesLayoutManager.findFirstVisibleItemPosition()
-        val lastPos = datesLayoutManager.findLastVisibleItemPosition()
-        return position in firstPos..lastPos
-    }
-
     private fun setupViewPager() {
+
         pagerAdapter = PagerAdapter(this)
         view_pager.adapter = pagerAdapter
 
         view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
             override fun onPageSelected(position: Int) {
-                Log.d(TAG, "onPageSelected: $position action $action")
                 val day = binding.days[position]
 
-                if (binding.selectedDayId != day.id) { // to avoid executing on first show
+                updateTitle(day)
+                viewModel.updateCurrentDay(day)
+                binding.selectedDayId = day.id
 
-                    when (action) {
-                        Action.SWIPE -> updateDateViewsPosition(position, day.id, false)
-                        Action.DATE_CLICK -> Unit
-                        Action.DATE_SET -> {
-                            val selectedPos = binding.days.indexOfFirst {
-                                it.id == binding.selectedDayId
-                            }
-                            updateDateViewsPosition(
-                                position,
-                                day.id,
-                                !isPositionVisible(selectedPos)
-                            )
-                        }
-                    }
-
-                    updateTitle(day)
-                    viewModel.updateCurrentDay(day)
-                    binding.selectedDayId = day.id
-                    action = Action.SWIPE
-                }
                 super.onPageSelected(position)
             }
         })
+
+        dateTabsAdapter = DateTabsAdapter(view_pager)
+        tab_layout.setUpWithAdapter(dateTabsAdapter)
     }
 
     private fun onDayChosen(dayId: String) {
         val position = binding.days.indexOfFirst { it.id == dayId }
-
-        if (view_pager.currentItem == position) {
-            // the day is already selected, need to scroll dates recycler only
-            updateDateViewsPosition(position, dayId, true)
-        } else {
-            action = Action.DATE_SET
-            view_pager.currentItem = position
-        }
-    }
-
-    private fun updateDateViewsPosition(position: Int, dayId: String, resetIndicatorPos: Boolean) {
-        val firstPos = datesLayoutManager.findFirstVisibleItemPosition()
-        val lastPos = datesLayoutManager.findLastVisibleItemPosition()
-        if (position !in firstPos..lastPos) {
-
-            // to prevent overlong scrolling
-            if (position - firstPos > 20)
-                datesLayoutManager.scrollToPositionWithOffset(position + 20, 0)
-            if (firstPos - position > 20)
-                datesLayoutManager.scrollToPositionWithOffset(position - 10, 0)
-
-            smoothScrollDatesTo(
-                position,
-                if (resetIndicatorPos) 0 else indicator.translationX.toInt()
-            ) {
-                if (resetIndicatorPos) indicator.translationX = 0f
-                datesAdapter.selectDay(dayId) // after scroll to avoid tab text blinking
-            }
-        } else {
-            datesLayoutManager.findViewByPosition(position)?.let {
-                indicator.translationX = (it.left + it.paddingLeft).toFloat()
-            }
-            datesAdapter.selectDay(dayId)
-        }
-    }
-
-    private fun dateClickCallback(position: Int, holderLeft: Int) {
-        // date is already visible, no need to scroll dates recycler
-        action = Action.DATE_CLICK
-        indicator.translationX = holderLeft.toFloat()
-        view_pager.currentItem = position
+        tab_layout.setCurrentItem(position, true)
     }
 
     private fun onDeleteRequested() {
@@ -356,31 +257,6 @@ class MainFragment : BaseFragment<MainViewModel>() {
         viewModel.navigateToVacations(shiftsAdapter.selectedItems.firstOrNull()?.scheduleId)
     }
 
-    private fun smoothScrollDatesTo(
-        pos: Int,
-        offset: Int = 0,
-        onStop: (() -> Unit)? = null
-    ) {
-        if (pos == -1) return
-
-        onIdleCallback = onStop
-
-        val smoothScroller = object : LinearSmoothScroller(requireContext()) {
-            override fun calculateDxToMakeVisible(view: View?, snapPreference: Int): Int {
-                return super.calculateDxToMakeVisible(view, snapPreference) + offset - Constants.dp4
-            }
-
-            override fun getHorizontalSnapPreference(): Int = SNAP_TO_START
-        }
-        smoothScroller.targetPosition = pos
-        datesLayoutManager.startSmoothScroll(smoothScroller)
-    }
-
-    private fun scrollDatesTo(pos: Int, offset: Int = 0) {
-        if (pos == -1) return
-        datesLayoutManager.scrollToPositionWithOffset(pos, offset - Constants.dp4)
-    }
-
     inner class MainBinding : Binding() {
 
         var currentDayStart: Long = Constants.today.timeInMillis
@@ -397,13 +273,13 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
             val pos = list.indexOfFirst { it.id == selectedDayId }
 
-            datesAdapter.submitList(list) {
-                scrollDatesTo(pos)
-            }
-
             pagerAdapter.items = days
             pagerAdapter.notifyDataSetChanged()
-            view_pager.setCurrentItem(pos, false)
+
+            dateTabsAdapter.submitList(list) {
+                tab_layout.setCurrentItem(pos, false)
+            }
+
         }
 
         private var shiftItems: List<ShiftOnMainItem> by RenderProp(emptyList()) {

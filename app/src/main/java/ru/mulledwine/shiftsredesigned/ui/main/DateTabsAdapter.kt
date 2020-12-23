@@ -3,71 +3,63 @@ package ru.mulledwine.shiftsredesigned.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_date_tab.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
+import ru.mulledwine.shiftsredesigned.ui.custom.RecyclerTabLayout
+import kotlin.math.roundToInt
 
-class DateTabsAdapter(
-    private val clickListener: (position: Int, holderLeft: Int) -> Unit
-) :
-    ListAdapter<Day, DateTabsAdapter.ViewHolder>(DiffCallback()) {
+class DateTabsAdapter(viewPager: ViewPager2) :
+    RecyclerTabLayout.Adapter<Day>(DiffCallback(), viewPager) {
 
-    var selectedItemId: String = Constants.todayId
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerTabLayout.Adapter<Day>.ViewHolder {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val containerView = inflater.inflate(R.layout.item_date_tab, parent, false)
+
+        if (tabOnScreenLimit > 0) {
+            val w = (parent.measuredWidth / tabOnScreenLimit.toFloat()).roundToInt()
+            containerView.updateLayoutParams { width = w }
+        }
+
         return ViewHolder(containerView)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerTabLayout.Adapter<Day>.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.firstOrNull() == RENDER_SELECTION_PAYLOAD) {
+            holder.renderSelection(position == currentIndicatorPosition)
+        } else super.onBindViewHolder(holder, position, payloads)
+    }
+
+    override fun onBindViewHolder(
+        holder: RecyclerTabLayout.Adapter<Day>.ViewHolder,
+        position: Int
+    ) {
         val item = getItem(position)
-        holder.containerView.setOnClickListener {
-            handleSelection(item, holder)
-            val holderLeft = holder.containerView.left + holder.containerView.paddingLeft
-            clickListener.invoke(position, holderLeft)
-        }
-        holder.bind(item)
-        holder.setSelection(selectedItemId == item.id)
+        holder.bind(item, position)
+        holder.renderSelection(position == currentIndicatorPosition)
     }
 
-    fun selectDay(dayId: String) {
-        if (selectedItemId == dayId) return // already selected, do not remove selection
-
-        val posOld = currentList.indexOfFirst { it.id == selectedItemId }
-        selectedItemId = dayId
-        // TODO use payload
-        notifyItemChanged(posOld) // remove previous selection
-        val posNew = currentList.indexOfFirst { it.id == dayId }
-        notifyItemChanged(posNew) // set new selection
-    }
-
-    private fun handleSelection(item: Day, holder: ViewHolder) {
-
-        if (selectedItemId == item.id) return // already selected, do not remove selection
-
-        val pos = currentList.indexOfFirst { it.id == selectedItemId }
-        selectedItemId = item.id
-        // TODO use payload
-        notifyItemChanged(pos) // remove previous selection
-        holder.setSelection(true) // set new selection
-    }
-
-    inner class ViewHolder(
-        override val containerView: View
-    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-
-        fun bind(item: Day) {
+    inner class ViewHolder(override val containerView: View) :
+        RecyclerTabLayout.Adapter<Day>.ViewHolder(containerView), LayoutContainer {
+        override fun bind(item: Day, position: Int) {
             tv_date_item_date.text = item.date.toString()
             tv_date_item_weekday.text = Constants.weekDays[item.numberInWeek]
         }
 
-        fun setSelection(isSelected: Boolean) {
+        override fun renderSelection(isSelected: Boolean) {
             setOf(tv_date_item_date, tv_date_item_weekday).forEach {
                 it.isSelected = isSelected
                 it.typeface = if (isSelected)
