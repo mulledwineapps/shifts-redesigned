@@ -140,7 +140,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
         val selected = shiftsAdapter.selectedItems
         val message = if (selected.size == 1) {
             val item = selected.first()
-            "Удалить график?\n\n${item.jobName}\n${item.scheduleDuration}"
+            "Удалить график?\n\n${item.scheduleDuration}\n${item.jobName}"
         } else "Удалить ${selected.size.getScheduleGenitive()}?"
 
         root.askWhetherToDelete(message) {

@@ -12,6 +12,8 @@ val Calendar.dayOfWeek get() = this.get(Calendar.DAY_OF_WEEK)
 
 val Calendar.hour get() = this.get(Calendar.HOUR_OF_DAY)
 val Calendar.minute get() = this.get(Calendar.MINUTE)
+val Calendar.second get() = this.get(Calendar.SECOND)
+val Calendar.millisecond get() = this.get(Calendar.MILLISECOND)
 
 val Calendar.daysFromWeekStart
     get(): Int = dayOfWeek -
@@ -33,7 +35,8 @@ fun Calendar.zeroTime() {
 }
 
 fun Calendar.setWithZeroTime(year: Int, month: Int, date: Int) {
-    set(year, month, date, 0, 0, 0)
+    set(year, month, date)
+    zeroTime()
 }
 
 fun Calendar.moveToNextDay() = add(Calendar.DATE, 1)

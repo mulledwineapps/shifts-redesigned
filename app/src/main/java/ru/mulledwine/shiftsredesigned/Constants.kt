@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import ru.mulledwine.shiftsredesigned.extensions.dpToIntPx
-import ru.mulledwine.shiftsredesigned.extensions.dpToPx
 import ru.mulledwine.shiftsredesigned.extensions.getDayId
 import ru.mulledwine.shiftsredesigned.extensions.zeroTime
 import ru.mulledwine.shiftsredesigned.utils.Utils
@@ -19,7 +18,6 @@ object Constants {
     @ColorInt val brightGray54 = ContextCompat.getColor(App.applicationContext(), R.color.bright_gray_54)
     @ColorInt val selectionColor = ContextCompat.getColor(App.applicationContext(), R.color.color_selection)
 
-    val dp4 = App.applicationContext().dpToIntPx(4)
     val dp8 = App.applicationContext().dpToIntPx(8)
     val dp16 = App.applicationContext().dpToIntPx(16)
     val dp40 = App.applicationContext().dpToIntPx(40)

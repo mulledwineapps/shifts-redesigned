@@ -77,28 +77,31 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/spacing_32"
+            <ru.mulledwine.shiftsredesigned.ui.custom.SquareImageView
+                android:id="@+id/iv_list_is_empty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:contentDescription="@string/description_empty_list_image"
-                android:src="@drawable/tiredness"
+                android:src="@drawable/state_empty"
                 app:layout_constraintBottom_toTopOf="@id/tv_list_is_empty"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintWidth_percent="0.75" />
 
             <TextView
                 android:id="@+id/tv_list_is_empty"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/empty_yet_placeholder"
                 android:textColor="@color/bright_gray_54"
                 android:textSize="@dimen/font_14"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/iv_list_is_empty" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
