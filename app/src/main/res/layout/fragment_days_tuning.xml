@@ -44,38 +44,7 @@
                 android:layout_marginTop="@dimen/spacing_24"
                 android:text="@string/tuning_choose_days_title" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_height_48"
-                android:layout_marginHorizontal="@dimen/spacing_16">
-
-                <TextView
-                    android:id="@+id/tv_month_name"
-                    style="@style/TextSelectable"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center|center_vertical"
-                    tools:text="Ноябрь 2020" />
-
-                <ImageButton
-                    android:id="@+id/btn_previous_month"
-                    android:layout_width="@dimen/button_size_40"
-                    android:layout_height="@dimen/button_size_40"
-                    android:layout_gravity="start|center_vertical"
-                    android:background="@drawable/bg_btn_round_inset"
-                    android:contentDescription="@string/description_previous_month"
-                    android:src="@drawable/ic_round_keyboard_arrow_left_24" />
-
-                <ImageButton
-                    android:id="@+id/btn_next_month"
-                    android:layout_width="@dimen/button_size_40"
-                    android:layout_height="@dimen/button_size_40"
-                    android:layout_gravity="end|center_vertical"
-                    android:background="@drawable/bg_btn_round_inset"
-                    android:contentDescription="@string/description_next_month"
-                    android:src="@drawable/ic_round_keyboard_arrow_right_24" />
-
-            </FrameLayout>
+            <include layout="@layout/layout_month_choosing" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_dates"

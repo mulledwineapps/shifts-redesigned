@@ -95,4 +95,14 @@
         <item name="android:textSize">@dimen/font_14</item>
         <item name="android:theme">@style/ButtonTheme</item>
     </style>
+
+    <style name="RadioButtonStyle">
+        <item name="android:button">@drawable/bg_radio_button</item>
+        <item name="android:buttonTint">@color/checkable_color</item>
+        <item name="android:paddingStart">@dimen/spacing_8</item>
+        <item name="android:paddingEnd">@dimen/spacing_8</item>
+        <item name="android:textColor">@color/checkable_color</item>
+    </style>
+
+
 </resources>

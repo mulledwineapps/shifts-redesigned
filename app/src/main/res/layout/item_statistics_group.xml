@@ -2,16 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height_48"
+    android:layout_height="@dimen/view_height_40"
     android:paddingHorizontal="@dimen/spacing_16"
-    tools:context=".ui.settings.SettingsAdapter">
+    tools:context=".ui.statistics.StatisticsAdapter">
 
     <TextView
-        android:id="@+id/tv_settings_group_title"
+        android:id="@+id/tv_statistics_group_title"
         style="@style/TitlePrimaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_size_24"
         android:layout_gravity="bottom"
-        tools:text="Главное" />
+        tools:text="Количество часов" />
 
 </FrameLayout>

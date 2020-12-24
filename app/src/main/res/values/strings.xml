@@ -131,6 +131,9 @@
     <string name="shift_type_name_title">Название смены</string>
     <string name="shift_type_all_day_btn_title">Весь день</string>
     <string name="shift_type_choose_hours_btn_title">Выбрать часы</string>
+    <string name="shift_type_title">Тип смены</string>
+    <string name="shift_type_day_off_btn_title">Выходной день</string>
+    <string name="shift_type_day_on_btn_title">Рабочий день</string>
     <string name="shift_type_duration_title">Продолжительность смены</string>
     <string name="shift_type_start_title">Начало</string>
     <string name="shift_type_finish_title">Конец</string>

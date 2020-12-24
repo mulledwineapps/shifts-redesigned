@@ -44,6 +44,7 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
                 id = args.item?.id,
                 name = et_shift_type_name.getTrimmedString(),
                 color = btn_shift_type_choose_color.backgroundTintList!!.defaultColor,
+                isDayOff = btn_shift_type_day_off.isChecked,
                 isFullDay = btn_shift_type_full_day.isChecked,
                 start = binding.start,
                 finish = binding.finish
@@ -57,14 +58,20 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
 
         args.item?.let {
             et_shift_type_name.setText(it.name)
+
+            if (it.isDayOff) btn_shift_type_day_off.isChecked = true
+            else btn_shift_type_day_on.isChecked = true
+
             if (it.isFullDay) btn_shift_type_full_day.isChecked = true
             else btn_shift_type_choose_hours.isChecked = true
+
             btn_shift_type_choose_color.backgroundTintList = ColorStateList.valueOf(it.color)
 
             binding.start = it.start
             binding.finish = it.finish
             binding.isFullDay = it.isFullDay
         } ?: run {
+            btn_shift_type_day_on.isChecked = true
             btn_shift_type_choose_hours.isChecked = true
             btn_shift_type_choose_color.backgroundTintList =
                 ColorStateList.valueOf(Utils.getRandomColor())
@@ -135,7 +142,6 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
         }
 
         var isFullDay: Boolean by RenderProp(true) {
-            tv_shift_type_duration_title.isEnabled = !it
             tv_shift_type_start.isEnabled = !it
             tv_shift_type_finish.isEnabled = !it
             if (it) {

@@ -4,16 +4,17 @@ import android.os.Bundle
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_statistics.*
+import kotlinx.android.synthetic.main.layout_month_choosing.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.Month
 import ru.mulledwine.shiftsredesigned.data.local.models.Months
 import ru.mulledwine.shiftsredesigned.data.local.models.StatisticItem
+import ru.mulledwine.shiftsredesigned.extensions.getDrawableCompat
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
+import ru.mulledwine.shiftsredesigned.ui.custom.DividerItemDecoration
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
 import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
 import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseMonthDialog
@@ -57,10 +58,16 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>() {
 
         with(rv_statistics) {
             adapter = statisticsAdapter
-            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+            getDrawableCompat(R.drawable.list_divider)?.let {
+                addItemDecoration(DividerItemDecoration(it) { pos ->
+                    if (pos > statisticsAdapter.itemCount.dec()) false else
+                    statisticsAdapter.getItemViewType(pos) == StatisticItem.VIEW_TYPE_ELEMENT
+                })
+            }
         }
 
         tv_statistics_job.setOnClickListener { navigateToDialogChooseJob() }
+        tv_month_name.setOnClickListener { navigateToDialogChooseMonth() }
 
         btn_previous_month.setOnClickListener {
             viewModel.handleSetPreviousMonth()
@@ -82,17 +89,23 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>() {
         viewModel.navigateWithAction(action)
     }
 
+    private fun navigateToDialogChooseMonth() {
+        val action = StatisticsFragmentDirections
+            .actionNavStatisticsToDialogChooseMonth(binding.month)
+        viewModel.navigateWithAction(action)
+    }
+
     inner class StatisticsBinding : Binding() {
 
         var jobItems: List<JobItem> = emptyList()
 
-        private var jobName by RenderProp(args.item.jobItem.name) {
-            tv_statistics_job.text = it
-        }
-
-        private var month by RenderProp(args.item.month) {
+        var month by RenderProp(args.item.month) {
             val monthName = Months.values()[it.number].getName(requireContext())
             tv_month_name.text = getString(R.string.month_year, monthName, it.year.toString())
+        }
+
+        private var jobName by RenderProp(args.item.jobItem.name) {
+            tv_statistics_job.text = it
         }
 
         private var statisticItems: List<StatisticItem> by RenderProp(args.item.statisticItems) {

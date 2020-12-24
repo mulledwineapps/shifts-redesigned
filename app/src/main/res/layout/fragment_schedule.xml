@@ -25,19 +25,19 @@
                 style="@style/TitlePrimaryStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_size_24"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginHorizontal="@dimen/spacing_16"
-                android:text="@string/schedule_belongs_job_title" />
+                android:text="@string/schedule_belongs_job_title"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_schedule_job"
                 style="@style/TextSelectable"
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_schedule_job_title"
                 android:layout_height="@dimen/view_height_48"
                 android:layout_marginHorizontal="@dimen/spacing_16"
                 android:gravity="start|center_vertical"
                 android:hint="@string/choose_placeholder"
+                app:layout_constraintTop_toBottomOf="@id/tv_schedule_job_title"
                 tools:text="Моя работа" />
 
             <TextView
@@ -127,28 +127,21 @@
 
                 <RadioButton
                     android:id="@+id/btn_schedule_type_regular"
+                    style="@style/RadioButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/spacing_24"
                     android:layout_weight="1"
-                    android:button="@drawable/bg_radio_button"
-                    android:buttonTint="@color/checkable_color"
-                    android:paddingHorizontal="@dimen/spacing_8"
                     android:text="@string/schedule_type_regular_btn_title"
-                    android:textColor="@color/checkable_color"
                     tools:checked="true" />
 
                 <RadioButton
                     android:id="@+id/btn_schedule_type_cyclic"
+                    style="@style/RadioButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="end"
                     android:layout_weight="1"
-                    android:button="@drawable/bg_radio_button"
-                    android:buttonTint="@color/checkable_color"
-                    android:paddingHorizontal="@dimen/spacing_8"
                     android:text="@string/schedule_type_cyclic_btn_title"
-                    android:textColor="@color/checkable_color"
                     tools:checked="false" />
 
             </RadioGroup>

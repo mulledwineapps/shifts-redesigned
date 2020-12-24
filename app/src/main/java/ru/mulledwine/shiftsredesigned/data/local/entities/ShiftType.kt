@@ -15,6 +15,8 @@ data class ShiftType(
     val id: Int? = null,
     val name: String,
     val color: Int,
+    @ColumnInfo(name = "is_day_off")
+    val isDayOff: Boolean,
     @ColumnInfo(name = "is_full_day")
     val isFullDay: Boolean,
     val start: ShiftTime = ShiftTime(0, 0),
@@ -33,6 +35,7 @@ data class ShiftType(
                     ShiftType(
                         id = counter++,
                         name = it,
+                        isDayOff = isFullDay,
                         isFullDay = isFullDay,
                         color = Utils.getRandomColor(),
                     )
@@ -40,6 +43,7 @@ data class ShiftType(
                     ShiftType(
                         id = counter++,
                         name = it,
+                        isDayOff = isFullDay,
                         isFullDay = isFullDay,
                         start = ShiftTime.random(),
                         finish = ShiftTime.random(),

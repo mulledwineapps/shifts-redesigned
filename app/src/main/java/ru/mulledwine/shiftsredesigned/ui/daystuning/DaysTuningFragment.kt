@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_days_tuning.*
 import kotlinx.android.synthetic.main.item_shift_type.*
+import kotlinx.android.synthetic.main.layout_month_choosing.*
 import ru.mulledwine.shiftsredesigned.Constants.today
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem

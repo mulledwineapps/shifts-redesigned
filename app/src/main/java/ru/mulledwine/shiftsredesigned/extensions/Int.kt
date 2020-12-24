@@ -42,3 +42,25 @@ fun Int.getDaysGenitive(): String {
         }
     }
 }
+
+fun Int.getHoursGenitive(): String {
+    return when (this) {
+        in 11..14 -> "$this часов"
+        else -> when (this % 10) {
+            1 -> "$this час"
+            in 2..4 -> "$this часа"
+            else -> "$this часов"
+        }
+    }
+}
+
+fun Int.getMinutesGenitive(): String {
+    return when (this) {
+        in 11..14 -> "$this минут"
+        else -> when (this % 10) {
+            1 -> "$this минута"
+            in 2..4 -> "$this минуты"
+            else -> "$this минут"
+        }
+    }
+}

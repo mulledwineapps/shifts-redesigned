@@ -75,10 +75,9 @@
     <TextView
         style="@style/TitlePrimaryStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_size_24"
         android:layout_marginHorizontal="@dimen/spacing_16"
         android:layout_marginTop="@dimen/spacing_24"
-        android:minHeight="@dimen/view_size_24"
         android:text="@string/vacation_start_shift_title" />
 
     <FrameLayout

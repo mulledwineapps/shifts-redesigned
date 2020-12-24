@@ -1,13 +1,14 @@
 package ru.mulledwine.shiftsredesigned.ui.settings
 
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.DataHolder
 import ru.mulledwine.shiftsredesigned.data.local.models.SettingsItem
+import ru.mulledwine.shiftsredesigned.extensions.getDrawableCompat
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
+import ru.mulledwine.shiftsredesigned.ui.custom.DividerItemDecoration
 import ru.mulledwine.shiftsredesigned.viewmodels.SettingsViewModel
 
 class SettingsFragment : BaseFragment<SettingsViewModel>() {
@@ -32,11 +33,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
         with(rv_settings) {
             adapter = settingsAdapter
             itemAnimator = null
-            addItemDecoration(DividerItemDecoration(
-                ContextCompat.getDrawable(requireContext(), R.drawable.list_divider)!!
-            ) {
-                settingsAdapter.getItemViewType(it) == SettingsItem.VIEW_TYPE_ELEMENT
-            })
+            getDrawableCompat(R.drawable.list_divider)?.let {
+                addItemDecoration(DividerItemDecoration(it) { pos ->
+                    settingsAdapter.getItemViewType(pos) == SettingsItem.VIEW_TYPE_ELEMENT
+                })
+            }
         }
 
     }

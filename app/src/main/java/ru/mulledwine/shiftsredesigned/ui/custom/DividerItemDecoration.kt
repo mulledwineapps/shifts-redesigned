@@ -1,4 +1,4 @@
-package ru.mulledwine.shiftsredesigned.ui.settings
+package ru.mulledwine.shiftsredesigned.ui.custom
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
