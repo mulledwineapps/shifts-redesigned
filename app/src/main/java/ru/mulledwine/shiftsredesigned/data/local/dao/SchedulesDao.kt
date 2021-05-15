@@ -5,6 +5,7 @@ import androidx.room.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithShifts
 import ru.mulledwine.shiftsredesigned.data.local.entities.Shift
+import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleForAlarm
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
 
 @Dao
@@ -18,6 +19,14 @@ interface SchedulesDao : BaseDao<Schedule> {
     """
     )
     fun findSchedules(jobId: Int): LiveData<List<Schedule>>
+
+    @Query(
+        """
+            SELECT id, is_cyclic, start, finish
+            FROM schedules WHERE id = :id
+            """
+    )
+    suspend fun getScheduleForAlarm(id: Int): ScheduleForAlarm
 
     @Query(
         """
@@ -39,7 +48,7 @@ interface SchedulesDao : BaseDao<Schedule> {
             SELECT * FROM schedules WHERE id = :id 
         """
     )
-    suspend fun getSchedule(id: Int): ScheduleWithShifts
+    suspend fun getScheduleWithShifts(id: Int): ScheduleWithShifts
 
     @Transaction
     @Query(

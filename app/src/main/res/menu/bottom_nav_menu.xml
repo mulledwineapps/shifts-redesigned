@@ -21,4 +21,9 @@
         android:id="@+id/menu_item_vacations"
         android:title="@string/title_vacations"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_item_alarms"
+        android:title="@string/title_alarms"
+        app:showAsAction="never" />
 </menu>

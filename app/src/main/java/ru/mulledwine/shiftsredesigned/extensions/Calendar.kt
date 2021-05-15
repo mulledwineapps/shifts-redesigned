@@ -74,6 +74,10 @@ fun Calendar.daysFrom(from: Calendar): Int {
     return elapsedDays.toInt()
 }
 
+fun Calendar.isTheSameDay(other: Calendar): Boolean {
+    return this.date == other.date && this.month == other.month && this.year == other.year
+}
+
 private fun Calendar.getCopyWithZeroTime(): Calendar {
     val instance = Utils.getCalendarInstance(this.timeInMillis)
     instance.zeroTime()

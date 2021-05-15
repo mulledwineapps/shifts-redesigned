@@ -1,7 +1,6 @@
 package ru.mulledwine.shiftsredesigned.ui.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime
+import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
 import ru.mulledwine.shiftsredesigned.ui.RootActivity
 import ru.mulledwine.shiftsredesigned.viewmodels.BaseViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.Loading
@@ -110,7 +109,7 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
         viewModel.navigate(command)
     }
 
-    fun navigateToTimePicker(time: ShiftTime, viewId: Int = -1) {
+    fun navigateToTimePicker(time: ClockTime, viewId: Int = -1) {
         val command = NavigationCommand.To(
             destination = R.id.dialog_time_picker,
             args = bundleOf(

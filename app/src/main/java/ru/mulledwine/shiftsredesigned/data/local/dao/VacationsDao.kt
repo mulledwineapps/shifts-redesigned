@@ -4,9 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
+import ru.mulledwine.shiftsredesigned.data.local.entities.VacationWithJob
 
 @Dao
 interface VacationsDao : BaseDao<Vacation> {
+
+    @Query(
+        """
+        SELECT * FROM vacations
+    """
+    )
+    fun findVacationsWithJob(): LiveData<List<VacationWithJob>>
 
     @Query(
         """
@@ -15,7 +23,7 @@ interface VacationsDao : BaseDao<Vacation> {
         ORDER BY start DESC, finish DESC
     """
     )
-    fun findVacations(jobId: Int): LiveData<List<Vacation>>
+    fun findVacationsWithJob(jobId: Int): LiveData<List<Vacation>>
 
     @Query(
         """
@@ -23,6 +31,13 @@ interface VacationsDao : BaseDao<Vacation> {
         """
     )
     suspend fun getVacation(id: Int): Vacation
+
+    @Query(
+        """
+            SELECT * FROM vacations WHERE job_id = :jobId
+        """
+    )
+    suspend fun getVacationsByJob(jobId: Int): List<Vacation>
 
     @Query(
         """

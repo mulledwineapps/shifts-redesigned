@@ -59,7 +59,7 @@ class SchedulesViewModel(
 
     fun handleClickEdit(title: String, id: Int) {
         launchSafely {
-            val schedule = repository.getSchedule(id)
+            val schedule = repository.getScheduleWithShiftItems(id)
             val action = SchedulesFragmentDirections
                 .actionNavSchedulesToNavSchedule(title, jobLive.value!!, schedule)
             navigateWithAction(action)

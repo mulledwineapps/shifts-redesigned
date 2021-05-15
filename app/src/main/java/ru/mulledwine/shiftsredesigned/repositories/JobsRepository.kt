@@ -3,6 +3,7 @@ package ru.mulledwine.shiftsredesigned.repositories
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
+import ru.mulledwine.shiftsredesigned.data.local.entities.JobWithVacations
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithScheduleItems

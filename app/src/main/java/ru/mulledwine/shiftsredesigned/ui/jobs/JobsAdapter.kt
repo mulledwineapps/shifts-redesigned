@@ -78,15 +78,11 @@ class JobsAdapter(
     }
 
     class DiffCallback : DiffUtil.ItemCallback<JobItem>() {
-        override fun areItemsTheSame(
-            oldItem: JobItem,
-            newItem: JobItem
-        ): Boolean = oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: JobItem, newItem: JobItem): Boolean =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(
-            oldItem: JobItem,
-            newItem: JobItem
-        ): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: JobItem, newItem: JobItem): Boolean =
+            oldItem == newItem
     }
 
 }

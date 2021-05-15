@@ -13,6 +13,7 @@ import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.extensions.date
 import ru.mulledwine.shiftsredesigned.extensions.month
+import ru.mulledwine.shiftsredesigned.extensions.toCalendar
 import ru.mulledwine.shiftsredesigned.extensions.year
 import ru.mulledwine.shiftsredesigned.utils.Utils
 
@@ -31,7 +32,7 @@ class DatePickerDialog : DialogFragment() {
         val context = ContextThemeWrapper(requireContext(), R.style.DatePickerTheme)
         val datePicker = DatePicker(context)
         val time = if (args.time == 0L) Constants.today.timeInMillis else args.time
-        val calendar = Utils.getCalendarInstance(time)
+        val calendar = time.toCalendar()
         datePicker.init(calendar.year, calendar.month, calendar.date, null)
 
         return AlertDialog.Builder(requireContext(), R.style.DarkAlertDialogTheme)

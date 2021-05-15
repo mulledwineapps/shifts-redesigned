@@ -1,6 +1,7 @@
 package ru.mulledwine.shiftsredesigned.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -31,6 +32,11 @@ class RootActivity : BaseActivity<RootViewModel>() {
     }
 
     override fun renderNotification(notify: Notify) {
+
+        if (notify is Notify.ToastMessage) {
+            Toast.makeText(this, notify.message, notify.duration).show()
+            return
+        }
 
         val snackbar = Snackbar.make(root_container, notify.message, notify.duration)
         notify.anchorViewId?.let { snackbar.setAnchorView(it) }

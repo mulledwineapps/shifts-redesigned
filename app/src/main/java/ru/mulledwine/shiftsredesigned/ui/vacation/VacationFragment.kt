@@ -14,9 +14,10 @@ import kotlinx.android.synthetic.main.item_shift_type.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
-import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleShiftItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftItem
 import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
 import ru.mulledwine.shiftsredesigned.extensions.hideKeyboard
+import ru.mulledwine.shiftsredesigned.extensions.toCalendar
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
@@ -55,9 +56,9 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
 
         // listen for shift pick
         setFragmentResultListener(ChooseShiftDialog.CHOOSE_SHIFT_KEY) { _, bundle ->
-            val item = bundle[ChooseShiftDialog.SELECTED_SHIFT] as ScheduleShiftItem
+            val item = bundle[ChooseShiftDialog.SELECTED_SHIFT] as ShiftItem
             updateFirstShift(item.typeName, item.duration, item.color)
-            binding.firstShiftId = item.shiftId
+            binding.firstShiftId = item.id
         }
     }
 
@@ -125,7 +126,7 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
             clearCountFieldFocus()
         })
 
-        btn_choose_shift_type.setOnClickListener { navigateToDialogChooseShiftType() }
+        btn_choose_shift_type.setOnClickListener { navigateToDialogChooseShift() }
 
 //        TODO get proper schedule
 //        viewModel.observePattern(args.schedule.id, viewLifecycleOwner) {
@@ -148,7 +149,7 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
         }
     }
 
-    private fun navigateToDialogChooseShiftType() {
+    private fun navigateToDialogChooseShift() {
         val action = VacationFragmentDirections.actionNavVacationToDialogChooseShift(
             binding.pattern.toTypedArray()
         )
@@ -158,7 +159,7 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
     inner class VacationBinding : Binding() {
 
         var firstShiftId: Int? = null
-        var pattern: List<ScheduleShiftItem> = emptyList()
+        var pattern: List<ShiftItem> = emptyList()
 
         var duration: Int by RenderProp(0) {
             if (it == 0) et_days_total.text.clear()
@@ -167,13 +168,13 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
 
         var start: Long by RenderProp(0L) {
             tv_vacation_start.text =
-                if (it == 0L) "" else Utils.getCalendarInstance(it).formatAndCapitalize()
+                if (it == 0L) "" else it.toCalendar().formatAndCapitalize()
             updateDuration()
         }
 
         var finish: Long by RenderProp(0L) {
             tv_vacation_finish.text =
-                if (it == 0L) "" else Utils.getCalendarInstance(it).formatAndCapitalize()
+                if (it == 0L) "" else it.toCalendar().formatAndCapitalize()
             updateDuration()
         }
 
@@ -187,7 +188,7 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
         }
 
         fun calculateFinish(daysCount: Int) {
-            val calendar = Utils.getCalendarInstance(binding.start)
+            val calendar = binding.start.toCalendar()
             calendar.add(Calendar.DATE, daysCount)
             // to avoid loop turn off duration updating
             doNotUpdateDuration = true

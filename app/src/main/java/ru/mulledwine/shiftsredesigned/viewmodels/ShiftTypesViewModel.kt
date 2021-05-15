@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toShiftTypeItem
 import ru.mulledwine.shiftsredesigned.repositories.ShiftTypesRepository
 import ru.mulledwine.shiftsredesigned.ui.shifttypes.ShiftTypesFragmentDirections
@@ -15,13 +15,13 @@ class ShiftTypesViewModel(handle: SavedStateHandle) :
 
     private val repository = ShiftTypesRepository
 
-    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeItem>) -> Unit) {
+    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeListItem>) -> Unit) {
         repository.findShiftTypes().map { list ->
             list.map { it.toShiftTypeItem() }
         }.observe(owner, Observer(onChange))
     }
 
-    fun handleEditShiftType(title: String, id: Int) {
+    fun handleNavigateEditShiftType(title: String, id: Int) {
         launchSafely {
             val item = repository.getShiftType(id)
             val action = ShiftTypesFragmentDirections.actionNavShiftTypesToNavShiftType(title, item)

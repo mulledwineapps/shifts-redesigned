@@ -1,10 +1,10 @@
 package ru.mulledwine.shiftsredesigned.extensions.data
 
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 
-fun ShiftType.toShiftTypeItem(): ShiftTypeItem {
-    return ShiftTypeItem(
+fun ShiftType.toShiftTypeItem(): ShiftTypeListItem {
+    return ShiftTypeListItem(
         id = id!!,
         duration = getDuration(),
         name = name,

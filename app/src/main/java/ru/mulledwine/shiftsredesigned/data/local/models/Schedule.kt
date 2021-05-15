@@ -1,7 +1,9 @@
 package ru.mulledwine.shiftsredesigned.data.local.models
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import kotlinx.android.parcel.Parcelize
+import ru.mulledwine.shiftsredesigned.extensions.data.IDurable
 
 @Parcelize
 data class ScheduleItem(
@@ -10,6 +12,15 @@ data class ScheduleItem(
     val duration: String,
     val isCyclic: Boolean
 ) : Parcelable
+
+@Parcelize
+data class ScheduleForAlarm(
+    val id: Int,
+    @ColumnInfo(name = "is_cyclic")
+    val isCyclic: Boolean,
+    override val start: Long,
+    override val finish: Long
+): Parcelable, IDurable
 
 // для передачи на экран редактирования
 @Parcelize

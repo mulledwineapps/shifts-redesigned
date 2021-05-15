@@ -2,6 +2,7 @@ package ru.mulledwine.shiftsredesigned.viewmodels
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.UiThread
 import androidx.lifecycle.*
@@ -167,6 +168,10 @@ abstract class BaseViewModel<T : IViewModelState>(
         }
     }
 
+    protected fun makeToast(message: String) {
+        notify(Notify.ToastMessage(message))
+    }
+
 }
 
 class Event<out E>(private val content: E) {
@@ -203,20 +208,17 @@ sealed class Notify() {
     // исключение - если они являются подклассами sealed класса
 
     abstract val message: String
-    abstract val duration: Int
-    abstract val anchorViewId: Int?
+    open val duration: Int = Snackbar.LENGTH_LONG
+    open val anchorViewId: Int? = null
 
     data class TextMessage(
         override val message: String,
-        override val duration: Int = Snackbar.LENGTH_LONG,
         @IdRes override val anchorViewId: Int? = null,
     ) : Notify()
 
     data class ActionMessage(
         override val message: String,
-        override val duration: Int = Snackbar.LENGTH_LONG,
         val actionLabel: String,
-        @IdRes override val anchorViewId: Int? = null,
         val actionHandler: (() -> Unit)
     ) : Notify()
 
@@ -224,9 +226,13 @@ sealed class Notify() {
         override val message: String,
         override val duration: Int = Snackbar.LENGTH_INDEFINITE,
         val errLabel: String? = null,
-        @IdRes override val anchorViewId: Int? = null,
         val errHandler: (() -> Unit)? = null
     ) : Notify()
+
+    data class ToastMessage(
+        override val message: String,
+        override val duration: Int = Toast.LENGTH_LONG
+    ): Notify()
 }
 
 sealed class NavigationCommand() {

@@ -1,5 +1,9 @@
 package ru.mulledwine.shiftsredesigned.ui.shifttype
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Menu
@@ -9,10 +13,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_shift_type.*
 import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime
+import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
 import ru.mulledwine.shiftsredesigned.extensions.getTrimmedString
 import ru.mulledwine.shiftsredesigned.extensions.hideKeyboard
+import ru.mulledwine.shiftsredesigned.ui.AlarmActivity
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
@@ -109,10 +115,10 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
 
         // listen for time pick
         setFragmentResultListener(TimePickerDialog.TIME_PICKER_KEY) { _, bundle ->
-            val shiftTime = bundle[TimePickerDialog.PICK_ACTION_KEY] as ShiftTime
+            val time = bundle[TimePickerDialog.PICK_ACTION_KEY] as ClockTime
             when (bundle.getInt(TimePickerDialog.VIEW_KEY)) {
-                tv_shift_type_start.id -> binding.start = shiftTime
-                tv_shift_type_finish.id -> binding.finish = shiftTime
+                tv_shift_type_start.id -> binding.start = time
+                tv_shift_type_finish.id -> binding.finish = time
             }
         }
 
@@ -133,11 +139,11 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
 
     inner class ShiftTypeBinding : Binding() {
 
-        var start: ShiftTime by RenderProp(ShiftTime()) {
+        var start: ClockTime by RenderProp(ClockTime()) {
             tv_shift_type_start.text = it.toString()
         }
 
-        var finish: ShiftTime by RenderProp(ShiftTime()) {
+        var finish: ClockTime by RenderProp(ClockTime()) {
             tv_shift_type_finish.text = it.toString()
         }
 
@@ -145,8 +151,8 @@ class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
             tv_shift_type_start.isEnabled = !it
             tv_shift_type_finish.isEnabled = !it
             if (it) {
-                start = ShiftTime()
-                finish = ShiftTime()
+                start = ClockTime()
+                finish = ClockTime()
             }
         }
 

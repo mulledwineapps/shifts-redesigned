@@ -1,28 +1,16 @@
 package ru.mulledwine.shiftsredesigned.data.local
 
 import androidx.room.TypeConverter
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime
-import ru.mulledwine.shiftsredesigned.utils.Utils
-import java.util.*
+import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
+import ru.mulledwine.shiftsredesigned.extensions.toClockTime
+import ru.mulledwine.shiftsredesigned.extensions.toLong
 
-class CalendarConverter {
+class ClockTimeConverter {
     @TypeConverter
-    fun timestampToCalendar(timestamp: Long?): Calendar? = timestamp?.let {
-        Utils.getCalendarInstance(timestamp)
+    fun longToClockTime(time: Long?): ClockTime? {
+        return time?.toClockTime()
     }
 
     @TypeConverter
-    fun calendarToTimestamp(calendar: Calendar?): Long? = calendar?.timeInMillis
-}
-
-class ShiftTimeConverter {
-    @TypeConverter
-    fun timeToShiftTime(time: String?): ShiftTime? {
-        time ?: return null
-        val (hour, minute) = time.split(ShiftTime.separator)
-        return ShiftTime(hour.toInt(), minute.toInt())
-    }
-
-    @TypeConverter
-    fun shiftTimeToName(shiftTime: ShiftTime?): String? = shiftTime?.toString()
+    fun clockTimeToLong(clockTime: ClockTime?): Long? = clockTime?.toLong()
 }

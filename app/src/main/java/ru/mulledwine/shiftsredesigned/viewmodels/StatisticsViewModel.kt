@@ -13,6 +13,7 @@ import ru.mulledwine.shiftsredesigned.extensions.mutableLiveData
 import ru.mulledwine.shiftsredesigned.repositories.DaysRepository
 import ru.mulledwine.shiftsredesigned.repositories.JobsRepository
 import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
+import ru.mulledwine.shiftsredesigned.repositories.VacationsRepository
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 class StatisticsViewModel(
@@ -26,6 +27,7 @@ class StatisticsViewModel(
 
     private val jobsRepository = JobsRepository
     private val schedulesRepository = SchedulesRepository
+    private val vacationsRepository = VacationsRepository
     private val daysRepository = DaysRepository
 
     private val jobLive = mutableLiveData(param.jobItem)
@@ -33,6 +35,10 @@ class StatisticsViewModel(
 
     private val schedules = jobLive.switchMap {
         schedulesRepository.findSchedulesWithShifts(it.id)
+    }
+
+    private val vacations = jobLive.switchMap {
+        vacationsRepository.findVacations(it.id)
     }
 
     private val days = monthLive.switchMap {
@@ -44,11 +50,14 @@ class StatisticsViewModel(
             val f = f@{
                 val days = days.value ?: return@f
                 val schedules = schedules.value ?: return@f
-                value = days.getStatisticItems(schedules)
+                val vacations = vacations.value ?: return@f
+
+                value = days.getStatisticItems(schedules, vacations)
             }
 
             value = param.statisticItems
             addSource(schedules) { f.invoke() }
+            addSource(vacations) { f.invoke() }
             addSource(days) { f.invoke() }
         }
 

@@ -1,16 +1,19 @@
 package ru.mulledwine.shiftsredesigned.data.local.entities
 
+import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "jobs")
 data class Job(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val name: String
-) {
+): Parcelable {
     companion object {
         private var counter = 0
         private val jobNames = listOf(

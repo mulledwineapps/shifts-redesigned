@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_shift_type.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 
 class ShiftTypesAdapter(
-    private val longClickListener: ((item: ShiftTypeItem) -> Unit)? = null,
-    private val clickListener: (item: ShiftTypeItem) -> Unit
+    private val longClickListener: ((item: ShiftTypeListItem) -> Unit)? = null,
+    private val clickListener: (item: ShiftTypeListItem) -> Unit
 ) :
-    ListAdapter<ShiftTypeItem, ShiftTypesAdapter.ViewHolder>(DiffCallback()) {
+    ListAdapter<ShiftTypeListItem, ShiftTypesAdapter.ViewHolder>(DiffCallback()) {
 
     companion object {
         private const val TAG = "M_ShiftTypesAdapter"
@@ -44,22 +44,22 @@ class ShiftTypesAdapter(
         override val containerView: View
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(item: ShiftTypeItem) {
+        fun bind(item: ShiftTypeListItem) {
             tv_shift_type_item_name.text = item.name
             tv_shift_type_item_duration.text = item.duration
             v_shift_type_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<ShiftTypeItem>() {
+    class DiffCallback : DiffUtil.ItemCallback<ShiftTypeListItem>() {
         override fun areItemsTheSame(
-            oldItem: ShiftTypeItem,
-            newItem: ShiftTypeItem
+            oldItem: ShiftTypeListItem,
+            newItem: ShiftTypeListItem
         ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: ShiftTypeItem,
-            newItem: ShiftTypeItem
+            oldItem: ShiftTypeListItem,
+            newItem: ShiftTypeListItem
         ): Boolean = oldItem == newItem
     }
 

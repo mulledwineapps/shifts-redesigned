@@ -6,19 +6,17 @@ import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.item_shift_on_main.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
 import ru.mulledwine.shiftsredesigned.data.local.models.*
-import ru.mulledwine.shiftsredesigned.extensions.data.getShiftItems
-import ru.mulledwine.shiftsredesigned.extensions.data.getStatisticItems
-import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
-import ru.mulledwine.shiftsredesigned.extensions.data.toMonth
+import ru.mulledwine.shiftsredesigned.extensions.data.*
 import ru.mulledwine.shiftsredesigned.extensions.mutableLiveData
-import ru.mulledwine.shiftsredesigned.repositories.DaysRepository
-import ru.mulledwine.shiftsredesigned.repositories.JobsRepository
-import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
+import ru.mulledwine.shiftsredesigned.extensions.toAlarmParcelable
+import ru.mulledwine.shiftsredesigned.repositories.*
 import ru.mulledwine.shiftsredesigned.ui.main.MainFragmentDirections
+import ru.mulledwine.shiftsredesigned.ui.vacations.VacationsFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle, MainState()) {
@@ -28,28 +26,53 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
     }
 
     private val daysRepository = DaysRepository
-    private val jobRepository = JobsRepository
+    private val jobsRepository = JobsRepository
     private val schedulesRepository = SchedulesRepository
+    private val alarmRepository = AlarmRepository
+    private val vacationsRepository = VacationsRepository
 
     private val currentDay: MutableLiveData<Day> = mutableLiveData()
     private val schedules = schedulesRepository.findSchedulesWithShifts()
+    private val vacations = vacationsRepository.findVacationsWithJob()
 
     private val shiftItems =
         MediatorLiveData<List<ShiftOnMainItem>>().apply {
             val f = f@{
                 val currentDay = currentDay.value ?: return@f
                 val schedules = schedules.value ?: return@f
-                value = currentDay.getShiftItems(schedules).map {
-                    it.toShiftOnMainItem()
+                val vacations = vacations.value ?: return@f
+
+                val currentVacations = vacations.filter {
+                    currentDay.startTime in it.content.start..it.content.finish
                 }
+
+                val result = currentDay.getShiftItems(schedules).map {
+                    val vacation = currentVacations.firstOrNull { v -> v.job.id == it.jobId }
+                    it.toShiftOnMainItem(vacation?.content?.id, vacation?.content?.getDuration())
+                }
+
+                // отпуска по тем работам, у которых нет текущего графика
+                val notShownVacations =
+                    currentVacations.filterNot { result.any { r -> r.jobId == it.job.id } }
+
+                val vacationsResult = notShownVacations.map {
+                    ShiftOnMainItem(
+                        jobId = it.job.id!!,
+                        jobName = it.job.name,
+                        vacationId = it.content.id,
+                        vacationTitle = it.content.getDuration()
+                    )
+                }
+
+                value = result + vacationsResult
             }
             value = emptyList()
             addSource(currentDay) { f.invoke() }
             addSource(schedules) { f.invoke() }
+            addSource(vacations) { f.invoke() }
         }
 
     init {
-
         launchSafely {
             updateCurrentDay(daysRepository.getDay(Constants.todayId))
         }
@@ -70,7 +93,7 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
 
     fun handleClickAdd(context: Context) {
         launchSafely {
-            val job = jobRepository.getJob()?.toJobItem()
+            val job = jobsRepository.getJob()?.toJobItem()
 
             val action = if (job == null) {
                 MainFragmentDirections.actionNavMainToDialogAddJob()
@@ -84,19 +107,32 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
         }
     }
 
-    fun handleClickEdit(title: String, item: ShiftOnMainItem) {
+    fun handleClickEdit(
+        titleEditSchedule: String,
+        titleEditVacation: String,
+        item: ShiftOnMainItem
+    ) {
         launchSafely {
-            val job = jobRepository.getJob(item.jobId).toJobItem()
-            val schedule = schedulesRepository.getSchedule(item.scheduleId)
-            val action = MainFragmentDirections.actionNavMainToNavSchedule(title, job, schedule)
-            navigateWithAction(action)
+            val job = jobsRepository.getJob(item.jobId).toJobItem()
+
+            if (item.scheduleId != null) {
+                val schedule = schedulesRepository.getScheduleWithShiftItems(item.scheduleId)
+                val action = MainFragmentDirections
+                    .actionNavMainToNavSchedule(titleEditSchedule, job, schedule)
+                navigateWithAction(action)
+            } else if (item.vacationId != null) {
+                val vacation = vacationsRepository.getVacationParcelable(item.vacationId)
+                val action = MainFragmentDirections
+                    .actionNavMainToNavVacation(titleEditVacation, job, vacation)
+                navigateWithAction(action)
+            }
         }
     }
 
     fun handleAddJobThenSchedule(name: String, context: Context) {
         launchSafely {
             val job = Job(name = name)
-            val id = jobRepository.insertJob(job)
+            val id = jobsRepository.insertJob(job)
 
             Log.d(TAG, "handleAddJobThenSchedule: id $id")
 
@@ -119,6 +155,18 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
         }
     }
 
+    fun handleDeleteVacation(vacationId: Int) {
+        launchSafely {
+            vacationsRepository.deleteVacation(vacationId)
+        }
+    }
+
+    fun handleDeleteVacations(ids: List<Int>) {
+        launchSafely {
+            vacationsRepository.deleteVacations(ids)
+        }
+    }
+
     fun navigateToJobs() {
         val action = MainFragmentDirections.actionNavMainToNavJobs()
         navigateWithAction(action)
@@ -126,7 +174,7 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
 
     fun navigateToSchedules(jobId: Int?) {
         launchSafely {
-            val item = jobRepository.getJobWithScheduleItems(jobId)
+            val item = jobsRepository.getJobWithScheduleItems(jobId)
             val action = MainFragmentDirections.actionNavMainToNavSchedules(item)
             navigateWithAction(action)
         }
@@ -139,7 +187,7 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
 
     fun navigateToVacations(jobId: Int?) {
         launchSafely {
-            val item = jobRepository.getJobWithVacationItems(jobId)
+            val item = jobsRepository.getJobWithVacationItems(jobId)
             val action = MainFragmentDirections.actionNavMainToNavVacations(item)
             navigateWithAction(action)
         }
@@ -147,7 +195,7 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
 
     fun navigateToTuning(jobId: Int) {
         launchSafely {
-            val job = jobRepository.getJob(jobId).toJobItem()
+            val job = jobsRepository.getJob(jobId).toJobItem()
             val action = MainFragmentDirections.actionNavMainToNavDaysTuning(job)
             navigateWithAction(action)
         }
@@ -158,14 +206,41 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
 
         launchSafely {
 
-            val job = jobRepository.getJob(jobId).toJobItem()
+            val job = jobsRepository.getJob(jobId).toJobItem()
             val month = currentDay.value!!.toMonth()
             val days = daysRepository.getDays(month)
             val schedules = schedulesRepository.getSchedulesWithShifts(jobId)
-            val statisticItems = days.getStatisticItems(schedules)
+            val vacations = vacationsRepository.getVacations(jobId)
+            val statisticItems = days.getStatisticItems(schedules, vacations)
 
             val item = JobWithStatisticItems(job, month, statisticItems)
             val action = MainFragmentDirections.actionNavMainToNavStatistics(item)
+            navigateWithAction(action)
+        }
+    }
+
+    fun navigateToAlarm(
+        titleAdd: String,
+        titleEdit: String,
+        item: ShiftOnMainItem
+    ) {
+        launchSafely {
+            if (item.shiftId == null || item.scheduleId == null) return@launchSafely
+
+            var alarm = alarmRepository.findAlarm(item.shiftId)?.toAlarmParcelable()
+            val title = if (alarm == null) titleAdd else titleEdit
+            if (alarm == null) {
+                val job = jobsRepository.getJob(item.jobId).toJobItem()
+                val schedule = alarmRepository.getScheduleForAlarm(item.scheduleId)
+                val shift = alarmRepository.getShiftForAlarm(item.shiftId)
+                alarm = AlarmParcelable(
+                    alarm = null,
+                    job = job,
+                    schedule = schedule,
+                    shift = shift
+                )
+            }
+            val action = MainFragmentDirections.actionNavMainToNavAlarm(title, alarm)
             navigateWithAction(action)
         }
     }

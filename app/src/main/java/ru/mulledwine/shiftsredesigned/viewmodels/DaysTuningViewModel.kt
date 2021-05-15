@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toShiftTypeItem
 import ru.mulledwine.shiftsredesigned.repositories.JobsRepository
@@ -23,7 +23,7 @@ class DaysTuningViewModel(handle: SavedStateHandle) :
             .observe(owner, Observer(onChange))
     }
 
-    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeItem>) -> Unit) {
+    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeListItem>) -> Unit) {
         shiftTypeRepository.findShiftTypes().map { list ->
             list.map { it.toShiftTypeItem() }
         }.observe(owner, Observer(onChange))

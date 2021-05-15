@@ -8,7 +8,7 @@ import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toShiftTypeItem
 import ru.mulledwine.shiftsredesigned.repositories.ScheduleRepository
@@ -33,7 +33,7 @@ class ScheduleViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(ha
         }
     }
 
-    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeItem>) -> Unit) {
+    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeListItem>) -> Unit) {
         repository.findShiftTypes().map { list ->
             list.map { it.toShiftTypeItem() }
         }.observe(owner, Observer(onChange))

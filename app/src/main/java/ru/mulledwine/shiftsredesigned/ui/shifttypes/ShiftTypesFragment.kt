@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_shift_types.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.viewmodels.ShiftTypesViewModel
 
@@ -28,11 +28,11 @@ class ShiftTypesFragment : BaseFragment<ShiftTypesViewModel>() {
         )
     }
 
-    private fun itemClickCallback(item: ShiftTypeItem) {
-        viewModel.handleEditShiftType(getString(R.string.shift_type_edit_label), item.id)
+    private fun itemClickCallback(item: ShiftTypeListItem) {
+        viewModel.handleNavigateEditShiftType(getString(R.string.shift_type_edit_label), item.id)
     }
 
-    private fun itemLongClickCallback(item: ShiftTypeItem) {
+    private fun itemLongClickCallback(item: ShiftTypeListItem) {
         root.askWhetherToDelete("Удалить тип смены ${item.name}?") {
             viewModel.handleDeleteShiftType(item.id)
         }

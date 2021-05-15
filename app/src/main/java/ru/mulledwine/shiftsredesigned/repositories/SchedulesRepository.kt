@@ -43,8 +43,8 @@ object SchedulesRepository {
         schedulesDao.deleteSchedules(ids)
     }
 
-    suspend fun getSchedule(id: Int): ScheduleWithShiftItems {
-        val scheduleFull = schedulesDao.getSchedule(id)
+    suspend fun getScheduleWithShiftItems(id: Int): ScheduleWithShiftItems {
+        val scheduleFull = schedulesDao.getScheduleWithShifts(id)
         return ScheduleWithShiftItems(
             id = scheduleFull.schedule.id!!,
             isCyclic = scheduleFull.schedule.isCyclic,

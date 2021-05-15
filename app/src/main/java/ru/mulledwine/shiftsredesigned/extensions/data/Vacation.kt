@@ -6,6 +6,7 @@ import ru.mulledwine.shiftsredesigned.data.local.models.VacationItem
 import ru.mulledwine.shiftsredesigned.data.local.models.VacationParcelable
 import ru.mulledwine.shiftsredesigned.extensions.format
 import ru.mulledwine.shiftsredesigned.extensions.getDaysGenitive
+import ru.mulledwine.shiftsredesigned.extensions.toCalendar
 import ru.mulledwine.shiftsredesigned.utils.Utils
 
 fun Vacation.toVacationItem(shiftType: ShiftType? = null): VacationItem {
@@ -24,8 +25,8 @@ fun Vacation.toVacationParcelable(shiftType: ShiftType? = null) = VacationParcel
 )
 
 fun Vacation.getDuration(): String {
-    val start = Utils.getCalendarInstance(start).format()
-    val finish = Utils.getCalendarInstance(finish).format()
+    val start = start.toCalendar().format()
+    val finish = finish.toCalendar().format()
     return "$start - $finish"
 }
 

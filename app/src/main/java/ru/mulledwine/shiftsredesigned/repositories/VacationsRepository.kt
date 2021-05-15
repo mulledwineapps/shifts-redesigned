@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
+import ru.mulledwine.shiftsredesigned.data.local.entities.VacationWithJob
 import ru.mulledwine.shiftsredesigned.data.local.models.VacationParcelable
 import ru.mulledwine.shiftsredesigned.extensions.data.toVacationParcelable
 
@@ -18,8 +19,16 @@ object VacationsRepository {
         return jobsDao.findJobs()
     }
 
+    fun findVacationsWithJob(): LiveData<List<VacationWithJob>> {
+        return vacationsDao.findVacationsWithJob()
+    }
+
     fun findVacations(jobId: Int): LiveData<List<Vacation>> {
-        return vacationsDao.findVacations(jobId)
+        return vacationsDao.findVacationsWithJob(jobId)
+    }
+
+    suspend fun getVacations(jobId: Int): List<Vacation> {
+        return vacationsDao.getVacationsByJob(jobId)
     }
 
     suspend fun deleteVacation(id: Int) {

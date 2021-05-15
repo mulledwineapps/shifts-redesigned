@@ -16,5 +16,5 @@ data class VacationParcelable(
     val id: Int,
     val start: Long,
     val finish: Long,
-    val shiftTypeItem: ShiftTypeItem?
+    val shiftTypeItem: ShiftTypeListItem?
 ) : Parcelable

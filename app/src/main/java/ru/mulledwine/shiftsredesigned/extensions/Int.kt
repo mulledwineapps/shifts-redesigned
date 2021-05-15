@@ -32,6 +32,17 @@ fun Int.getVacationGenitive(): String {
     }
 }
 
+fun Int.getAlarmGenitive(): String {
+    return when (this) {
+        in 11..14 -> "$this выбранных будильников"
+        else -> when (this % 10) {
+            1 -> "$this выбранный будильник"
+            in 2..4 -> "$this выбранных будильника"
+            else -> "$this выбранных будильников"
+        }
+    }
+}
+
 fun Int.getDaysGenitive(): String {
     return when (this) {
         in 11..14 -> "$this дней"

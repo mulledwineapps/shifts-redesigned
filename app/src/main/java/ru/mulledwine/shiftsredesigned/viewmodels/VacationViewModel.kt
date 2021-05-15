@@ -21,6 +21,19 @@ class VacationViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(ha
     }
 
     fun handleClickSave(item: Vacation) {
+
+        if (item.start == 0L) {
+            val notify = Notify.ErrorMessage("Не задан первый день отпуска")
+            notify(notify)
+            return
+        }
+
+        if (item.finish == 0L) {
+            val notify = Notify.ErrorMessage("Не задан последний день отпуска")
+            notify(notify)
+            return
+        }
+
         launchSafely {
             repository.upsertVacation(item)
             navigateUp()

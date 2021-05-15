@@ -19,6 +19,14 @@ interface JobsDao : BaseDao<Job> {
     )
     fun findJobs(): LiveData<List<Job>>
 
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM jobs
+        """
+    )
+    fun findJobsWithVacations(): LiveData<List<JobWithVacations>>
+
     @Query(
         """
             SELECT * from jobs WHERE id = :id

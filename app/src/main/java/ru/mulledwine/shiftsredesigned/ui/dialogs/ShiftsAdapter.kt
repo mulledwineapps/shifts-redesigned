@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_shift.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftItem
 
 class ShiftsAdapter(
-    private val clickListener: (item: ScheduleShiftItem) -> Unit
+    private val clickListener: (item: ShiftItem) -> Unit
 ) :
-    ListAdapter<ScheduleShiftItem, ShiftsAdapter.ViewHolder>(DiffCallback()) {
+    ListAdapter<ShiftItem, ShiftsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -35,7 +35,7 @@ class ShiftsAdapter(
         override val containerView: View
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(item: ScheduleShiftItem) {
+        fun bind(item: ShiftItem) {
             tv_shift_item_ordinal.text = item.ordinal.toString()
             tv_shift_item_name.text = item.typeName
             tv_shift_item_duration.text = item.duration
@@ -43,15 +43,15 @@ class ShiftsAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<ScheduleShiftItem>() {
+    class DiffCallback : DiffUtil.ItemCallback<ShiftItem>() {
         override fun areItemsTheSame(
-            oldItem: ScheduleShiftItem,
-            newItem: ScheduleShiftItem
-        ): Boolean = oldItem.shiftId == newItem.shiftId
+            oldItem: ShiftItem,
+            newItem: ShiftItem
+        ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: ScheduleShiftItem,
-            newItem: ScheduleShiftItem
+            oldItem: ShiftItem,
+            newItem: ShiftItem
         ): Boolean = oldItem == newItem
     }
 

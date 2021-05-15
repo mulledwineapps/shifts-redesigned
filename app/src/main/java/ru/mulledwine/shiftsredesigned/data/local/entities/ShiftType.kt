@@ -1,11 +1,9 @@
 package ru.mulledwine.shiftsredesigned.data.local.entities
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import kotlinx.android.parcel.Parcelize
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTime
+import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
 import ru.mulledwine.shiftsredesigned.utils.Utils
 
 @Parcelize
@@ -19,8 +17,8 @@ data class ShiftType(
     val isDayOff: Boolean,
     @ColumnInfo(name = "is_full_day")
     val isFullDay: Boolean,
-    val start: ShiftTime = ShiftTime(0, 0),
-    val finish: ShiftTime = ShiftTime(0, 0)
+    val start: ClockTime = ClockTime(0, 0),
+    val finish: ClockTime = ClockTime(0, 0)
 ) : Parcelable {
 
     companion object {
@@ -45,8 +43,8 @@ data class ShiftType(
                         name = it,
                         isDayOff = isFullDay,
                         isFullDay = isFullDay,
-                        start = ShiftTime.random(),
-                        finish = ShiftTime.random(),
+                        start = ClockTime.random(),
+                        finish = ClockTime.random(),
                         color = Utils.getRandomColor(),
                     )
                 }

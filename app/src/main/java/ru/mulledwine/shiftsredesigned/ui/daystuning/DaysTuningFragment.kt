@@ -16,7 +16,7 @@ import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.Month
 import ru.mulledwine.shiftsredesigned.data.local.models.Months
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.extensions.data.next
 import ru.mulledwine.shiftsredesigned.extensions.data.previous
 import ru.mulledwine.shiftsredesigned.extensions.daysFromWeekStart
@@ -62,7 +62,7 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
         // listen for shift type pick
         setFragmentResultListener(ChooseShiftTypeDialog.CHOOSE_SHIFT_TYPE_KEY) { _, bundle ->
-            val shiftTypeItem = bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeItem
+            val shiftTypeItem = bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeListItem
             selectedShiftTypeId = shiftTypeItem.id
             tv_shift_type_item_name.text = shiftTypeItem.name
             tv_shift_type_item_duration.text = shiftTypeItem.duration
@@ -130,7 +130,7 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
     inner class DaysTuningBinding : Binding() {
 
         var jobItems: List<JobItem> = emptyList()
-        var shiftTypeItems: List<ShiftTypeItem> = emptyList()
+        var shiftTypeItems: List<ShiftTypeListItem> = emptyList()
 
         var jobName: String by RenderProp(args.job.name) {
             tv_tuning_job.text = it

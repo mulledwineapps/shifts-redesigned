@@ -31,6 +31,7 @@
     <string name="title_schedules">Графики</string>
     <string name="title_shift_types">Смены</string>
     <string name="title_vacations">Отпуска</string>
+    <string name="title_alarms">Будильники</string>
     <string name="title_settings">Настройки</string>
 
     <!-- jobs screen -->
@@ -57,6 +58,11 @@
     <string name="schedule_setup_shifts_btn_title">Задать смены</string>
     <string name="schedule_setup_cycle_btn_title">Задать цикл смен</string>
     <string name="schedule_add_shift_btn_title">Добавить смену</string>
+
+    <!-- alarm screen -->
+    <string name="alarm_belongs_job_title">Работа</string>
+    <string name="alarm_belongs_schedule_title">График</string>
+    <string name="alarm_belongs_shift_title">Смена</string>
 
     <!-- vacations screen -->
     <string name="label_vacations">Отпуска</string>
@@ -91,8 +97,9 @@
     <string name="settings_description_melody">Выбрать</string>
 
     <!-- dialogs -->
-    <string name="label_choose_shift">Выбрать смену</string>
     <string name="label_choose_job">Выбрать работу</string>
+    <string name="label_choose_schedule">Выбрать график</string>
+    <string name="label_choose_shift">Выбрать смену</string>
     <string name="label_choose_month">Выбрать месяц</string>
     <string name="label_choose_shift_color">Выбрать цвет смены</string>
 
@@ -104,6 +111,7 @@
     <!-- menu item titles -->
     <string name="menu_item_edit">Редактировать</string>
     <string name="menu_item_delete">Удалить</string>
+    <string name="menu_item_alarm">Будильник</string>
     <string name="menu_item_statistics">Статистика</string>
     <string name="menu_item_vacations">Настроить отпуска</string>
     <string name="menu_item_archive">Архивировать</string>
@@ -150,6 +158,11 @@
     <!-- statistics screen -->
     <string name="label_statistics">Статистика</string>
     <string name="statistics_choose_period_title">Выбрать период</string>
+
+    <!-- alarms screen -->
+    <string name="label_alarms">Будильники</string>
+    <string name="alarm_add_label">Новый будильник</string>
+    <string name="alarm_edit_label">Редактировать будильник</string>
 
     <!-- misc -->
     <string name="empty_yet_placeholder">Здесь пока пусто</string>

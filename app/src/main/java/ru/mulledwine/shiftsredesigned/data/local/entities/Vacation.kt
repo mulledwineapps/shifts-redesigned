@@ -1,9 +1,6 @@
 package ru.mulledwine.shiftsredesigned.data.local.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = "vacations",
@@ -28,7 +25,16 @@ data class Vacation(
     @ColumnInfo(name = "job_id", index = true)
     val jobId: Int,
     val start: Long,
-    val finish: Long,
+    val finish: Long, // нулевая миллисекунда последнего дня отпуска
     @ColumnInfo(name = "first_shift_id", index = true)
     val firstShiftId: Int? // первая рабочая смена после отпуска
+)
+
+data class VacationWithJob(
+    @Embedded val content: Vacation,
+    @Relation(
+        parentColumn = "job_id",
+        entityColumn = "id"
+    )
+    val job: Job
 )

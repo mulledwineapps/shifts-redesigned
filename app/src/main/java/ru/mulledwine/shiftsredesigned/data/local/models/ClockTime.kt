@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 //import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ShiftTime(
+data class ClockTime(
     val hour: Int = 0,
     val minute: Int = 0
 ) : Parcelable {
@@ -14,7 +14,7 @@ data class ShiftTime(
     companion object {
         const val separator = ":"
 
-        fun random() = ShiftTime((0..23).random(), 10 * (1..5).random())
+        fun random() = ClockTime((0..23).random(), 10 * (1..5).random())
     }
 
    override fun toString(): String {

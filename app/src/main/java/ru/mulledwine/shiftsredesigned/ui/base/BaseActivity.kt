@@ -53,7 +53,8 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
             renderLoading(it)
         }
 
-        navController = findNavController(R.id.nav_host_fragment)
+        if (findViewById<View>(R.id.nav_host_fragment) != null) // TODO проверка только ради AlarmActivity
+            navController = findNavController(R.id.nav_host_fragment)
 
         val dialogView = View.inflate(this, R.layout.dialog_progress_bar, null)
         progressDialog =

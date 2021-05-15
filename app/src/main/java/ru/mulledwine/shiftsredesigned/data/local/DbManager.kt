@@ -30,14 +30,15 @@ object DbManager {
         Schedule::class,
         ShiftType::class,
         Shift::class,
-        Vacation::class
+        Vacation::class,
+        Alarm::class
     ],
     version = AppDb.DATABASE_VERSION,
     exportSchema = true,
-    views = [ShiftsWithTypeView::class]
+    views = [ShiftsWithTypeView::class, AlarmView:: class]
 )
 
-@TypeConverters(CalendarConverter::class, ShiftTimeConverter::class)
+@TypeConverters(ClockTimeConverter::class)
 abstract class AppDb : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = BuildConfig.APPLICATION_ID + ".db"
@@ -50,4 +51,5 @@ abstract class AppDb : RoomDatabase() {
     abstract fun shiftsDao(): ShiftsDao
     abstract fun shiftTypesDao(): ShiftTypesDao
     abstract fun vacationsDao(): VacationsDao
+    abstract fun alarmsDao(): AlarmsDao
 }

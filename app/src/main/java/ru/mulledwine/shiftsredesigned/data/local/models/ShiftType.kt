@@ -6,7 +6,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ShiftTypeItem(
     val id: Int,
-    val name: String,
-    val duration: String,
-    val color: Int
-): Parcelable
+    val name: String
+) : Parcelable

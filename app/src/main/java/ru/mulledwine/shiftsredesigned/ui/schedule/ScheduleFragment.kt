@@ -14,8 +14,9 @@ import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
-import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeItem
+import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
+import ru.mulledwine.shiftsredesigned.extensions.toCalendar
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp
@@ -62,7 +63,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
         // listen for shift type pick
         setFragmentResultListener(ChooseShiftTypeDialog.CHOOSE_SHIFT_TYPE_KEY) { _, bundle ->
 
-            val shiftTypeItem = bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeItem
+            val shiftTypeItem = bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeListItem
             val currentItemId = bundle.getInt(ChooseShiftTypeDialog.CURRENT_ITEM_ID)
             val copy = scheduleShiftsAdapter.currentList
 
@@ -262,7 +263,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
     inner class ScheduleBinding : Binding() {
 
-        var shiftTypeItems: List<ShiftTypeItem> = emptyList()
+        var shiftTypeItems: List<ShiftTypeListItem> = emptyList()
         val shiftIdsToDelete: MutableList<Int> = mutableListOf()
 
         var jobItems: List<JobItem> = emptyList()
@@ -273,12 +274,12 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
         var start: Long by RenderProp(0L) {
             tv_schedule_start.text = if (it == 0L) ""
-            else Utils.getCalendarInstance(it).formatAndCapitalize()
+            else it.toCalendar().formatAndCapitalize()
         }
 
         var finish: Long by RenderProp(0L) {
             tv_schedule_finish.text = if (it == 0L) ""
-            else Utils.getCalendarInstance(it).formatAndCapitalize()
+            else it.toCalendar().formatAndCapitalize()
         }
 
         var isCyclic: Boolean by RenderProp(false) {

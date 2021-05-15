@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_item_alarm"
+        android:icon="@drawable/ic_round_alarm_24"
+        android:title="@string/menu_item_alarm"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_item_statistics"
         android:icon="@drawable/ic_round_insert_chart_outlined_24"
         android:title="@string/menu_item_statistics"

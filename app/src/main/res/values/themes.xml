@@ -18,6 +18,11 @@
         <item name="android:textColor">@color/bright_gray</item>
     </style>
 
+    <style name="Theme.FullScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/bright_gray</item>

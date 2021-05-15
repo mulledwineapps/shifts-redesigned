@@ -15,9 +15,7 @@ import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftOnMainItem
-import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
-import ru.mulledwine.shiftsredesigned.extensions.getDayId
-import ru.mulledwine.shiftsredesigned.extensions.getScheduleGenitive
+import ru.mulledwine.shiftsredesigned.extensions.*
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.base.BottombarBuilder
@@ -137,15 +135,40 @@ class MainFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun onDeleteRequested() {
+        // TODO показывать одно окно с запросом на оба типа
         val selected = shiftsAdapter.selectedItems
-        val message = if (selected.size == 1) {
-            val item = selected.first()
-            "Удалить график?\n\n${item.scheduleDuration}\n${item.jobName}"
-        } else "Удалить ${selected.size.getScheduleGenitive()}?"
+        val schedules = selected.filter { it.scheduleId != null }
+        onSchedulesDeleteRequested(schedules)
+        val vacations = selected.filter { it.vacationId != null }
+        onVacationsDeleteRequested(vacations)
+    }
+
+    private fun onVacationsDeleteRequested(items: List<ShiftOnMainItem>) {
+        if (items.isEmpty()) return
+
+        val message = if (items.size == 1) {
+            val item = items.first()
+            "Удалить отпуск?\n\n${item.vacationTitle}\n${item.jobName}"
+        } else "Удалить ${items.size.getVacationGenitive()}?"
 
         root.askWhetherToDelete(message) {
-            if (selected.size == 1) viewModel.handleDeleteSchedule(selected.first().scheduleId)
-            else viewModel.handleDeleteSchedules(selected.map { it.scheduleId })
+            if (items.size == 1) viewModel.handleDeleteVacation(items.first().vacationId!!)
+            else viewModel.handleDeleteVacations(items.map { it.vacationId!! })
+            disableSelectionMode()
+        }
+    }
+
+    private fun onSchedulesDeleteRequested(items: List<ShiftOnMainItem>) {
+        if (items.isEmpty()) return
+
+        val message = if (items.size == 1) {
+            val item = items.first()
+            "Удалить график?\n\n${item.scheduleTitle}\n${item.jobName}"
+        } else "Удалить ${items.size.getScheduleGenitive()}?"
+
+        root.askWhetherToDelete(message) {
+            if (items.size == 1) viewModel.handleDeleteSchedule(items.first().scheduleId!!)
+            else viewModel.handleDeleteSchedules(items.map { it.scheduleId!! })
             disableSelectionMode()
         }
     }
@@ -159,7 +182,8 @@ class MainFragment : BaseFragment<MainViewModel>() {
     private fun itemClickCallback(item: ShiftOnMainItem) {
         if (isSelectionMode) onSelectionChanged()
         else viewModel.handleClickEdit(
-            title = getString(R.string.label_edit_schedule),
+            titleEditSchedule = getString(R.string.label_edit_schedule),
+            titleEditVacation = getString(R.string.label_edit_vacation),
             item = item
         )
     }
@@ -198,7 +222,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun updateTitle(day: Day) {
-        val calendar = Utils.getCalendarInstance(day.startTime)
+        val calendar = day.startTime.toCalendar()
         updateTitle(calendar)
     }
 
@@ -219,12 +243,18 @@ class MainFragment : BaseFragment<MainViewModel>() {
         when (item.itemId) {
             R.id.menu_item_delete -> onDeleteRequested()
             R.id.menu_item_tuning -> viewModel.navigateToTuning(shiftsAdapter.selectedItems.first().jobId)
+            R.id.menu_item_alarm -> viewModel.navigateToAlarm(
+                getString(R.string.alarm_add_label),
+                getString(R.string.alarm_edit_label),
+                shiftsAdapter.selectedItems.first()
+            )
             R.id.menu_item_statistics -> viewModel.navigateToStatistics(shiftsAdapter.selectedItems.first().jobId)
             R.id.menu_item_jobs -> navigateToJobs()
             R.id.menu_item_schedules -> navigateToSchedules()
             R.id.menu_item_shift_types -> navigateToShiftTypes()
             R.id.menu_item_vacations -> navigateToVacations()
             R.id.menu_item_settings -> navigateToSettings()
+            R.id.menu_item_alarms -> navigateToAlarms()
         }
 
         return true
@@ -241,6 +271,11 @@ class MainFragment : BaseFragment<MainViewModel>() {
         viewModel.navigateWithAction(action)
     }
 
+    private fun navigateToAlarms() {
+        val action = MainFragmentDirections.actionNavMainToNavAlarms()
+        viewModel.navigateWithAction(action)
+    }
+
     private fun navigateToJobs() {
         viewModel.navigateToJobs()
     }
@@ -254,7 +289,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun navigateToVacations() {
-        viewModel.navigateToVacations(shiftsAdapter.selectedItems.firstOrNull()?.scheduleId)
+        viewModel.navigateToVacations(shiftsAdapter.selectedItems.firstOrNull()?.jobId)
     }
 
     inner class MainBinding : Binding() {

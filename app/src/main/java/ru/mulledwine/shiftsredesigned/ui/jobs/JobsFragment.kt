@@ -99,11 +99,6 @@ class JobsFragment : BaseFragment<JobsViewModel>() {
         viewModel.navigateJobDialog()
     }
 
-    private fun navigateEditJob() {
-        val selected = jobsAdapter.selectedItems
-        viewModel.navigateJobDialog(selected.first())
-    }
-
     private fun onDeleteRequested() {
         val selected = jobsAdapter.selectedItems
         val message = if (selected.size == 1) "Удалить работу ${selected.first().name}?"
@@ -120,7 +115,6 @@ class JobsFragment : BaseFragment<JobsViewModel>() {
     private fun itemClickCallback(item: JobItem) {
         if (isSelectionMode) onSelectionChanged()
         else viewModel.navigateJobDialog(item)
-        // viewModel.handleNavigateToSchedules(item.id)
     }
 
     private fun onSelectionChanged() {

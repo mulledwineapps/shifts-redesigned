@@ -41,7 +41,7 @@ class MainAdapter(
             true
         }
         holder.bind(item)
-        holder.setSelection(selectedItems.contains(item))
+        holder.setSelection(selectedItems.contains(item), item.shiftId != null)
     }
 
     fun clearSelection() {
@@ -52,10 +52,10 @@ class MainAdapter(
     private fun handleSelection(item: ShiftOnMainItem, holder: ViewHolder) {
         if (selectedItems.contains(item)) {
             selectedItems.remove(item)
-            holder.setSelection(false)
+            holder.setSelection(false, item.shiftId != null)
         } else {
             selectedItems.add(item)
-            holder.setSelection(true)
+            holder.setSelection(true, item.shiftId != null)
         }
     }
 
@@ -65,16 +65,34 @@ class MainAdapter(
 
         fun bind(item: ShiftOnMainItem) {
             tv_main_item_name.text = item.jobName
-            tv_main_item_description.text = item.description
-            v_main_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
-            iv_main_item_check.imageTintList = ColorStateList.valueOf(item.color)
+
+            tv_main_item_description.text = when {
+                item.shiftDetails != null -> item.shiftDetails
+                item.scheduleId == null -> "График не задан"
+                item.shiftId == null -> "Смена не задана"
+                else -> ""
+            }
+
+            if (item.color == null) {
+                v_main_item_colored_dot.isVisible = false
+                iv_main_item_check.imageTintList = ColorStateList.valueOf(Constants.brightGray54)
+            } else {
+                v_main_item_colored_dot.isVisible = true
+                v_main_item_colored_dot.backgroundTintList = ColorStateList.valueOf(item.color)
+                iv_main_item_check.imageTintList = ColorStateList.valueOf(item.color)
+            }
+            iv_main_item_vacation.isVisible = item.vacationId != null
         }
 
-        fun setSelection(isSelected: Boolean) {
+        fun setSelection(isSelected: Boolean, isThereShift: Boolean) {
             val color = if (isSelected) Constants.selectionColor else Color.WHITE
             containerView.backgroundTintList = ColorStateList.valueOf(color)
-            v_main_item_color.isVisible = !isSelected
             iv_main_item_check.isVisible = isSelected
+            setDotVisibility(isVisible = !isSelected && isThereShift)
+        }
+
+        private fun setDotVisibility(isVisible: Boolean) {
+            v_main_item_colored_dot.isVisible = isVisible
         }
     }
 

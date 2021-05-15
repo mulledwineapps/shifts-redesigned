@@ -30,7 +30,7 @@ class ChooseJobDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        jobsAdapter.submitList(args.jobs.toList())
+        jobsAdapter.submitList(args.items.toList())
 
         val rvJobs = RecyclerView(requireContext()).apply {
             adapter = jobsAdapter
