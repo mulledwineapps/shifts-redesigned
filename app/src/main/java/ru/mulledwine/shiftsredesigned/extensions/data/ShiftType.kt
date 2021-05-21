@@ -6,7 +6,7 @@ import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 fun ShiftType.toShiftTypeItem(): ShiftTypeListItem {
     return ShiftTypeListItem(
         id = id!!,
-        duration = getDuration(),
+        title = getDuration(),
         name = name,
         color = color
     )

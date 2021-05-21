@@ -28,6 +28,10 @@ object AlarmRepository {
         return alarmsDao.insert(alarm)
     }
 
+    suspend fun getAlarm(id: Int): Alarm {
+        return alarmsDao.getAlarm(id)
+    }
+
     suspend fun findAlarm(shiftId: Int): AlarmView? {
         return alarmsDao.findAlarm(shiftId)
     }

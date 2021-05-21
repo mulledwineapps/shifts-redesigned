@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_vacation.btn_choose_shift_type
 import kotlinx.android.synthetic.main.item_shift_type.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
-import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleShiftItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftItem
 import ru.mulledwine.shiftsredesigned.extensions.formatAndCapitalize
 import ru.mulledwine.shiftsredesigned.extensions.hideKeyboard
@@ -99,7 +98,7 @@ class VacationFragment : BaseFragment<VacationViewModel>() {
             binding.firstShiftId = it.shiftTypeItem?.id
 
             it.shiftTypeItem?.let { shiftType ->
-                updateFirstShift(shiftType.name, shiftType.duration, shiftType.color)
+                updateFirstShift(shiftType.name, shiftType.title, shiftType.color)
             }
         }
 

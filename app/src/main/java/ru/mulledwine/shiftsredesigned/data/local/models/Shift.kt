@@ -53,5 +53,5 @@ data class ShiftForAlarm(
     val ordinal: Int,
     val name: String,
     val start: ClockTime,
-    val duration: Long
+    val finish: ClockTime
 ) : Parcelable

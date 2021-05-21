@@ -65,7 +65,7 @@ class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
             val shiftTypeItem = bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeListItem
             selectedShiftTypeId = shiftTypeItem.id
             tv_shift_type_item_name.text = shiftTypeItem.name
-            tv_shift_type_item_duration.text = shiftTypeItem.duration
+            tv_shift_type_item_duration.text = shiftTypeItem.title
             v_shift_type_item_color.backgroundTintList = ColorStateList.valueOf(shiftTypeItem.color)
             tv_shift_placeholder.isVisible = false
         }

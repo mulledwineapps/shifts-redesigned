@@ -3,6 +3,7 @@ package ru.mulledwine.shiftsredesigned.viewmodels
 import android.util.Log
 import androidx.lifecycle.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.data.local.models.*
 import ru.mulledwine.shiftsredesigned.extensions.*
@@ -16,7 +17,7 @@ import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 class AlarmViewModel(
     handle: SavedStateHandle,
-    param: AlarmParcelable // TODO если сделать по умолчанию null? тогда job, schedule и shift смогут быть non-nullable
+    param: AlarmFullParcelable // TODO если сделать по умолчанию null? тогда job, schedule и shift смогут быть non-nullable
 ) : BaseViewModel<AlarmState>(
     handle,
     AlarmState(
@@ -147,7 +148,7 @@ class AlarmViewModel(
     fun handleClickSave(
         isActive: Boolean,
         label: String,
-        handleAlarm: (alarmId: Int, time: Long) -> Unit
+        handleAlarm: (alarm: AlarmParcelable, time: Long) -> Unit
     ) {
 
         if (jobLive.value == null) {
@@ -189,20 +190,21 @@ class AlarmViewModel(
                 label = label
             )
 
-            val alarmId = if (alarmParam == null) {
-                repository.createAlarm(alarm).toInt()
+            val alarmParcelable = if (alarmParam == null) {
+                val id = repository.createAlarm(alarm).toInt()
+                repository.getAlarm(id).toAlarmParcelable()
             } else {
                 repository.updateAlarm(alarm)
-                alarmParam.id
+                alarmParam
             }
 
             // TODO Если возникла ошибка, не сохранять будильник
             // какая у андроида защита от кривых повторяющихся будильников?
             // TODO контролировать минимальный интервал между будильниками
 
-            handleAlarm(alarmId, alarmTime)
+            handleAlarm(alarmParcelable, alarmTime)
             if (isActive) {
-                notify(Notify.TextMessage("Будильник сработает ${alarmTime.whenWillHappen()}"))
+                notify(Notify.TextMessage("Будильник сработает ${alarmTime.whenHappen()}"))
             } else {
                 makeToast("Будильник выключен")
             }
@@ -214,7 +216,8 @@ class AlarmViewModel(
     private fun getAlarmInfo(): String {
         val now = Utils.getTime()
         val shiftStart = getShiftStart()
-        val shiftFinish = shiftStart + shiftLive.value!!.duration
+        val duration = shiftLive.value!!.finish - shiftLive.value!!.start
+        val shiftFinish = shiftStart + duration.toLong()
         if (shiftFinish - now < 0L) {
             return "Смена уже закончилась"
         }

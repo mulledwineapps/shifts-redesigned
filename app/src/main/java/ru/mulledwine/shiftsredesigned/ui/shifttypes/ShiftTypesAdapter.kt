@@ -46,7 +46,7 @@ class ShiftTypesAdapter(
 
         fun bind(item: ShiftTypeListItem) {
             tv_shift_type_item_name.text = item.name
-            tv_shift_type_item_duration.text = item.duration
+            tv_shift_type_item_duration.text = item.title
             v_shift_type_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
         }
     }

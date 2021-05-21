@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
+import com.google.android.material.snackbar.Snackbar
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
@@ -25,15 +26,30 @@ class ScheduleViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(ha
     fun handleClickSave(
         schedule: Schedule,
         shiftsToUpsert: List<ScheduleShiftItem>,
-        shiftIdsToDelete: List<Int>
+        shiftIdsToDelete: List<Int>,
+        cancelAlarmsCallback: (ids: List<Int>) -> Unit
     ) {
         launchSafely {
             repository.upsertSchedule(schedule, shiftsToUpsert, shiftIdsToDelete)
+            val shiftsWereChanged = shiftsToUpsert.filter { it.shiftId != it.originalShiftTypeId }
+            val alarmsToCancel = shiftsWereChanged.mapNotNull {
+                repository.getAlarmId(it.shiftId)
+            }
+            if (alarmsToCancel.isNotEmpty()) {
+                cancelAlarmsCallback(alarmsToCancel)
+                val message = "Будильники для изменённых смен были отключены"
+                notify(Notify.ActionMessage(message, Snackbar.LENGTH_INDEFINITE, "ОК") {})
+            }
             navigateUp()
+            // TODO был случай, когда изменение смены не отразилось в календаре для сегодняшнего дня
+            // не удалось повторить
         }
     }
 
-    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeListItem>) -> Unit) {
+    fun observeShiftTypes(
+        owner: LifecycleOwner,
+        onChange: (list: List<ShiftTypeListItem>) -> Unit
+    ) {
         repository.findShiftTypes().map { list ->
             list.map { it.toShiftTypeItem() }
         }.observe(owner, Observer(onChange))

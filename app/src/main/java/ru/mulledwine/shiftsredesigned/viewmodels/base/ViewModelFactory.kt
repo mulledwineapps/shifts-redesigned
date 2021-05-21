@@ -6,7 +6,7 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithScheduleItems
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithStatisticItems
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithVacationItems
@@ -48,7 +48,7 @@ class ViewModelFactory(
         if (modelClass.isAssignableFrom(AlarmViewModel::class.java)) {
             return AlarmViewModel(
                 handle,
-                params as AlarmParcelable
+                params as AlarmFullParcelable
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

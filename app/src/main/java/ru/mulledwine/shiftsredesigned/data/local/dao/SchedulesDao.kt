@@ -97,6 +97,13 @@ interface SchedulesDao : BaseDao<Schedule> {
     )
     suspend fun deleteShift(id: Int)
 
+    @Query(
+        """
+            UPDATE alarms SET is_active = 0 WHERE shift_id = :shiftId
+        """
+    )
+    suspend fun deactivateAlarm(shiftId: Int)
+
     @Transaction
     suspend fun upsertSchedule(
         schedule: Schedule,
@@ -126,6 +133,9 @@ interface SchedulesDao : BaseDao<Schedule> {
                         ordinal = it.ordinal
                     )
                     updateShift(shift)
+                    // если изменилась смена, отменить будильники
+                    if (it.shiftId != it.originalShiftTypeId)
+                        deactivateAlarm(it.shiftId)
                 }
             }
         }

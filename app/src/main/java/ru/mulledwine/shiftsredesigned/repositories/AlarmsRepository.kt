@@ -2,6 +2,7 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmView
 
 object AlarmsRepository {
@@ -13,7 +14,11 @@ object AlarmsRepository {
         return alarmsDao.findAlarms()
     }
 
-    suspend fun getAlarm(id: Int): AlarmView {
+    suspend fun getAlarmFull(id: Int): AlarmView {
+        return alarmsDao.getAlarmFull(id)
+    }
+
+    suspend fun getAlarm(id: Int): Alarm {
         return alarmsDao.getAlarm(id)
     }
 

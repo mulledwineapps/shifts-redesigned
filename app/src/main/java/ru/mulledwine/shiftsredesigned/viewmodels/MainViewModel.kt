@@ -6,7 +6,7 @@ import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.item_shift_on_main.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
@@ -16,7 +16,6 @@ import ru.mulledwine.shiftsredesigned.extensions.mutableLiveData
 import ru.mulledwine.shiftsredesigned.extensions.toAlarmParcelable
 import ru.mulledwine.shiftsredesigned.repositories.*
 import ru.mulledwine.shiftsredesigned.ui.main.MainFragmentDirections
-import ru.mulledwine.shiftsredesigned.ui.vacations.VacationsFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle, MainState()) {
@@ -233,7 +232,7 @@ class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle,
                 val job = jobsRepository.getJob(item.jobId).toJobItem()
                 val schedule = alarmRepository.getScheduleForAlarm(item.scheduleId)
                 val shift = alarmRepository.getShiftForAlarm(item.shiftId)
-                alarm = AlarmParcelable(
+                alarm = AlarmFullParcelable(
                     alarm = null,
                     job = job,
                     schedule = schedule,

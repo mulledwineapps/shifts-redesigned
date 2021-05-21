@@ -19,7 +19,7 @@ import ru.mulledwine.shiftsredesigned.data.local.models.AlarmItem
 class AlarmsAdapter(
     private val longClickListener: (() -> Unit)? = null,
     private val clickListener: (id: Int) -> Unit,
-    private val toggleListener: (id: Int, Boolean) -> Unit
+    private val toggleListener: (alarm: AlarmItem, Boolean) -> Unit
 ) :
     ListAdapter<AlarmItem, AlarmsAdapter.ViewHolder>(DiffCallback()) {
 
@@ -68,7 +68,7 @@ class AlarmsAdapter(
 
     class ViewHolder(
         override val containerView: View,
-        private val toggleListener: (id: Int, Boolean) -> Unit
+        private val toggleListener: (alarm: AlarmItem, Boolean) -> Unit
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(item: AlarmItem) {
@@ -79,7 +79,7 @@ class AlarmsAdapter(
 
             switch_alarm_item.setOnCheckedChangeListener { _, isChecked ->
                 Log.d(TAG, "OnCheckedChangeListener: $isChecked")
-                toggleListener.invoke(item.id, isChecked)
+                toggleListener.invoke(item, isChecked)
             }
         }
 

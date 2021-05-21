@@ -8,7 +8,7 @@ operator fun ClockTime.minus(start: ClockTime): ClockTime {
     var hours = this.hour - start.hour
     var minutes = this.minute - start.minute
 
-    // 22:00 - 04:00
+    // this: 04:00 start: 22:00
     if (hours < 0) {
         hours += 24
     }

@@ -18,9 +18,9 @@
         <item name="android:textColor">@color/bright_gray</item>
     </style>
 
-    <style name="Theme.FullScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowFullscreen">true</item>
+    <style name="Theme.AlarmGoOff" parent="Theme.ShiftsRedesigned">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimaryVariant">@color/black</item>
     </style>
 
     <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">

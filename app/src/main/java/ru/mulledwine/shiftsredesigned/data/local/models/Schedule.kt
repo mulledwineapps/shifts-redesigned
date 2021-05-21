@@ -37,8 +37,9 @@ data class ScheduleShiftItem(
     val shiftId: Int,
     val shiftTypeId: Int,
     val ordinal: Int,
-    val duration: String,
+    val title: String, // shift duration
     val typeName: String,
     val color: Int,
-    val isNewItem: Boolean
+    val isNewItem: Boolean,
+    val originalShiftTypeId: Int
 ) : Parcelable

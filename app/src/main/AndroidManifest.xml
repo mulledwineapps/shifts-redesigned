@@ -14,14 +14,8 @@
         <activity android:name=".ui.RootActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:theme="@style/Theme.FullScreen"
-            android:name=".ui.AlarmActivity">
         </activity>
     </application>
 

@@ -3,7 +3,7 @@ package ru.mulledwine.shiftsredesigned.ui.custom
 import android.content.Context
 import android.util.AttributeSet
 
-class SquareImageView @JvmOverloads constructor(
+class SquareImageViewW @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0

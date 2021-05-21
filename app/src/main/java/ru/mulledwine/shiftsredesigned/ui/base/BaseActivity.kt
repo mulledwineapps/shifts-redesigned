@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.viewmodels.BaseViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.Loading
 import ru.mulledwine.shiftsredesigned.viewmodels.NavigationCommand
@@ -53,8 +54,7 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
             renderLoading(it)
         }
 
-        if (findViewById<View>(R.id.nav_host_fragment) != null) // TODO проверка только ради AlarmActivity
-            navController = findNavController(R.id.nav_host_fragment)
+        navController = findNavController(R.id.nav_host_fragment)
 
         val dialogView = View.inflate(this, R.layout.dialog_progress_bar, null)
         progressDialog =

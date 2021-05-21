@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_alarms.*
 import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.data.local.models.AlarmItem
 import ru.mulledwine.shiftsredesigned.extensions.getAlarmGenitive
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
@@ -41,7 +42,7 @@ class AlarmsFragment : BaseFragment<AlarmsViewModel>() {
             root.onNavigationIconClick = null
         }
     }
-    
+
     private val alarmsAdapter by lazy {
         AlarmsAdapter(
             longClickListener = ::itemLongClickCallback,
@@ -76,7 +77,7 @@ class AlarmsFragment : BaseFragment<AlarmsViewModel>() {
             alarmsAdapter.submitList(it)
         }
     }
-    
+
     private fun closeSelectionMenu() {
         alarmsAdapter.clearSelection()
         isSelectionMode = false
@@ -91,7 +92,7 @@ class AlarmsFragment : BaseFragment<AlarmsViewModel>() {
         if (item.itemId != R.id.menu_item_delete) closeSelectionMenu()
         return true
     }
-    
+
     private fun navigateAddAlarm() {
         viewModel.handleNavigateAddAlarm(getString(R.string.alarm_add_label))
     }
@@ -115,11 +116,13 @@ class AlarmsFragment : BaseFragment<AlarmsViewModel>() {
     }
 
     // TODO предохранитель от слишком частого использования переключателя
-    private fun itemToggleCallback(id: Int, flagActive: Boolean) {
-        viewModel.handleToggleAlarm(id, flagActive, ::setAlarm, ::cancelAlarm)
+    private fun itemToggleCallback(alarm: AlarmItem, flagActive: Boolean) {
+        viewModel.handleToggleAlarm(alarm, flagActive, ::setAlarm, ::cancelAlarm)
     }
 
-    private fun setAlarm(id: Int, time: Long) = Utils.setAlarm(requireContext(), id, time)
+    private fun setAlarm(alarm: AlarmParcelable, time: Long) =
+        Utils.setAlarm(requireContext(), alarm, time)
+
     private fun cancelAlarm(id: Int) = Utils.cancelAlarm(requireContext(), id)
 
     private fun onSelectionChanged() {

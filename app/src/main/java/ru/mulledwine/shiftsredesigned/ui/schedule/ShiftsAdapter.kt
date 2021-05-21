@@ -43,7 +43,7 @@ class ShiftsAdapter(
         fun bind(item: ScheduleShiftItem) {
             tv_shift_item_ordinal.text = item.ordinal.toString()
             tv_shift_item_name.text = item.typeName
-            tv_shift_item_duration.text = item.duration
+            tv_shift_item_duration.text = item.title
             v_shift_item_color.backgroundTintList = ColorStateList.valueOf(item.color)
         }
     }

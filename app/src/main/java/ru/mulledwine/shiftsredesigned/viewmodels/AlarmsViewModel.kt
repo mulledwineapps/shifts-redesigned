@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.data.local.models.AlarmItem
 import ru.mulledwine.shiftsredesigned.extensions.toAlarmItem
 import ru.mulledwine.shiftsredesigned.extensions.toAlarmParcelable
@@ -28,7 +29,7 @@ class AlarmsViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(hand
 
     fun handleNavigateEditAlarm(title: String, id: Int) {
         launchSafely {
-            val item = repository.getAlarm(id).toAlarmParcelable()
+            val item = repository.getAlarmFull(id).toAlarmParcelable()
             val action = AlarmsFragmentDirections.actionNavAlarmsToNavAlarm(title, item)
             navigateWithAction(action)
         }
@@ -40,12 +41,13 @@ class AlarmsViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(hand
     }
 
     fun handleToggleAlarm(
-        id: Int,
+        alarmItem: AlarmItem,
         flagActive: Boolean,
-        setAlarm: (id: Int, time: Long) -> Unit,
+        setAlarm: (alarm: AlarmParcelable, time: Long) -> Unit,
         cancelAlarm: (id: Int) -> Unit
     ) {
         launchSafely {
+            val id = alarmItem.id
             val isActiveOnToggle = repository.isActive(id)
             if (isActiveOnToggle == flagActive) return@launchSafely
             repository.toggleAlarm(id)
@@ -54,7 +56,8 @@ class AlarmsViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(hand
                 cancelAlarm(id)
             } else {
                 val alarmTime = calculateAlarmTime(id) ?: return@launchSafely
-                setAlarm(id, alarmTime)
+                val alarm = repository.getAlarm(id).toAlarmParcelable()
+                setAlarm(alarm, alarmTime)
             }
         }
     }
@@ -74,7 +77,7 @@ class AlarmsViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(hand
 
     private suspend fun calculateAlarmTime(id: Int): Long? {
 
-        val alarm = repository.getAlarm(id)
+        val alarm = repository.getAlarmFull(id)
         val shiftsCount = repository.getShiftsCount(alarm.schedule.id)
 
         val calculator = AlarmCalculator.Builder()

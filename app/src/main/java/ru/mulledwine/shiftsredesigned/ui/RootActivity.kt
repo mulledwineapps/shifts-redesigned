@@ -8,6 +8,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.mulledwine.shiftsredesigned.R
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.ui.base.BaseActivity
 import ru.mulledwine.shiftsredesigned.viewmodels.Notify
 import ru.mulledwine.shiftsredesigned.viewmodels.RootViewModel
@@ -18,13 +19,21 @@ class RootActivity : BaseActivity<RootViewModel>() {
 
     companion object {
         private const val TAG = "M_RootActivity"
+        const val ALARM_PARAM = "ALARM_PARAM"
     }
 
     override val layout: Int = R.layout.activity_root
     public override val viewModel: RootViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val alarm = intent.getParcelableExtra<AlarmParcelable>(ALARM_PARAM)
+        if (alarm != null) setTheme(R.style.Theme_AlarmGoOff)
+
         super.onCreate(savedInstanceState)
+
+        if (alarm != null) navController.graph = navController.graph.apply {
+            startDestination = R.id.nav_alarm_go_off
+        }
 
         // top level destination ids
         val appbarConfiguration = AppBarConfiguration(setOf(R.id.nav_main))

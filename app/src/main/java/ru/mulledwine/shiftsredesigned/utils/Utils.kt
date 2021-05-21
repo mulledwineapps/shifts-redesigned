@@ -6,9 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.annotation.ColorInt
-import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
 import ru.mulledwine.shiftsredesigned.extensions.daysFrom
-import ru.mulledwine.shiftsredesigned.ui.AlarmActivity
+import ru.mulledwine.shiftsredesigned.ui.RootActivity
+import ru.mulledwine.shiftsredesigned.ui.base.BaseActivity
 import java.util.*
 
 object Utils {
@@ -50,8 +51,8 @@ object Utils {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun setAlarm(context: Context, alarmId: Int, time: Long) {
-        val pendingIntent = getPendingIntent(context, alarmId)
+    fun setAlarm(context: Context, alarm: AlarmParcelable, time: Long) {
+        val pendingIntent = getPendingIntent(context, alarm.id, 0, alarm)
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         // val info = AlarmManager.AlarmClockInfo(time, pendingIntent)
         // alarmManager.setAlarmClock(info, pendingIntent)
@@ -62,10 +63,11 @@ object Utils {
     private fun getPendingIntent(
         context: Context,
         requestCode: Int,
-        flags: Int = 0
+        flags: Int,
+        alarm: AlarmParcelable? = null
     ): PendingIntent? {
-        val intent = Intent(context, AlarmActivity::class.java)
-        intent.putExtra(AlarmActivity.ALARM_ID_PARAM, requestCode)
+        val intent = Intent(context, RootActivity::class.java)
+        if (alarm != null) intent.putExtra(RootActivity.ALARM_PARAM, alarm)
         return PendingIntent.getActivity(context, requestCode, intent, flags)
     }
 

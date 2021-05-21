@@ -42,14 +42,14 @@ fun Long.toTimeDuration(): String {
     }.trim()
 }
 
-fun Long.whenWillHappen(): String {
+fun Long.whenHappen(): String {
     val now = Utils.getTime()
-    val delta = now - this
+    val delta = this - now
     val duration = delta.absoluteValue.toTimeDuration()
 
     return when {
-        delta < 1000L -> "менее чем через минуту"
-        delta > 0 -> "$duration назад"
+        delta in 0..TimeUnits.MINUTE.value -> "менее чем через минуту"
+        delta < 0 -> "$duration назад"
         else -> "через $duration"
     }
 }

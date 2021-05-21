@@ -29,7 +29,7 @@ interface ShiftsDao : BaseDao<Shift> {
 
     @Query(
         """
-            SELECT sh.id, sh.ordinal, st.name, st.start
+            SELECT sh.id, sh.ordinal, st.name, st.start, st.finish
             FROM shifts sh LEFT JOIN shift_types as st ON st.id = sh.shift_type_id
             WHERE sh.id = :id 
             """

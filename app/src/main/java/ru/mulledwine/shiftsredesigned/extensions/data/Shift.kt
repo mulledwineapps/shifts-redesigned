@@ -8,9 +8,10 @@ fun ShiftWithType.toScheduleShiftItem(): ScheduleShiftItem {
         shiftId = shift.id!!,
         shiftTypeId = type.id!!,
         ordinal = shift.ordinal,
-        duration = type.getDuration(),
+        title = type.getDuration(),
         typeName = type.name,
         color = type.color,
-        isNewItem = false
+        isNewItem = false,
+        originalShiftTypeId = type.id
     )
 }

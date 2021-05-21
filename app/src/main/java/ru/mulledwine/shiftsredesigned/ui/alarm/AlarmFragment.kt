@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_alarm.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
+import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable
 import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem
@@ -36,7 +36,7 @@ class AlarmFragment : BaseFragment<AlarmViewModel>() {
     override val viewModel: AlarmViewModel by viewModels {
         ViewModelFactory(
             owner = this,
-            params = args.item ?: AlarmParcelable()
+            params = args.item ?: AlarmFullParcelable()
         )
     }
 
@@ -81,11 +81,11 @@ class AlarmFragment : BaseFragment<AlarmViewModel>() {
         menu.findItem(R.id.menu_item_save).setOnMenuItemClickListener {
             val isActive = checkbox_is_alarm_active.isChecked
             val label = et_alarm_label.getTrimmedString()
-            viewModel.handleClickSave(isActive, label) { id, time ->
+            viewModel.handleClickSave(isActive, label) { alarm, time ->
                 // cancel the alarm
-                Utils.cancelAlarm(requireContext(), id)
+                Utils.cancelAlarm(requireContext(), alarm.id)
                 // setup new alarm if active
-                if (isActive) Utils.setAlarm(requireContext(), id, time)
+                if (isActive) Utils.setAlarm(requireContext(), alarm, time)
             }
             true
         }
@@ -115,6 +115,10 @@ class AlarmFragment : BaseFragment<AlarmViewModel>() {
 
         tv_alarm_time.setOnClickListener {
             navigateToTimePicker(binding.alarmClock)
+        }
+
+        args.item?.alarm?.let {
+            et_alarm_label.setText(it.label)
         }
     }
 

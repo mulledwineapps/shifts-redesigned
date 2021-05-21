@@ -63,7 +63,8 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
         // listen for shift type pick
         setFragmentResultListener(ChooseShiftTypeDialog.CHOOSE_SHIFT_TYPE_KEY) { _, bundle ->
 
-            val shiftTypeItem = bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeListItem
+            val shiftTypeItem =
+                bundle[ChooseShiftTypeDialog.SELECTED_SHIFT_TYPE] as ShiftTypeListItem
             val currentItemId = bundle.getInt(ChooseShiftTypeDialog.CURRENT_ITEM_ID)
             val copy = scheduleShiftsAdapter.currentList
 
@@ -75,10 +76,11 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
                     shiftId = maxId + 1,
                     shiftTypeId = shiftTypeItem.id,
                     ordinal = maxOrdinal + 1,
-                    duration = shiftTypeItem.duration,
+                    title = shiftTypeItem.title,
                     typeName = shiftTypeItem.name,
                     color = shiftTypeItem.color,
-                    isNewItem = true
+                    isNewItem = true,
+                    originalShiftTypeId = shiftTypeItem.id
                 )
                 submitItems(copy + item)
 
@@ -87,7 +89,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
                     if (it.shiftId == currentItemId)
                         it.copy(
                             shiftTypeId = shiftTypeItem.id,
-                            duration = shiftTypeItem.duration,
+                            title = shiftTypeItem.title,
                             typeName = shiftTypeItem.name,
                             color = shiftTypeItem.color,
                         )
@@ -129,9 +131,16 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
             viewModel.handleClickSave(
                 schedule = schedule,
                 shiftsToUpsert = scheduleShiftsAdapter.currentList,
-                shiftIdsToDelete = binding.shiftIdsToDelete
+                shiftIdsToDelete = binding.shiftIdsToDelete,
+                ::cancelAlarms
             )
             true
+        }
+    }
+
+    private fun cancelAlarms(ids: List<Int>) {
+        ids.forEach {
+            Utils.cancelAlarm(requireContext(), it)
         }
     }
 

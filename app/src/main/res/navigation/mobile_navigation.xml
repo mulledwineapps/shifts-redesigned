@@ -17,6 +17,11 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_alarm_go_off"
+        android:name="ru.mulledwine.shiftsredesigned.ui.alarmgooff.AlarmGoOff"
+        tools:layout="@layout/fragment_alarm_go_off"/>
+
+    <fragment
         android:id="@+id/nav_main"
         android:name="ru.mulledwine.shiftsredesigned.ui.main.MainFragment"
         tools:layout="@layout/fragment_main">
@@ -186,7 +191,7 @@
         <argument
             android:name="item"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable"
+            app:argType="ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable"
             app:nullable="true" />
 
     </fragment>

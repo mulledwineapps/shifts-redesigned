@@ -1,9 +1,5 @@
 package ru.mulledwine.shiftsredesigned.ui.shifttype
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Menu
@@ -13,12 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_shift_type.*
 import ru.mulledwine.shiftsredesigned.R
-import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
 import ru.mulledwine.shiftsredesigned.data.local.models.ClockTime
 import ru.mulledwine.shiftsredesigned.extensions.getTrimmedString
 import ru.mulledwine.shiftsredesigned.extensions.hideKeyboard
-import ru.mulledwine.shiftsredesigned.ui.AlarmActivity
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
 import ru.mulledwine.shiftsredesigned.ui.delegates.RenderProp

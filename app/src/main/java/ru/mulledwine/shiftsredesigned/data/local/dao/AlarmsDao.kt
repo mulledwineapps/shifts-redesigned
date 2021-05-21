@@ -22,7 +22,14 @@ interface AlarmsDao : BaseDao<Alarm> {
             SELECT * from alarms_view WHERE alarm_id = :id
         """
     )
-    suspend fun getAlarm(id: Int): AlarmView
+    suspend fun getAlarmFull(id: Int): AlarmView
+
+    @Query(
+        """
+            SELECT * from alarms WHERE id = :id
+        """
+    )
+    suspend fun getAlarm(id: Int): Alarm
 
     @Query(
         """
@@ -98,5 +105,19 @@ interface AlarmsDao : BaseDao<Alarm> {
         val scheduleId = getScheduleId(shiftId)
         return isScheduleCyclic(scheduleId)
     }
+
+    @Query(
+        """
+            SELECT id FROM alarms WHERE shift_id = :shiftId
+        """
+    )
+    suspend fun getAlarmId(shiftId: Int): Int?
+
+    @Query(
+        """
+            SELECT * FROM ALARMS
+        """
+    )
+    suspend fun getAlarms(): List<Alarm>
 
 }

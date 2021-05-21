@@ -218,6 +218,7 @@ sealed class Notify() {
 
     data class ActionMessage(
         override val message: String,
+        override val duration: Int = Snackbar.LENGTH_LONG,
         val actionLabel: String,
         val actionHandler: (() -> Unit)
     ) : Notify()

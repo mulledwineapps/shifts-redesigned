@@ -29,7 +29,7 @@ data class Alarm(
 ) : Parcelable
 
 @Parcelize
-data class AlarmItem(
+data class AlarmParcelable(
     val id: Int,
     val time: ClockTime,
     @ColumnInfo(name = "is_active")
@@ -40,12 +40,13 @@ data class AlarmItem(
 @DatabaseView(
     viewName = "alarms_view",
     value = """
-        SELECT a.id as alarm_id, a.time as alarm_time, a.is_active as alarm_is_active,
+        SELECT a.id as alarm_id, a.time as alarm_time, 
+        a.is_active as alarm_is_active, a.label as alarm_label,
         j.id as job_id, j.name as job_name,
         sch.id as schedule_id, sch.is_cyclic as schedule_is_cyclic,
         sch.start as schedule_start, sch.finish as schedule_finish, 
         sh.id as shift_id, st.name as shift_name, sh.ordinal as shift_ordinal, 
-        st.start as shift_start, st.finish - st.start as shift_duration
+        st.start as shift_start, st.finish as shift_finish
         FROM alarms a
         LEFT JOIN shifts sh ON sh.id = a.shift_id
         LEFT JOIN shift_types st ON st.id = sh.shift_type_id
@@ -55,7 +56,7 @@ data class AlarmItem(
 )
 data class AlarmView(
     @Embedded(prefix = "alarm_")
-    val alarm: AlarmItem,
+    val alarm: AlarmParcelable,
     @Embedded(prefix = "job_")
     val job: JobItem,
     @Embedded(prefix = "schedule_")
@@ -65,8 +66,8 @@ data class AlarmView(
 )
 
 @Parcelize
-data class AlarmParcelable(
-    val alarm: AlarmItem? = null,
+data class AlarmFullParcelable(
+    val alarm: AlarmParcelable? = null,
     val job: JobItem? = null,
     val schedule: ScheduleForAlarm? = null,
     val shift: ShiftForAlarm? = null
