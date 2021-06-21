@@ -2,18 +2,20 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.dao.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
 import ru.mulledwine.shiftsredesigned.data.local.entities.VacationWithJob
 import ru.mulledwine.shiftsredesigned.data.local.models.VacationParcelable
 import ru.mulledwine.shiftsredesigned.extensions.data.toVacationParcelable
+import javax.inject.Inject
 
-object VacationsRepository {
-
-    private val jobsDao = db.jobsDao()
-    private val vacationsDao = db.vacationsDao()
-    private val shiftsDao = db.shiftsDao()
-    private val shiftTypesDao = db.shiftTypesDao()
+class VacationsRepository @Inject constructor(
+    private val jobsDao: JobsDao,
+    private val vacationsDao: VacationsDao,
+    private val shiftsDao: ShiftsDao,
+    private val shiftTypesDao: ShiftTypesDao
+) {
 
     fun findJobs(): LiveData<List<Job>> {
         return jobsDao.findJobs()

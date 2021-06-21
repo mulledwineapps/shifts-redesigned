@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
@@ -15,13 +17,14 @@ import ru.mulledwine.shiftsredesigned.extensions.data.toShiftTypeItem
 import ru.mulledwine.shiftsredesigned.repositories.ScheduleRepository
 import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
 
-class ScheduleViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(handle, EmptyState) {
+class ScheduleViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: ScheduleRepository
+) : BaseViewModel<EmptyState>(handle, EmptyState) {
 
     companion object {
         private const val TAG = "M_ScheduleViewModel"
     }
-
-    private val repository = ScheduleRepository
 
     fun handleClickSave(
         schedule: Schedule,

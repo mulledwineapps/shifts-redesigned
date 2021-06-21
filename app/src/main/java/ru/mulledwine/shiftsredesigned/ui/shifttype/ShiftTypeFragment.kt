@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_shift_type.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
@@ -21,6 +22,7 @@ import ru.mulledwine.shiftsredesigned.ui.dialogs.TimePickerDialog
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.ShiftTypeViewModel
 
+@AndroidEntryPoint
 class ShiftTypeFragment : BaseFragment<ShiftTypeViewModel>() {
 
     private val args: ShiftTypeFragmentArgs by navArgs()

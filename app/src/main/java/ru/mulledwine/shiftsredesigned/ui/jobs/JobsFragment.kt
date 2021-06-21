@@ -9,6 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_jobs.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
@@ -18,6 +19,7 @@ import ru.mulledwine.shiftsredesigned.ui.dialogs.JobDialog
 import ru.mulledwine.shiftsredesigned.viewmodels.JobsViewModel
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class JobsFragment : BaseFragment<JobsViewModel>() {
 
     override val viewModel: JobsViewModel by viewModels()

@@ -2,18 +2,22 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.dao.JobsDao
+import ru.mulledwine.shiftsredesigned.data.local.dao.SchedulesDao
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
 import ru.mulledwine.shiftsredesigned.data.local.entities.ScheduleWithShifts
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithShiftItems
 import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleShiftItem
+import javax.inject.Inject
 
-object SchedulesRepository {
-
-    private const val TAG = "M_SchedulesRepository"
-
-    private val jobsDao = db.jobsDao()
-    private val schedulesDao = db.schedulesDao()
+class SchedulesRepository @Inject constructor(
+    private val jobsDao: JobsDao,
+    private val schedulesDao: SchedulesDao,
+) {
+    companion object {
+        private const val TAG = "M_SchedulesRepository"
+    }
 
     fun findJobs(): LiveData<List<Job>> {
         return jobsDao.findJobs()

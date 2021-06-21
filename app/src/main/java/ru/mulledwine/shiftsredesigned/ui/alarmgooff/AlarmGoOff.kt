@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.util.Log
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_alarm_go_off.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
@@ -15,6 +16,7 @@ import ru.mulledwine.shiftsredesigned.ui.base.ToolbarBuilder
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.AlarmsViewModel
 
+@AndroidEntryPoint
 class AlarmGoOff : BaseFragment<AlarmsViewModel>() {
 
     companion object {

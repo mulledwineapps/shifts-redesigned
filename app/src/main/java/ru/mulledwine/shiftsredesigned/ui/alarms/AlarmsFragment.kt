@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_alarms.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
@@ -18,6 +19,7 @@ import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.AlarmsViewModel
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class AlarmsFragment : BaseFragment<AlarmsViewModel>() {
 
     override val viewModel: AlarmsViewModel by viewModels()

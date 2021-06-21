@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import ru.mulledwine.shiftsredesigned.data.local.CalendarGenerator
 import ru.mulledwine.shiftsredesigned.data.local.PrefManager
@@ -10,14 +12,14 @@ import ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType
 import ru.mulledwine.shiftsredesigned.repositories.SplashRepository
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class SplashViewModel(handle: SavedStateHandle) :
-    BaseViewModel<SplashState>(handle, SplashState()) {
+class SplashViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: SplashRepository
+) : BaseViewModel<SplashState>(handle, SplashState()) {
 
     companion object {
         private const val TAG = "M_SplashViewModel"
     }
-
-    private val repository: SplashRepository = SplashRepository
 
     init {
         launchSafely {

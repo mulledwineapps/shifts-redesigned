@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithScheduleItems
@@ -11,21 +13,24 @@ import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
 import ru.mulledwine.shiftsredesigned.ui.schedules.SchedulesFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class SchedulesViewModel(
-    handle: SavedStateHandle,
-    param: JobWithScheduleItems
+fun JobWithScheduleItems.toSchedulesState() = SchedulesState(
+    this.jobItem.name,
+    this.scheduleItems
+)
+
+class SchedulesViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: SchedulesRepository
 ) : BaseViewModel<SchedulesState>(
     handle,
-    SchedulesState(param.jobItem.name, param.scheduleItems)
+    handle.get<JobWithScheduleItems>("item")!!.toSchedulesState()
 ) {
 
     companion object {
         private const val TAG = "M_SchedulesViewModel"
     }
 
-    private val repository = SchedulesRepository
-
-    private val jobLive = mutableLiveData(param.jobItem)
+    private val jobLive = mutableLiveData(handle.get<JobWithScheduleItems>("item")!!.jobItem)
 
     private val schedules = jobLive.switchMap {
         repository.findSchedules(it.id)

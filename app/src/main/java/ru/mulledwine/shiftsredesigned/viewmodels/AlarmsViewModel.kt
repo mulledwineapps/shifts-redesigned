@@ -1,6 +1,8 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
 import android.util.Log
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
@@ -14,15 +16,17 @@ import ru.mulledwine.shiftsredesigned.ui.alarms.AlarmsFragmentDirections
 import ru.mulledwine.shiftsredesigned.utils.AlarmCalculator
 import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
 
-class AlarmsViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(handle, EmptyState) {
+class AlarmsViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: AlarmsRepository
+) : BaseViewModel<EmptyState>(handle, EmptyState) {
 
     companion object {
         private const val TAG = "M_AlarmsViewModel"
     }
 
-    private val repository = AlarmsRepository
-
-    fun observeAlarms(owner: LifecycleOwner, onChange: (list: List<AlarmItem>) -> Unit) {
+    fun observeAlarms(owner: LifecycleOwner,
+                      onChange: (list: List<AlarmItem>) -> Unit) {
         repository.findAlarms().map { list -> list.map { it.toAlarmItem() } }
             .observe(owner, Observer(onChange))
     }

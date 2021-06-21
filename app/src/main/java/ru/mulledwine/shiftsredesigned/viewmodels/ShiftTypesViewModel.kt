@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
@@ -10,12 +12,16 @@ import ru.mulledwine.shiftsredesigned.repositories.ShiftTypesRepository
 import ru.mulledwine.shiftsredesigned.ui.shifttypes.ShiftTypesFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
 
-class ShiftTypesViewModel(handle: SavedStateHandle) :
-    BaseViewModel<EmptyState>(handle, EmptyState) {
+class ShiftTypesViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: ShiftTypesRepository
+) : BaseViewModel<EmptyState>(handle, EmptyState) {
 
-    private val repository = ShiftTypesRepository
 
-    fun observeShiftTypes(owner: LifecycleOwner, onChange: (list: List<ShiftTypeListItem>) -> Unit) {
+    fun observeShiftTypes(
+        owner: LifecycleOwner,
+        onChange: (list: List<ShiftTypeListItem>) -> Unit
+    ) {
         repository.findShiftTypes().map { list ->
             list.map { it.toShiftTypeItem() }
         }.observe(owner, Observer(onChange))

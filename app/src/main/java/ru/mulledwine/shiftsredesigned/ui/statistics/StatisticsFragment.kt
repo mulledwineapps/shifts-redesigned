@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import kotlinx.android.synthetic.main.layout_month_choosing.*
 import ru.mulledwine.shiftsredesigned.R
@@ -21,8 +22,8 @@ import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseMonthDialog
 import ru.mulledwine.shiftsredesigned.viewmodels.StatisticsState
 import ru.mulledwine.shiftsredesigned.viewmodels.StatisticsViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
-import ru.mulledwine.shiftsredesigned.viewmodels.base.ViewModelFactory
 
+@AndroidEntryPoint
 class StatisticsFragment : BaseFragment<StatisticsViewModel>() {
 
     private val args: StatisticsFragmentArgs by navArgs()
@@ -30,12 +31,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>() {
 
     override val layout: Int = R.layout.fragment_statistics
     override val binding: StatisticsBinding by lazy { StatisticsBinding() }
-    override val viewModel: StatisticsViewModel by viewModels {
-        ViewModelFactory(
-            owner = this,
-            params = args.item
-        )
-    }
+    override val viewModel: StatisticsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +57,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>() {
             getDrawableCompat(R.drawable.list_divider)?.let {
                 addItemDecoration(DividerItemDecoration(it) { pos ->
                     if (pos > statisticsAdapter.itemCount.dec()) false else
-                    statisticsAdapter.getItemViewType(pos) == StatisticItem.VIEW_TYPE_ELEMENT
+                        statisticsAdapter.getItemViewType(pos) == StatisticItem.VIEW_TYPE_ELEMENT
                 })
             }
         }

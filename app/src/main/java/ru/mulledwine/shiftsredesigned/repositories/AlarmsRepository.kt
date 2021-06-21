@@ -2,13 +2,16 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.dao.AlarmsDao
+import ru.mulledwine.shiftsredesigned.data.local.dao.ShiftsDao
 import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmView
+import javax.inject.Inject
 
-object AlarmsRepository {
-
-    private val alarmsDao = db.alarmsDao()
-    private val shiftsDao = db.shiftsDao()
+class AlarmsRepository @Inject constructor(
+    private val alarmsDao: AlarmsDao,
+    private val shiftsDao: ShiftsDao
+) {
 
     fun findAlarms(): LiveData<List<AlarmView>> {
         return alarmsDao.findAlarms()

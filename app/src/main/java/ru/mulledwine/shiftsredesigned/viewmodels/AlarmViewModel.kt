@@ -1,6 +1,8 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
 import android.util.Log
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable
@@ -15,26 +17,28 @@ import ru.mulledwine.shiftsredesigned.utils.AlarmCalculator
 import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class AlarmViewModel(
-    handle: SavedStateHandle,
-    param: AlarmFullParcelable // TODO если сделать по умолчанию null? тогда job, schedule и shift смогут быть non-nullable
+fun AlarmFullParcelable.toAlarmState() = AlarmState(
+    jobTitle = this.job?.name ?: "",
+    scheduleTitle = this.schedule?.getDuration() ?: "",
+    shiftTitle = this.shift?.name ?: "",
+    alarmClock = this.alarm?.time ?: ClockTime()
+)
+
+class AlarmViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: AlarmRepository,
+    private val jobRepository: JobsRepository,
+    private val schedulesRepository: SchedulesRepository,
 ) : BaseViewModel<AlarmState>(
     handle,
-    AlarmState(
-        jobTitle = param.job?.name ?: "",
-        scheduleTitle = param.schedule?.getDuration() ?: "",
-        shiftTitle = param.shift?.name ?: "",
-        alarmClock = param.alarm?.time ?: ClockTime()
-    )
+    handle.get<AlarmFullParcelable>("item")?.toAlarmState() ?: AlarmState()
 ) {
+    // TODO если сделать по умолчанию null? тогда job, schedule и shift смогут быть non-nullable
+    private val param: AlarmFullParcelable = handle["item"] ?: AlarmFullParcelable()
 
     companion object {
         private const val TAG = "M_AlarmViewModel"
     }
-
-    private val repository = AlarmRepository
-    private val jobRepository = JobsRepository
-    private val schedulesRepository = SchedulesRepository
 
     private val alarmParam = param.alarm
 
@@ -293,9 +297,9 @@ class AlarmViewModel(
 }
 
 data class AlarmState(
-    val jobTitle: String,
-    val scheduleTitle: String,
-    val shiftTitle: String,
-    val alarmClock: ClockTime,
+    val jobTitle: String = "",
+    val scheduleTitle: String = "",
+    val shiftTitle: String = "",
+    val alarmClock: ClockTime = ClockTime(),
     val alarmInfo: String = ""
 ) : IViewModelState

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_vacations.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
@@ -23,9 +24,9 @@ import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
 import ru.mulledwine.shiftsredesigned.viewmodels.VacationsState
 import ru.mulledwine.shiftsredesigned.viewmodels.VacationsViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
-import ru.mulledwine.shiftsredesigned.viewmodels.base.ViewModelFactory
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class VacationsFragment : BaseFragment<VacationsViewModel>() {
 
     companion object {
@@ -38,12 +39,7 @@ class VacationsFragment : BaseFragment<VacationsViewModel>() {
     override val binding: VacationsBinding by lazy {
         VacationsBinding()
     }
-    override val viewModel: VacationsViewModel by viewModels {
-        ViewModelFactory(
-            owner = this,
-            params = args.item
-        )
-    }
+    override val viewModel: VacationsViewModel by viewModels()
 
     private var isSelectionMode: Boolean by Delegates.observable(false) { _, _, newValue ->
         root.invalidateOptionsMenu()

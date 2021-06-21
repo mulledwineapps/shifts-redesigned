@@ -10,6 +10,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_main.*
 import ru.mulledwine.shiftsredesigned.Constants
 import ru.mulledwine.shiftsredesigned.R
@@ -29,7 +30,7 @@ import ru.mulledwine.shiftsredesigned.viewmodels.MainViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 import java.util.*
 
-
+@AndroidEntryPoint
 class MainFragment : BaseFragment<MainViewModel>() {
 
     companion object {

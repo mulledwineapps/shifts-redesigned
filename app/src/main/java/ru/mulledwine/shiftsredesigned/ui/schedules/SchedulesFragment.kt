@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_schedules.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
@@ -23,21 +24,16 @@ import ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog
 import ru.mulledwine.shiftsredesigned.viewmodels.SchedulesState
 import ru.mulledwine.shiftsredesigned.viewmodels.SchedulesViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
-import ru.mulledwine.shiftsredesigned.viewmodels.base.ViewModelFactory
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
 
     private val args: SchedulesFragmentArgs by navArgs()
 
     override val layout: Int = R.layout.fragment_schedules
     override val binding: SchedulesBinding by lazy { SchedulesBinding() }
-    override val viewModel: SchedulesViewModel by viewModels {
-        ViewModelFactory(
-            owner = this,
-            params = args.item
-        )
-    }
+    override val viewModel: SchedulesViewModel by viewModels()
 
     private var isSelectionMode: Boolean by Delegates.observable(false) { _, _, newValue ->
         root.invalidateOptionsMenu()
@@ -122,8 +118,7 @@ class SchedulesFragment : BaseFragment<SchedulesViewModel>() {
         val message = if (selected.size == 1) {
             val item = selected.first()
             "Удалить график?\n\n${binding.jobName}\n${item.duration}"
-        }
-        else "Удалить ${selected.size.getScheduleGenitive()}?"
+        } else "Удалить ${selected.size.getScheduleGenitive()}?"
 
         root.askWhetherToDelete(message) {
             if (selected.size == 1) viewModel.handleDeleteSchedule(selected.first().id)

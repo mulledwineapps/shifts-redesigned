@@ -2,6 +2,7 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.dao.JobsDao
 import ru.mulledwine.shiftsredesigned.data.local.entities.Job
 import ru.mulledwine.shiftsredesigned.data.local.entities.JobWithVacations
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
@@ -11,10 +12,11 @@ import ru.mulledwine.shiftsredesigned.data.local.models.JobWithVacationItems
 import ru.mulledwine.shiftsredesigned.extensions.data.toJobItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toScheduleItem
 import ru.mulledwine.shiftsredesigned.extensions.data.toVacationItem
+import javax.inject.Inject
 
-object JobsRepository {
-
-    private val jobsDao = db.jobsDao()
+class JobsRepository @Inject constructor(
+    private val jobsDao: JobsDao
+) {
 
     fun findJobs(): LiveData<List<Job>> {
         return jobsDao.findJobs()

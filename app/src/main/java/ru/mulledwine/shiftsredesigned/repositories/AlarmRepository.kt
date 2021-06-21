@@ -1,16 +1,20 @@
 package ru.mulledwine.shiftsredesigned.repositories
 
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.dao.AlarmsDao
+import ru.mulledwine.shiftsredesigned.data.local.dao.SchedulesDao
+import ru.mulledwine.shiftsredesigned.data.local.dao.ShiftsDao
 import ru.mulledwine.shiftsredesigned.data.local.entities.Alarm
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmView
 import ru.mulledwine.shiftsredesigned.data.local.models.ScheduleForAlarm
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftForAlarm
+import javax.inject.Inject
 
-object AlarmRepository {
-
-    private val alarmsDao = db.alarmsDao()
-    private val schedulesDao = db.schedulesDao()
-    private val shiftsDao = db.shiftsDao()
+class AlarmRepository @Inject constructor(
+    private val alarmsDao: AlarmsDao,
+    private val schedulesDao: SchedulesDao,
+    private val shiftsDao: ShiftsDao
+) {
 
     suspend fun getScheduleForAlarm(id: Int): ScheduleForAlarm {
         return schedulesDao.getScheduleForAlarm(id)

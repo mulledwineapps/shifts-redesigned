@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_vacation.*
 import kotlinx.android.synthetic.main.fragment_vacation.btn_choose_shift_type
 import kotlinx.android.synthetic.main.item_shift_type.*
@@ -28,6 +29,7 @@ import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.VacationViewModel
 import java.util.*
 
+@AndroidEntryPoint
 class VacationFragment : BaseFragment<VacationViewModel>() {
 
     companion object {

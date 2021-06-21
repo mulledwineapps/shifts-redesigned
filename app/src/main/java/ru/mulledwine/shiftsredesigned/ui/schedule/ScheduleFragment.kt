@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.Schedule
@@ -28,7 +29,7 @@ import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.InputErrors
 import ru.mulledwine.shiftsredesigned.viewmodels.ScheduleViewModel
 
-
+@AndroidEntryPoint
 class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
     override val layout: Int = R.layout.fragment_schedule

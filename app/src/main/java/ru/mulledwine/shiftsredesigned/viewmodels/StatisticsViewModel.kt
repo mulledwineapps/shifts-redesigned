@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithStatisticItems
@@ -16,22 +18,26 @@ import ru.mulledwine.shiftsredesigned.repositories.SchedulesRepository
 import ru.mulledwine.shiftsredesigned.repositories.VacationsRepository
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class StatisticsViewModel(
-    handle: SavedStateHandle,
-    param: JobWithStatisticItems
+fun JobWithStatisticItems.toStatisticsState() = StatisticsState(
+    this.jobItem.name,
+    this.month,
+    this.statisticItems
+)
+
+class StatisticsViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val jobsRepository: JobsRepository,
+    private val schedulesRepository: SchedulesRepository,
+    private val vacationsRepository: VacationsRepository,
+    private val daysRepository: DaysRepository
 ) :
     BaseViewModel<StatisticsState>(
         handle,
-        StatisticsState(param.jobItem.name, param.month, param.statisticItems)
+        handle.get<JobWithStatisticItems>("item")!!.toStatisticsState()
     ) {
 
-    private val jobsRepository = JobsRepository
-    private val schedulesRepository = SchedulesRepository
-    private val vacationsRepository = VacationsRepository
-    private val daysRepository = DaysRepository
-
-    private val jobLive = mutableLiveData(param.jobItem)
-    private val monthLive = mutableLiveData(param.month)
+    private val jobLive = mutableLiveData(handle.get<JobWithStatisticItems>("item")!!.jobItem)
+    private val monthLive = mutableLiveData(handle.get<JobWithStatisticItems>("item")!!.month)
 
     private val schedules = jobLive.switchMap {
         schedulesRepository.findSchedulesWithShifts(it.id)
@@ -55,7 +61,7 @@ class StatisticsViewModel(
                 value = days.getStatisticItems(schedules, vacations)
             }
 
-            value = param.statisticItems
+            value = handle.get<JobWithStatisticItems>("item")!!.statisticItems
             addSource(schedules) { f.invoke() }
             addSource(vacations) { f.invoke() }
             addSource(days) { f.invoke() }

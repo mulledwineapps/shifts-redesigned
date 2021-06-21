@@ -6,12 +6,14 @@ import android.view.MenuInflater
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_shift_types.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.viewmodels.ShiftTypesViewModel
 
+@AndroidEntryPoint
 class ShiftTypesFragment : BaseFragment<ShiftTypesViewModel>() {
 
     companion object {

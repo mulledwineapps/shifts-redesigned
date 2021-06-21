@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_alarm.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable
@@ -26,19 +27,13 @@ import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.AlarmState
 import ru.mulledwine.shiftsredesigned.viewmodels.AlarmViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
-import ru.mulledwine.shiftsredesigned.viewmodels.base.ViewModelFactory
 
-
+@AndroidEntryPoint
 class AlarmFragment : BaseFragment<AlarmViewModel>() {
 
     override val layout: Int = R.layout.fragment_alarm
     override val binding: AlarmBinding by lazy { AlarmBinding() }
-    override val viewModel: AlarmViewModel by viewModels {
-        ViewModelFactory(
-            owner = this,
-            params = args.item ?: AlarmFullParcelable()
-        )
-    }
+    override val viewModel: AlarmViewModel by viewModels()
 
     private val args: AlarmFragmentArgs by navArgs()
 

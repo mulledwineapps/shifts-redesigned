@@ -2,12 +2,14 @@ package ru.mulledwine.shiftsredesigned.repositories
 
 import androidx.lifecycle.LiveData
 import ru.mulledwine.shiftsredesigned.data.local.DbManager.db
+import ru.mulledwine.shiftsredesigned.data.local.dao.DaysDao
 import ru.mulledwine.shiftsredesigned.data.local.entities.Day
 import ru.mulledwine.shiftsredesigned.data.local.models.Month
+import javax.inject.Inject
 
-object DaysRepository {
-
-    private val daysDao = db.daysDao()
+class DaysRepository @Inject constructor(
+    private val daysDao: DaysDao
+) {
 
     fun findDays(): LiveData<List<Day>> {
         return daysDao.findDays()

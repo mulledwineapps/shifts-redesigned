@@ -2,6 +2,8 @@ package ru.mulledwine.shiftsredesigned.viewmodels
 
 import android.content.Context
 import android.util.Log
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.item_shift_on_main.*
 import ru.mulledwine.shiftsredesigned.Constants
@@ -18,17 +20,18 @@ import ru.mulledwine.shiftsredesigned.repositories.*
 import ru.mulledwine.shiftsredesigned.ui.main.MainFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class MainViewModel(handle: SavedStateHandle) : BaseViewModel<MainState>(handle, MainState()) {
+class MainViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val daysRepository: DaysRepository,
+    private val jobsRepository: JobsRepository,
+    private val schedulesRepository: SchedulesRepository,
+    private val alarmRepository: AlarmRepository,
+    private val vacationsRepository: VacationsRepository
+) : BaseViewModel<MainState>(handle, MainState()) {
 
     companion object {
         private const val TAG = "M_MainViewModel"
     }
-
-    private val daysRepository = DaysRepository
-    private val jobsRepository = JobsRepository
-    private val schedulesRepository = SchedulesRepository
-    private val alarmRepository = AlarmRepository
-    private val vacationsRepository = VacationsRepository
 
     private val currentDay: MutableLiveData<Day> = mutableLiveData()
     private val schedules = schedulesRepository.findSchedulesWithShifts()

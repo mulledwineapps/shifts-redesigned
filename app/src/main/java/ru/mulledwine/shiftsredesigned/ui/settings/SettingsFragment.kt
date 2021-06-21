@@ -1,6 +1,7 @@
 package ru.mulledwine.shiftsredesigned.ui.settings
 
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import ru.mulledwine.shiftsredesigned.R
@@ -11,6 +12,7 @@ import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.custom.DividerItemDecoration
 import ru.mulledwine.shiftsredesigned.viewmodels.SettingsViewModel
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel>() {
 
     override val viewModel: SettingsViewModel by viewModels()

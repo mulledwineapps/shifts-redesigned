@@ -58,13 +58,13 @@ class AlarmCalculator() {
 
         fun build(): AlarmCalculator {
 
-            val result = AlarmCalculator()
+            val instance = AlarmCalculator()
 
             val now = Utils.getTime()
 
             val shiftStart = getShiftStart()
             if (shiftStart - now < 0L) {
-                return result.apply {
+                return instance.apply {
                     errorMessage = "Начало смены уже прошло"
                 }
             }
@@ -72,13 +72,13 @@ class AlarmCalculator() {
             val alarmTime = getAlarmTime(shiftStart)
             val delta = alarmTime - now
             if (delta < 0L) {
-                return result.apply {
+                return instance.apply {
                     errorMessage = "Время будильника уже прошло"
                 }
             }
 
-            result.alarmTime = alarmTime
-            return result
+            instance.alarmTime = alarmTime
+            return instance
         }
 
         private fun getShiftStart(): Long {

@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
@@ -8,9 +10,10 @@ import ru.mulledwine.shiftsredesigned.data.local.entities.Vacation
 import ru.mulledwine.shiftsredesigned.repositories.VacationRepository
 import ru.mulledwine.shiftsredesigned.viewmodels.base.EmptyState
 
-class VacationViewModel(handle: SavedStateHandle) : BaseViewModel<EmptyState>(handle, EmptyState) {
-
-    private val repository = VacationRepository
+class VacationViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: VacationRepository
+) : BaseViewModel<EmptyState>(handle, EmptyState) {
 
     fun observePattern(
         scheduleId: Int,

@@ -61,9 +61,6 @@ fun List<Day>.getStatisticItems(
             )
         }
     }
-
-
-
     return list
 }
 

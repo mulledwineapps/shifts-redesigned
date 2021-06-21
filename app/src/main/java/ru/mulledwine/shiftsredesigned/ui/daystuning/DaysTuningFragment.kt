@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_days_tuning.*
 import kotlinx.android.synthetic.main.item_shift_type.*
 import kotlinx.android.synthetic.main.layout_month_choosing.*
@@ -33,6 +34,7 @@ import ru.mulledwine.shiftsredesigned.utils.Utils
 import ru.mulledwine.shiftsredesigned.viewmodels.DaysTuningViewModel
 import java.util.*
 
+@AndroidEntryPoint
 class DaysTuningFragment : BaseFragment<DaysTuningViewModel>() {
 
     private val args: DaysTuningFragmentArgs by navArgs()

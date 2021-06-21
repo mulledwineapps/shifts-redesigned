@@ -1,11 +1,13 @@
 package ru.mulledwine.shiftsredesigned.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.data.local.entities.AlarmParcelable
@@ -15,6 +17,7 @@ import ru.mulledwine.shiftsredesigned.viewmodels.RootViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
 
+@AndroidEntryPoint
 class RootActivity : BaseActivity<RootViewModel>() {
 
     companion object {
@@ -27,6 +30,10 @@ class RootActivity : BaseActivity<RootViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val alarm = intent.getParcelableExtra<AlarmParcelable>(ALARM_PARAM)
+        Log.d(TAG, "onCreate: alarm $alarm")
+        // FIXME: 22.05.2021 не всегда меняется extra, например, label
+        // FIXME: 22.05.2021 не появляется активити с будильником, но срабатывает сигнал
+        // (быстро сама уходит в Pause)
         if (alarm != null) setTheme(R.style.Theme_AlarmGoOff)
 
         super.onCreate(savedInstanceState)

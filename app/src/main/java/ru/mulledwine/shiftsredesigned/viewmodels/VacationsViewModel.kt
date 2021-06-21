@@ -1,5 +1,7 @@
 package ru.mulledwine.shiftsredesigned.viewmodels
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import ru.mulledwine.shiftsredesigned.data.local.models.JobItem
 import ru.mulledwine.shiftsredesigned.data.local.models.JobWithVacationItems
@@ -11,17 +13,20 @@ import ru.mulledwine.shiftsredesigned.repositories.VacationsRepository
 import ru.mulledwine.shiftsredesigned.ui.vacations.VacationsFragmentDirections
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
-class VacationsViewModel(
-    handle: SavedStateHandle,
-    param: JobWithVacationItems
+fun JobWithVacationItems.toVacationsState() = VacationsState(
+    this.jobItem.name,
+    vacationItems
+)
+
+class VacationsViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: VacationsRepository
 ) : BaseViewModel<VacationsState>(
     handle,
-    VacationsState(param.jobItem.name, param.vacationItems)
+    handle.get<JobWithVacationItems>("item")!!.toVacationsState()
 ) {
 
-    private val repository = VacationsRepository
-
-    private val jobLive = mutableLiveData(param.jobItem)
+    private val jobLive = mutableLiveData(handle.get<JobWithVacationItems>("item")!!.jobItem)
 
     private val vacations = jobLive.switchMap {
         repository.findVacations(it.id)

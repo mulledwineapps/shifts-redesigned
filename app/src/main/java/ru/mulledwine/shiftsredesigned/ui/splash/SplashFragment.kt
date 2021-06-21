@@ -1,6 +1,7 @@
 package ru.mulledwine.shiftsredesigned.ui.splash
 
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import ru.mulledwine.shiftsredesigned.R
 import ru.mulledwine.shiftsredesigned.ui.base.BaseFragment
 import ru.mulledwine.shiftsredesigned.ui.base.Binding
@@ -10,6 +11,7 @@ import ru.mulledwine.shiftsredesigned.viewmodels.SplashState
 import ru.mulledwine.shiftsredesigned.viewmodels.SplashViewModel
 import ru.mulledwine.shiftsredesigned.viewmodels.base.IViewModelState
 
+@AndroidEntryPoint
 class SplashFragment : BaseFragment<SplashViewModel>() {
 
     companion object {
