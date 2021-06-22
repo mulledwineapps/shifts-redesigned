@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="@dimen/list_item_height_72"
+    android:paddingHorizontal="@dimen/spacing_16"
+    tools:context=".ui.main.MainAdapter">
+
+    <TextView
+        android:id="@+id/tv_main_item_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:letterSpacing="0.02"
+        android:minHeight="@dimen/view_size_24"
+        android:textColor="@color/bright_gray"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintBottom_toTopOf="@id/tv_main_item_description"
+        app:layout_constraintEnd_toStartOf="@id/iv_main_item_vacation"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Название" />
+
+    <TextView
+        android:id="@+id/tv_main_item_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.02"
+        android:minHeight="@dimen/text_view_height_32"
+        android:textColor="@color/bright_gray_54"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tv_main_item_title"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_item_title"
+        tools:text="Описание" />
+
+    <ImageView
+        android:id="@+id/iv_main_item_vacation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:contentDescription="@string/description_check_label"
+        android:src="@drawable/ic_round_beach_access_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/v_main_item_colored_dot"
+        app:layout_constraintStart_toEndOf="@id/tv_main_item_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/bright_gray_54"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/v_main_item_colored_dot"
+        android:layout_width="@dimen/colored_dot_size_16"
+        android:layout_height="@dimen/colored_dot_size_16"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:background="@drawable/bg_round"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_main_item_check"
+        app:layout_constraintStart_toEndOf="@id/iv_main_item_vacation"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:backgroundTint="@android:color/holo_red_light" />
+
+    <ImageView
+        android:id="@+id/iv_main_item_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_8"
+        android:contentDescription="@string/description_check_label"
+        android:src="@drawable/ic_round_done_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/v_main_item_colored_dot"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

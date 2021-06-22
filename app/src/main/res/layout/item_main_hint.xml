@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/titan_white"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="@dimen/list_item_height_72"
+    android:paddingHorizontal="@dimen/spacing_16"
+    tools:context=".ui.main.MainAdapter">
+
+    <ImageView
+        android:id="@+id/iv_main_hint_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_round_arrow_downward_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_main_hint_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_16"
+        android:letterSpacing="0.02"
+        android:minHeight="@dimen/view_size_24"
+        android:textColor="@color/bright_gray"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_main_hint_close"
+        app:layout_constraintStart_toEndOf="@id/iv_main_hint_arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/hint_item_long_click" />
+
+    <ImageView
+        android:id="@+id/iv_main_hint_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/description_check_label"
+        android:src="@drawable/ic_round_close_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

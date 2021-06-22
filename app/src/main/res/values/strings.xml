@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shifts Redesigned</string>
+    <string name="app_name">Shifts</string>
 
     <!-- weekdays -->
     <string-array name="days_of_week_array">
@@ -76,7 +76,6 @@
     <string name="vacation_enter_count_hint">Введите количество</string>
     <string name="vacation_start_shift_title">Первая смена после отпуска</string>
     <string name="click_to_choose_shift_hint">Нажмите, чтобы выбрать смену</string>
-    <string name="available_for_cyclic_schedules_only_hint">Доступно только для цикличных графиков</string>
 
     <!-- settings -->
     <string name="label_settings">Настройки</string>
@@ -96,6 +95,9 @@
     <string name="settings_title_melody">Мелодия напоминания</string>
     <string name="settings_description_melody">Выбрать</string>
 
+    <!-- hints -->
+    <string name="hint_item_long_click">Долгое нажатие на элемент списка откроет его меню</string>
+
     <!-- dialogs -->
     <string name="label_choose_job">Выбрать работу</string>
     <string name="label_choose_schedule">Выбрать график</string>
@@ -109,7 +111,6 @@
     <string name="cancel_button">Отмена</string>
 
     <!-- menu item titles -->
-    <string name="menu_item_edit">Редактировать</string>
     <string name="menu_item_delete">Удалить</string>
     <string name="menu_item_alarm">Будильник</string>
     <string name="menu_item_statistics">Статистика</string>
@@ -166,6 +167,7 @@
 
     <!-- misc -->
     <string name="empty_yet_placeholder">Здесь пока пусто</string>
+    <string name="empty_state_main">Создайте график, нажав кнопку ниже</string>
     <string name="choose_placeholder">Выбрать</string>
     <string name="please_wait">Пожалуйста, подождите…</string>
     <string name="choose_job_title">Выбрать работу</string>
@@ -174,6 +176,7 @@
     <string name="first_day_title">Первый день</string>
     <string name="last_day_title">Последний день</string>
     <string name="start_typing_hint">Начните писать</string>
+    <string name="add_job_hint">Например: основная работа</string>
 
     <!-- content descriptions -->
     <string name="description_btn_add_schedule">Кнопка добавить график</string>

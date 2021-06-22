@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_height_48"
         android:layout_marginHorizontal="@dimen/spacing_16"
-        android:hint="@string/start_typing_hint"
+        android:hint="@string/add_job_hint"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textCapSentences" />

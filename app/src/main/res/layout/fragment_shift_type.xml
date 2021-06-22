@@ -180,10 +180,12 @@
         android:id="@+id/btn_shift_type_random_color"
         android:layout_width="@dimen/button_size_40"
         android:layout_height="@dimen/button_size_40"
+        android:layout_marginStart="@dimen/spacing_4"
         android:background="@drawable/bg_btn_round_inset"
         android:backgroundTint="@color/alabaster"
         android:contentDescription="@string/description_btn_set_random_color"
-        android:src="@drawable/ic_round_autorenew_24"
+        android:rotation="10"
+        android:src="@drawable/ic_baseline_casino_24"
         app:layout_constraintBottom_toBottomOf="@id/btn_shift_type_choose_color"
         app:layout_constraintStart_toEndOf="@id/btn_shift_type_choose_color"
         app:layout_constraintTop_toTopOf="@id/btn_shift_type_choose_color" />

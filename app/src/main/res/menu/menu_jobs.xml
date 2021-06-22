@@ -15,5 +15,6 @@
         android:id="@+id/menu_item_archive"
         android:icon="@drawable/ic_round_archive_24"
         android:title="@string/menu_item_archive"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 </menu>

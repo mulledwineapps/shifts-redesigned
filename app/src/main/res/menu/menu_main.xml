@@ -5,6 +5,7 @@
         android:id="@+id/menu_item_alarm"
         android:icon="@drawable/ic_round_alarm_24"
         android:title="@string/menu_item_alarm"
+        android:visible="false"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_item_statistics"
@@ -15,6 +16,7 @@
         android:id="@+id/menu_item_tuning"
         android:icon="@drawable/ic_round_date_range_24"
         android:title="@string/menu_item_tuning"
+        android:visible="false"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_item_vacations"

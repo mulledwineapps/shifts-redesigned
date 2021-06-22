@@ -75,7 +75,7 @@
         <item name="android:textSize">@dimen/font_14</item>
     </style>
 
-    <style name="ButtonTheme" parent="Theme.ShiftsRedesigned">
+    <style name="ButtonTheme" parent="Theme.Shifts">
         <item name="colorControlHighlight">@color/white</item>
     </style>
 

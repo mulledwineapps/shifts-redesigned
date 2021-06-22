@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_splash"
-        android:name="ru.mulledwine.shiftsredesigned.ui.splash.SplashFragment"
+        android:name="ru.mulledwine.shifts.ui.splash.SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_nav_splash_to_nav_main"
@@ -18,12 +18,12 @@
 
     <fragment
         android:id="@+id/nav_alarm_go_off"
-        android:name="ru.mulledwine.shiftsredesigned.ui.alarmgooff.AlarmGoOff"
-        tools:layout="@layout/fragment_alarm_go_off"/>
+        android:name="ru.mulledwine.shifts.ui.alarmgooff.AlarmGoOff"
+        tools:layout="@layout/fragment_alarm_go_off" />
 
     <fragment
         android:id="@+id/nav_main"
-        android:name="ru.mulledwine.shiftsredesigned.ui.main.MainFragment"
+        android:name="ru.mulledwine.shifts.ui.main.MainFragment"
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_nav_main_to_nav_schedule"
@@ -65,23 +65,26 @@
 
     <fragment
         android:id="@+id/nav_jobs"
-        android:name="ru.mulledwine.shiftsredesigned.ui.jobs.JobsFragment"
+        android:name="ru.mulledwine.shifts.ui.jobs.JobsFragment"
         android:label="@string/label_jobs"
         tools:layout="@layout/fragment_jobs">
         <action
             android:id="@+id/action_nav_jobs_to_dialog_job"
             app:destination="@id/dialog_job" />
+        <action
+            android:id="@+id/action_nav_jobs_to_nav_statistics"
+            app:destination="@id/nav_statistics"/>
     </fragment>
 
     <fragment
         android:id="@+id/nav_schedules"
-        android:name="ru.mulledwine.shiftsredesigned.ui.schedules.SchedulesFragment"
+        android:name="ru.mulledwine.shifts.ui.schedules.SchedulesFragment"
         android:label="@string/label_schedules"
         tools:layout="@layout/fragment_schedules">
 
         <argument
             android:name="item"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobWithScheduleItems" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobWithScheduleItems" />
 
         <action
             android:id="@+id/action_nav_schedules_to_nav_schedule"
@@ -91,29 +94,24 @@
 
     <fragment
         android:id="@+id/nav_schedule"
-        android:name="ru.mulledwine.shiftsredesigned.ui.schedule.ScheduleFragment"
-        android:label="{title}"
+        android:name="ru.mulledwine.shifts.ui.schedule.ScheduleFragment"
         tools:layout="@layout/fragment_schedule">
 
         <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
             android:name="job"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobItem" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobItem" />
 
         <argument
             android:name="schedule"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleWithShiftItems"
+            app:argType="ru.mulledwine.shifts.data.local.models.ScheduleWithShiftItems"
             app:nullable="true" />
 
     </fragment>
 
     <fragment
         android:id="@+id/nav_shift_types"
-        android:name="ru.mulledwine.shiftsredesigned.ui.shifttypes.ShiftTypesFragment"
+        android:name="ru.mulledwine.shifts.ui.shifttypes.ShiftTypesFragment"
         android:label="@string/shift_types_shifts_label"
         tools:layout="@layout/fragment_shift_types">
         <action
@@ -123,19 +121,19 @@
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="ru.mulledwine.shiftsredesigned.ui.settings.SettingsFragment"
+        android:name="ru.mulledwine.shifts.ui.settings.SettingsFragment"
         android:label="@string/label_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_vacations"
-        android:name="ru.mulledwine.shiftsredesigned.ui.vacations.VacationsFragment"
+        android:name="ru.mulledwine.shifts.ui.vacations.VacationsFragment"
         android:label="@string/label_vacations"
         tools:layout="@layout/fragment_vacations">
 
         <argument
             android:name="item"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobWithVacationItems" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobWithVacationItems" />
 
         <action
             android:id="@+id/action_nav_vacations_to_nav_vacation"
@@ -145,20 +143,16 @@
 
     <fragment
         android:id="@+id/nav_vacation"
-        android:name="ru.mulledwine.shiftsredesigned.ui.vacation.VacationFragment"
-        android:label="{title}"
+        android:name="ru.mulledwine.shifts.ui.vacation.VacationFragment"
         tools:layout="@layout/fragment_vacation">
 
         <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
             android:name="job"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobItem" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobItem" />
         <argument
             android:name="vacation"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.VacationParcelable"
+            app:argType="ru.mulledwine.shifts.data.local.models.VacationParcelable"
             app:nullable="true" />
 
         <action
@@ -169,7 +163,7 @@
 
     <fragment
         android:id="@+id/nav_alarms"
-        android:name="ru.mulledwine.shiftsredesigned.ui.alarms.AlarmsFragment"
+        android:name="ru.mulledwine.shifts.ui.alarms.AlarmsFragment"
         android:label="@string/label_alarms"
         tools:layout="@layout/fragment_alarms">
 
@@ -181,7 +175,7 @@
 
     <fragment
         android:id="@+id/nav_alarm"
-        android:name="ru.mulledwine.shiftsredesigned.ui.alarm.AlarmFragment"
+        android:name="ru.mulledwine.shifts.ui.alarm.AlarmFragment"
         android:label="{title}"
         tools:layout="@layout/fragment_alarm">
 
@@ -191,27 +185,32 @@
         <argument
             android:name="item"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.entities.AlarmFullParcelable"
+            app:argType="ru.mulledwine.shifts.data.local.entities.AlarmFullParcelable"
             app:nullable="true" />
 
     </fragment>
 
     <dialog
         android:id="@+id/dialog_job"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.JobDialog"
+        android:name="ru.mulledwine.shifts.ui.dialogs.JobDialog"
         tools:layout="@layout/dialog_job">
 
         <argument
             android:name="item"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobItem"
+            app:argType="ru.mulledwine.shifts.data.local.models.JobItem"
             app:nullable="true" />
+
+        <argument
+            android:name="next_destination"
+            android:defaultValue="-1"
+            app:argType="integer" />
 
     </dialog>
 
     <fragment
         android:id="@+id/nav_shift_type"
-        android:name="ru.mulledwine.shiftsredesigned.ui.shifttype.ShiftTypeFragment"
+        android:name="ru.mulledwine.shifts.ui.shifttype.ShiftTypeFragment"
         android:label="{title}"
         tools:layout="@layout/fragment_shift_type">
 
@@ -222,7 +221,7 @@
         <argument
             android:name="item"
             android:defaultValue="@null"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.entities.ShiftType"
+            app:argType="ru.mulledwine.shifts.data.local.entities.ShiftType"
             app:nullable="true" />
         <action
             android:id="@+id/action_nav_shift_type_to_dialog_color_picker"
@@ -232,13 +231,13 @@
 
     <fragment
         android:id="@+id/nav_days_tuning"
-        android:name="ru.mulledwine.shiftsredesigned.ui.daystuning.DaysTuningFragment"
+        android:name="ru.mulledwine.shifts.ui.daystuning.DaysTuningFragment"
         android:label="@string/label_days_tuning"
         tools:layout="@layout/fragment_days_tuning">
 
         <argument
             android:name="job"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobItem" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobItem" />
         <action
             android:id="@+id/action_nav_days_tuning_to_dialog_choose_month"
             app:destination="@id/dialog_choose_month" />
@@ -247,13 +246,13 @@
 
     <fragment
         android:id="@+id/nav_statistics"
-        android:name="ru.mulledwine.shiftsredesigned.ui.statistics.StatisticsFragment"
+        android:name="ru.mulledwine.shifts.ui.statistics.StatisticsFragment"
         android:label="@string/label_statistics"
         tools:layout="@layout/fragment_statistics">
 
         <argument
             android:name="item"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobWithStatisticItems" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobWithStatisticItems" />
 
         <action
             android:id="@+id/action_nav_statistics_to_dialog_choose_month"
@@ -263,12 +262,12 @@
 
     <dialog
         android:id="@+id/dialog_choose_shift_type"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftTypeDialog"
+        android:name="ru.mulledwine.shifts.ui.dialogs.ChooseShiftTypeDialog"
         android:label="@string/label_choose_shift">
 
         <argument
             android:name="shift_types"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ShiftTypeListItem[]" />
+            app:argType="ru.mulledwine.shifts.data.local.models.ShiftTypeListItem[]" />
         <argument
             android:name="current_item_id"
             android:defaultValue="-1"
@@ -277,49 +276,49 @@
 
     <dialog
         android:id="@+id/dialog_choose_job"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseJobDialog"
+        android:name="ru.mulledwine.shifts.ui.dialogs.ChooseJobDialog"
         android:label="@string/label_choose_job">
 
         <argument
             android:name="items"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.JobItem[]" />
+            app:argType="ru.mulledwine.shifts.data.local.models.JobItem[]" />
     </dialog>
 
     <dialog
         android:id="@+id/dialog_choose_schedule"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseScheduleDialog"
+        android:name="ru.mulledwine.shifts.ui.dialogs.ChooseScheduleDialog"
         android:label="@string/label_choose_schedule">
 
         <argument
             android:name="items"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ScheduleItem[]" />
+            app:argType="ru.mulledwine.shifts.data.local.models.ScheduleItem[]" />
 
     </dialog>
 
     <dialog
         android:id="@+id/dialog_choose_shift"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseShiftDialog"
+        android:name="ru.mulledwine.shifts.ui.dialogs.ChooseShiftDialog"
         android:label="@string/label_choose_shift">
 
         <argument
             android:name="items"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ShiftItem[]" />
+            app:argType="ru.mulledwine.shifts.data.local.models.ShiftItem[]" />
 
     </dialog>
 
     <dialog
         android:id="@+id/dialog_choose_month"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ChooseMonthDialog"
+        android:name="ru.mulledwine.shifts.ui.dialogs.ChooseMonthDialog"
         android:label="@string/label_choose_month">
 
         <argument
             android:name="month"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.Month" />
+            app:argType="ru.mulledwine.shifts.data.local.models.Month" />
     </dialog>
 
     <dialog
         android:id="@+id/dialog_date_picker"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.DatePickerDialog">
+        android:name="ru.mulledwine.shifts.ui.dialogs.DatePickerDialog">
 
         <argument
             android:name="time"
@@ -334,11 +333,11 @@
 
     <dialog
         android:id="@+id/dialog_time_picker"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.TimePickerDialog">
+        android:name="ru.mulledwine.shifts.ui.dialogs.TimePickerDialog">
 
         <argument
             android:name="time"
-            app:argType="ru.mulledwine.shiftsredesigned.data.local.models.ClockTime" />
+            app:argType="ru.mulledwine.shifts.data.local.models.ClockTime" />
 
         <argument
             android:name="view_id"
@@ -348,7 +347,7 @@
 
     <dialog
         android:id="@+id/dialog_color_picker"
-        android:name="ru.mulledwine.shiftsredesigned.ui.dialogs.ColorPickerDialog">
+        android:name="ru.mulledwine.shifts.ui.dialogs.ColorPickerDialog">
 
         <argument
             android:name="titleRes"

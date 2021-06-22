@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ShiftsRedesigned" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Shifts" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/white</item>
@@ -18,7 +18,7 @@
         <item name="android:textColor">@color/bright_gray</item>
     </style>
 
-    <style name="Theme.AlarmGoOff" parent="Theme.ShiftsRedesigned">
+    <style name="Theme.AlarmGoOff" parent="Theme.Shifts">
         <item name="android:windowLightStatusBar">false</item>
         <item name="colorPrimaryVariant">@color/black</item>
     </style>
@@ -45,7 +45,7 @@
         <item name="android:textSize">@dimen/font_18</item>
     </style>
 
-    <style name="NumberPickerTheme" parent="Theme.ShiftsRedesigned">
+    <style name="NumberPickerTheme" parent="Theme.Shifts">
         <item name="android:textSize">@dimen/font_20</item>
         <item name="android:textColor">@color/bright_gray</item>
     </style>
