@@ -1,21 +1,24 @@
 package ru.mulledwine.shifts.viewmodels
 
 import android.util.Log
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.data.local.entities.Alarm
 import ru.mulledwine.shifts.data.local.entities.AlarmFullParcelable
 import ru.mulledwine.shifts.data.local.entities.AlarmParcelable
 import ru.mulledwine.shifts.data.local.models.*
 import ru.mulledwine.shifts.extensions.*
-import ru.mulledwine.shifts.extensions.data.*
+import ru.mulledwine.shifts.extensions.data.getDuration
+import ru.mulledwine.shifts.extensions.data.getShiftsForAlarm
+import ru.mulledwine.shifts.extensions.data.toJobItem
+import ru.mulledwine.shifts.extensions.data.toScheduleItem
 import ru.mulledwine.shifts.repositories.AlarmRepository
 import ru.mulledwine.shifts.repositories.JobsRepository
 import ru.mulledwine.shifts.repositories.SchedulesRepository
 import ru.mulledwine.shifts.utils.AlarmCalculator
 import ru.mulledwine.shifts.utils.Utils
 import ru.mulledwine.shifts.viewmodels.base.IViewModelState
+import javax.inject.Inject
 
 fun AlarmFullParcelable.toAlarmState() = AlarmState(
     jobTitle = this.job?.name ?: "",
@@ -24,8 +27,9 @@ fun AlarmFullParcelable.toAlarmState() = AlarmState(
     alarmClock = this.alarm?.time ?: ClockTime()
 )
 
-class AlarmViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class AlarmViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: AlarmRepository,
     private val jobRepository: JobsRepository,
     private val schedulesRepository: SchedulesRepository,

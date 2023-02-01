@@ -1,16 +1,17 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.data.local.CalendarGenerator
 import ru.mulledwine.shifts.data.local.PrefManager
 import ru.mulledwine.shifts.data.local.entities.ShiftType
 import ru.mulledwine.shifts.repositories.SplashRepository
 import ru.mulledwine.shifts.viewmodels.base.IViewModelState
+import javax.inject.Inject
 
-class SplashViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: SplashRepository,
     private val calendarGenerator: CalendarGenerator,
     private val preferences: PrefManager

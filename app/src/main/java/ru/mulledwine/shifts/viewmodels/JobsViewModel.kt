@@ -1,11 +1,10 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.Constants
 import ru.mulledwine.shifts.data.local.entities.Job
 import ru.mulledwine.shifts.data.local.models.JobItem
@@ -15,12 +14,17 @@ import ru.mulledwine.shifts.extensions.data.getStatisticItems
 import ru.mulledwine.shifts.extensions.data.toJobItem
 import ru.mulledwine.shifts.extensions.month
 import ru.mulledwine.shifts.extensions.year
-import ru.mulledwine.shifts.repositories.*
+import ru.mulledwine.shifts.repositories.DaysRepository
+import ru.mulledwine.shifts.repositories.JobsRepository
+import ru.mulledwine.shifts.repositories.SchedulesRepository
+import ru.mulledwine.shifts.repositories.VacationsRepository
 import ru.mulledwine.shifts.ui.jobs.JobsFragmentDirections
 import ru.mulledwine.shifts.viewmodels.base.EmptyState
+import javax.inject.Inject
 
-class JobsViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class JobsViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val daysRepository: DaysRepository,
     private val jobsRepository: JobsRepository,
     private val schedulesRepository: SchedulesRepository,

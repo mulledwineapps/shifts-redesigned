@@ -1,12 +1,11 @@
 package ru.mulledwine.shifts.viewmodels
 
 import android.util.Log
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.data.local.entities.AlarmParcelable
 import ru.mulledwine.shifts.data.local.models.AlarmItem
 import ru.mulledwine.shifts.extensions.toAlarmItem
@@ -15,9 +14,11 @@ import ru.mulledwine.shifts.repositories.AlarmsRepository
 import ru.mulledwine.shifts.ui.alarms.AlarmsFragmentDirections
 import ru.mulledwine.shifts.utils.AlarmCalculator
 import ru.mulledwine.shifts.viewmodels.base.EmptyState
+import javax.inject.Inject
 
-class AlarmsViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class AlarmsViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: AlarmsRepository
 ) : BaseViewModel<EmptyState>(handle, EmptyState) {
 

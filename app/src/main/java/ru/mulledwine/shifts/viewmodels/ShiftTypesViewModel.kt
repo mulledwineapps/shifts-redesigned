@@ -1,19 +1,20 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.data.local.models.ShiftTypeListItem
 import ru.mulledwine.shifts.extensions.data.toShiftTypeItem
 import ru.mulledwine.shifts.repositories.ShiftTypesRepository
 import ru.mulledwine.shifts.ui.shifttypes.ShiftTypesFragmentDirections
 import ru.mulledwine.shifts.viewmodels.base.EmptyState
+import javax.inject.Inject
 
-class ShiftTypesViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class ShiftTypesViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: ShiftTypesRepository
 ) : BaseViewModel<EmptyState>(handle, EmptyState) {
 

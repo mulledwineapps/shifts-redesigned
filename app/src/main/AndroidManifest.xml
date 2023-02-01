@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.mulledwine.shifts">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name="ru.mulledwine.shifts.App"
@@ -11,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shifts">
 
-        <activity android:name="ru.mulledwine.shifts.ui.RootActivity">
+        <activity android:name="ru.mulledwine.shifts.ui.RootActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

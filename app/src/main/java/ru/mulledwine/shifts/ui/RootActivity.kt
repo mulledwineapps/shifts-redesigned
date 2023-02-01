@@ -39,7 +39,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
         super.onCreate(savedInstanceState)
 
         if (alarm != null) navController.graph = navController.graph.apply {
-            startDestination = R.id.nav_alarm_go_off
+            this.setStartDestination(R.id.nav_alarm_go_off)
         }
 
         // top level destination ids
@@ -74,6 +74,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
                     }
                 }
             }
+            else -> throw IllegalStateException()
         }
 
         snackbar.show()

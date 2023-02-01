@@ -1,8 +1,9 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.Constants
 import ru.mulledwine.shifts.R
 import ru.mulledwine.shifts.data.local.PrefManager
@@ -10,18 +11,20 @@ import ru.mulledwine.shifts.data.local.entities.AlarmFullParcelable
 import ru.mulledwine.shifts.data.local.entities.Day
 import ru.mulledwine.shifts.data.local.entities.Job
 import ru.mulledwine.shifts.data.local.entities.ShiftType
-import ru.mulledwine.shifts.data.local.models.*
+import ru.mulledwine.shifts.data.local.models.JobItem
+import ru.mulledwine.shifts.data.local.models.JobWithStatisticItems
 import ru.mulledwine.shifts.extensions.data.*
 import ru.mulledwine.shifts.extensions.mutableLiveData
 import ru.mulledwine.shifts.extensions.toAlarmParcelable
 import ru.mulledwine.shifts.repositories.*
-import ru.mulledwine.shifts.ui.main.HintItemRes
 import ru.mulledwine.shifts.ui.main.MainFragmentDirections
 import ru.mulledwine.shifts.ui.main.MainItem
 import ru.mulledwine.shifts.viewmodels.base.IViewModelState
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val daysRepository: DaysRepository,
     private val jobsRepository: JobsRepository,
     private val schedulesRepository: SchedulesRepository,

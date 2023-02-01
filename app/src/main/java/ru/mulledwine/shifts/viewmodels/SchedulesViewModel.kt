@@ -1,8 +1,7 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.data.local.models.JobItem
 import ru.mulledwine.shifts.data.local.models.JobWithScheduleItems
 import ru.mulledwine.shifts.data.local.models.ScheduleItem
@@ -12,14 +11,16 @@ import ru.mulledwine.shifts.extensions.mutableLiveData
 import ru.mulledwine.shifts.repositories.SchedulesRepository
 import ru.mulledwine.shifts.ui.schedules.SchedulesFragmentDirections
 import ru.mulledwine.shifts.viewmodels.base.IViewModelState
+import javax.inject.Inject
 
 fun JobWithScheduleItems.toSchedulesState() = SchedulesState(
     this.jobItem.name,
     this.scheduleItems
 )
 
-class SchedulesViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class SchedulesViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: SchedulesRepository
 ) : BaseViewModel<SchedulesState>(
     handle,

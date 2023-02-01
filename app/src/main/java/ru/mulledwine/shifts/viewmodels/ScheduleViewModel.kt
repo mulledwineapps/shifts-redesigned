@@ -1,12 +1,11 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.R
 import ru.mulledwine.shifts.data.local.entities.Schedule
 import ru.mulledwine.shifts.data.local.models.JobItem
@@ -16,9 +15,11 @@ import ru.mulledwine.shifts.extensions.data.toJobItem
 import ru.mulledwine.shifts.extensions.data.toShiftTypeItem
 import ru.mulledwine.shifts.repositories.ScheduleRepository
 import ru.mulledwine.shifts.viewmodels.base.EmptyState
+import javax.inject.Inject
 
-class ScheduleViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class ScheduleViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: ScheduleRepository
 ) : BaseViewModel<EmptyState>(handle, EmptyState) {
 

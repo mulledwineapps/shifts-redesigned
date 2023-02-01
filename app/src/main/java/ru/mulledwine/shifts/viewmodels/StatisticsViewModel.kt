@@ -1,8 +1,7 @@
 package ru.mulledwine.shifts.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.mulledwine.shifts.data.local.models.JobItem
 import ru.mulledwine.shifts.data.local.models.JobWithStatisticItems
 import ru.mulledwine.shifts.data.local.models.Month
@@ -17,6 +16,7 @@ import ru.mulledwine.shifts.repositories.JobsRepository
 import ru.mulledwine.shifts.repositories.SchedulesRepository
 import ru.mulledwine.shifts.repositories.VacationsRepository
 import ru.mulledwine.shifts.viewmodels.base.IViewModelState
+import javax.inject.Inject
 
 fun JobWithStatisticItems.toStatisticsState() = StatisticsState(
     this.jobItem.name,
@@ -24,8 +24,9 @@ fun JobWithStatisticItems.toStatisticsState() = StatisticsState(
     this.statisticItems
 )
 
-class StatisticsViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class StatisticsViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val jobsRepository: JobsRepository,
     private val schedulesRepository: SchedulesRepository,
     private val vacationsRepository: VacationsRepository,
